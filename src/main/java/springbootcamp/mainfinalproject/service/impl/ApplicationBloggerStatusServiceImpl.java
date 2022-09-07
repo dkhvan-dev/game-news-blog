@@ -1,0 +1,14 @@
+package springbootcamp.mainfinalproject.service.impl;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import springbootcamp.mainfinalproject.repository.ApplicationBloggerStatusRepository;
+import springbootcamp.mainfinalproject.repository.GameRepository;
+import springbootcamp.mainfinalproject.service.ApplicationBloggerStatusService;
+
+@Service
+@RequiredArgsConstructor
+public class ApplicationBloggerStatusServiceImpl implements ApplicationBloggerStatusService {
+
+    private final ApplicationBloggerStatusRepository applicationBloggerStatusRepository;
+}

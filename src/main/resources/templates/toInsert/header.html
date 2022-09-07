@@ -1,0 +1,51 @@
+<header class="header-section">
+  <div class="header-warp">
+    <div class="header-social d-flex justify-content-end">
+      <p>Follow us:</p>
+      <a href="https://ru.pinterest.com/"><i class="fa fa-pinterest"></i></a>
+      <a href="https://www.facebook.com/"><i class="fa fa-facebook"></i></a>
+      <a href="https://twitter.com/"><i class="fa fa-twitter"></i></a>
+      <a href="https://www.instagram.com/"><i class="fa fa-dribbble"></i></a>
+      <a href="https://www.reddit.com/"><i class="fa fa-behance"></i></a>
+    </div>
+    <div class="header-bar-warp d-flex">
+      <!-- site logo -->
+      <a href="home.html" class="site-logo">
+        <img th:src="@{'/../img/logo.png'}" alt="">
+      </a>
+      <nav class="top-nav-area w-100">
+        <div class="user-panel">
+          <ul class="navbar-nav" sec:authorize="isAuthenticated()">
+            <li class="nav-item dropdown">
+              <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Profile
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" th:href="@{'/profile'}">Profile</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" th:href="@{'/adminPanel'}" sec:authorize="hasRole('ADMIN')">Admin Panel</a></li>
+                <li><a class="dropdown-item" th:href="@{'/applicationsBloggers'}" sec:authorize="hasRole('ADMIN')">Application bloggers requests</a></li>
+                <li><a th:href="@{'/signOut'}" class="dropdown-item text-danger">Logout</a></li>
+              </ul>
+            </li>
+          </ul>
+          <div sec:authorize="isAnonymous()">
+            <a th:href="@{'/signIn'}">Login</a> / <a th:href="@{'/signUp'}">Register</a>
+          </div>
+        </div>
+        <!-- Menu -->
+        <ul class="main-menu primary-menu">
+          <li><a th:href="@{'/'}">Home</a></li>
+          <li><a class="main-menu_dropdown" th:href="@{'/allGames'}">Games</a>
+            <ul class="sub-menu">
+              <li><a href="../detailsGame.html">Game Singel</a></li>
+            </ul>
+          </li>
+          <li><a href="../review.html">Reviews</a></li>
+          <li><a href="../blog.html">News</a></li>
+          <li><a href="../contact.html">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>

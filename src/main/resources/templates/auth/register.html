@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:insert="~{/toInsert/head.html}">
+  <title>Register page</title>
+</head>
+<body>
+  <div th:insert="~{/toInsert/preloader.html}"></div>
+
+  <header th:insert="~{/toInsert/header.html}">
+  </header>
+
+  <main class="main">
+    <div class="container mt-3">
+      <div class="alert alert-danger" role="alert" th:if="${param.userExist}">
+        The user with this email is already registered!
+      </div>
+      <div class="alert alert-danger" role="alert" th:if="${param.passwordsNotSame}">
+        Passwords are not same!
+      </div>
+      <form class="form-control" th:action="@{'/signUp'}" method="post">
+        <div class="mt-3">
+          <label>Email:
+            <input class="form-control" type="email" name="userEmail" required>
+          </label>
+        </div>
+        <div class="mt-3">
+          <label>First Name:
+            <input class="form-control" type="text" name="userFirstName" required>
+          </label>
+        </div>
+        <div class="mt-3">
+          <label>Surname:
+            <input class="form-control" type="text" name="userSurname" required>
+          </label>
+        </div>
+        <div class="mt-3">
+          <label>Birthdate:
+            <input class="form-control" type="date" name="birthdate" required>
+          </label>
+        </div>
+        <div class="mt-3">
+          <label>Password:
+            <input class="form-control" type="password" name="userPassword" required>
+          </label>
+        </div>
+        <div class="mt-3">
+          <label>Repeat password:
+            <input class="form-control" type="password" name="rePassword" required>
+          </label>
+        </div>
+        <button class="btn btn-primary mt-3">Sign Up</button>
+      </form>
+    </div>
+  </main>
+
+  <div th:insert="~{/toInsert/scripts.html}"></div>
+
+</body>
+</html>

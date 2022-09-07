@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:insert="~{/toInsert/head.html}">
+  <title>Auth page</title>
+</head>
+<body>
+  <div th:insert="~{/toInsert/preloader.html}"></div>
+
+  <header th:insert="~{/toInsert/header.html}">
+  </header>
+
+  <main class="main">
+    <div class="container mt-3">
+      <div class="alert alert-danger" role="alert" th:if="${param.error != null}">
+        Email or password is invalid!
+      </div>
+      <form class="form-control" th:action="@{'/signIn'}" method="post">
+        <div class="mt-3">
+          <label>Email:
+            <input class="form-control" type="email" name="user_email" required>
+          </label>
+        </div>
+        <div class="mt-3">
+          <label>Password:
+            <input class="form-control" type="password" name="user_password" required>
+          </label>
+        </div>
+        <button class="btn btn-primary mt-3">Login</button>
+      </form>
+    </div>
+  </main>
+
+  <div th:insert="~{/toInsert/scripts.html}"></div>
+
+</body>
+</html>
