@@ -83,11 +83,31 @@
                  stripComments="true" />
     </changeSet>
 
-    <changeSet id="2022_09_06_0.0.3_insert_new_columns_and_data_to_games_table" author="denis">
+    <changeSet id="2022_09_06_0.0.3_create_new_tables_and_insert_data" author="denis">
         <sqlFile dbms="postgresql"
                  encoding="utf-8"
                  endDelimiter=";"
-                 path="changes/2022_09_06_0.0.3_insert_new_columns_and_data_to_games_table.sql"
+                 path="changes/2022_09_06_0.0.3_create_new_tables_and_insert_data.sql"
+                 relativeToChangelogFile="true"
+                 splitStatements="true"
+                 stripComments="true" />
+    </changeSet>
+
+    <changeSet id="2022_09_07_0.0.1_create_new_column_and_insert_data_to_requirements_tables" author="denis">
+        <sqlFile dbms="postgresql"
+                 encoding="utf-8"
+                 endDelimiter=";"
+                 path="changes/2022_09_07_0.0.1_create_new_column_and_insert_data_to_requirements_tables.sql"
+                 relativeToChangelogFile="true"
+                 splitStatements="true"
+                 stripComments="true" />
+    </changeSet>
+
+    <changeSet id="2022_09_07_0.0.2_update_requirements_tables" author="denis">
+        <sqlFile dbms="postgresql"
+                 encoding="utf-8"
+                 endDelimiter=";"
+                 path="changes/2022_09_07_0.0.2_update_requirements_tables.sql"
                  relativeToChangelogFile="true"
                  splitStatements="true"
                  stripComments="true" />

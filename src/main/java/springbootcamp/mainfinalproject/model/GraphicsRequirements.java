@@ -8,19 +8,22 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "os_requirements")
+@Table(name = "graphics_requirements")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class OsRequirements {
+public class GraphicsRequirements {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long osRequirementId;
+    private Long graphicsRequirementId;
 
     @Column(name = "name")
-    private String osRequirementName;
+    private String graphicsRequirementName;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Game game;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private GamePlatform platform;

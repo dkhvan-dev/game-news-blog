@@ -29,6 +29,9 @@ public class Game {
     @Column(name = "image")
     private String gameImage;
 
+    @Column(name = "description")
+    private String gameDescription;
+
     @ManyToMany(fetch = FetchType.EAGER)
     private List<GamePlatform> platform;
 }
