@@ -1,5 +1,6 @@
 package springbootcamp.mainfinalproject.model;
 
+import liquibase.pro.packaged.F;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,4 +35,7 @@ public class Game {
 
     @ManyToMany(fetch = FetchType.EAGER)
     private List<GamePlatform> platform;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private GameRequirements gameRequirement;
 }

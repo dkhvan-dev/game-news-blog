@@ -40,7 +40,23 @@
 					<h4>Об игре</h4>
 					<p th:text="${game.gameDescription}"></p>
 					<h4>Минимальные требования:</h4>
-					<p th:text="${}"></p>
+					<div class="d-flex detailsGameRequirements">
+						<p>ОС: </p>
+						<span th:text="${game.gameRequirement.getGameRequirementsOS()}"></span>
+					</div>
+					<div class="d-flex detailsGameRequirements">
+						<p>Процессор: <span th:text="${game.gameRequirement.getGameRequirementsCPU()}"></span></p>
+					</div>
+					<div class="d-flex detailsGameRequirements">
+						<p>ОЗУ: <span th:text="${game.gameRequirement.getGameRequirementsMemory()}"></span></p>
+					</div>
+					<div class="d-flex detailsGameRequirements">
+						<p>Видеокарта: <span th:text="${game.gameRequirement.getGameRequirementsGPU()}"></span></p>
+					</div>
+					<div class="d-flex detailsGameRequirements">
+						<p>Жесткий диск: <span th:text="${game.gameRequirement.getGameRequirementsStorage()}"></span></p>
+					</div>
+
 					<div class="geme-social-share pt-5 d-flex">
 						<p>Share:</p>
 						<a href="#"><i class="fa fa-pinterest"></i></a>
@@ -82,30 +98,6 @@
 		</div>
 	</section>
 	<!-- Games end-->
-
-	<section class="game-author-section">
-		<div class="container">
-			<div class="game-author-pic set-bg" data-setbg="img/author.jpg"></div>
-			<div class="game-author-info">
-				<h4>Written by: Michael Williams</h4>
-				<p>Vivamus volutpat nibh ac sollicitudin imperdiet. Donec scelerisque lorem sodales odio ultricies, nec rhoncus ex lobortis. Vivamus tincid-unt sit amet sem id varius. Donec elementum aliquet tortor. Curabitur justo mi, efficitur sed eros alique.</p>
-			</div>
-		</div>
-	</section>
-
-
-	<!-- Newsletter section -->
-	<section class="newsletter-section">
-		<div class="container">
-			<h2>Subscribe to our newsletter</h2>
-			<form class="newsletter-form">
-				<input type="text" placeholder="ENTER YOUR E-MAIL">
-				<button class="site-btn">subscribe  <img src="img/icons/double-arrow.png" alt="#"/></button>
-			</form>
-		</div>
-	</section>
-	<!-- Newsletter section end -->
-
 
 	<!-- Footer section -->
 	<footer class="footer-section">

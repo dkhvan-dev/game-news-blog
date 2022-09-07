@@ -1268,7 +1268,21 @@ ol {
 	font-weight: 500;
 	color: #68647d;
 	line-height: 1.8;
-	margin-bottom: 70px;
+}
+
+.detailsGameRequirements p {
+	font-size: 16px;
+	font-weight: 500;
+	color: #b01ba5;
+	line-height: 1.8;
+}
+
+.detailsGameRequirements span {
+	margin-left: 5px;
+	font-size: 16px;
+	font-weight: 500;
+	color: #68647d;
+	line-height: 1.8;
 }
 
 .rating-widget {
