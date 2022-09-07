@@ -7,4 +7,5 @@ import java.util.List;
 public interface GameService {
     List<Game> getAllGames();
     Game getGameById(Long gameId);
+    List<Game> getGamesByPlatform(Long platformId);
 }

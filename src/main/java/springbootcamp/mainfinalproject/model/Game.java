@@ -38,4 +38,7 @@ public class Game {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private GameRequirements gameRequirement;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private GameRating gameRatings;
 }

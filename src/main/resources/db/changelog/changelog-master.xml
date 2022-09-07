@@ -93,4 +93,24 @@
                  stripComments="true" />
     </changeSet>
 
+    <changeSet id="2022_09_07_0.0.1_create_table_game_rating" author="denis">
+        <sqlFile dbms="postgresql"
+                 encoding="utf-8"
+                 endDelimiter=";"
+                 path="changes/2022_09_07_0.0.1_create_table_game_rating.sql"
+                 relativeToChangelogFile="true"
+                 splitStatements="true"
+                 stripComments="true" />
+    </changeSet>
+
+    <changeSet id="2022_09_07_0.0.2_add_column_to_game_rating" author="denis">
+        <sqlFile dbms="postgresql"
+                 encoding="utf-8"
+                 endDelimiter=";"
+                 path="changes/2022_09_07_0.0.2_add_column_to_game_rating.sql"
+                 relativeToChangelogFile="true"
+                 splitStatements="true"
+                 stripComments="true" />
+    </changeSet>
+
 </databaseChangeLog>

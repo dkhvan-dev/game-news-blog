@@ -98,4 +98,20 @@ public class MainController {
         }
         return "redirect:/allGames";
     }
+
+    @GetMapping("/gamesByPlatform/{platformId}")
+    public String gamesByPlatformPage(@PathVariable(name = "platformId") Long platformId,
+                                      Model model) {
+        List<Game> allGamesByPlatform = gameService.getGamesByPlatform(platformId);
+        if (allGamesByPlatform != null) {
+            model.addAttribute("allGamesByPlatform", allGamesByPlatform);
+            List<GamePlatform> allPlatforms = gamePlatformService.getAllPlatforms();
+            model.addAttribute("allPlatforms", allPlatforms);
+            List<Genre> allGenres = genreService.getAllGenres();
+            model.addAttribute("allGenres", allGenres);
+            return "gamesByPlatform";
+        }
+        return "redirect:/allGames";
+    }
+
 }
