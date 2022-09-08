@@ -123,4 +123,14 @@
                  stripComments="true" />
     </changeSet>
 
+    <changeSet id="2022_09_08_0.0.2_create_table_news" author="denis">
+        <sqlFile dbms="postgresql"
+                 encoding="utf-8"
+                 endDelimiter=";"
+                 path="changes/2022_09_08_0.0.2_create_table_news.sql"
+                 relativeToChangelogFile="true"
+                 splitStatements="true"
+                 stripComments="true" />
+    </changeSet>
+
 </databaseChangeLog>

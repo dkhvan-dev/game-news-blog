@@ -102,7 +102,11 @@
 										<div class="tw-meta">
 											<a th:href="@{'/detailsGame/' + ${game.gameId}}" th:text="${game.gameName}"></a>
 										</div>
-										<h5 th:text="${game.getGameRatings().getGameRatingAvg()} + ' / 5'"></h5>
+										<div class="d-flex">
+											<span>Рейтинг игры:&nbsp;&nbsp;</span>
+											<span class="tw-text__rating" th:text="${game.getGameRatings().getGameRatingAvg()}"></span>
+											<span>&nbsp;&nbsp;/&nbsp;&nbsp;5</span>
+										</div>
 									</div>
 								</div>
 							</div>

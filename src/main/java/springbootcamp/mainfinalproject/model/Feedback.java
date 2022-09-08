@@ -39,5 +39,5 @@ public class Feedback {
     private Date feedbackUpdateDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private FeedbackStatus status;
+    private FeedbackStatus feedbackStatus;
 }

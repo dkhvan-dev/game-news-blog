@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:insert="~{/toInsert/head.html}">
+    <title>Admin Panel</title>
+</head>
+<body>
+
+    <div th:insert="~{/toInsert/preloader.html}"></div>
+
+    <!-- Header section -->
+    <header th:insert="~{/toInsert/header.html}">
+    </header>
+    <!-- Header section end -->
+
+    <main class="d-flex flex-column">
+        <!-- News Collapse -->
+        <div class="d-flex">
+            <div class="admin-collapse">
+                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#newsCollapseAdmin" aria-expanded="false" aria-controls="collapseExample">
+                    News
+                </button>
+            </div>
+            <div class="collapse admin-collapse__show" id="newsCollapseAdmin">
+                <div class="card card-body">
+                    <!-- Button addNews modal -->
+                    <div>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addNewsModal">
+                            Add news
+                        </button>
+                    </div>
+
+                    <!-- AddNews Modal -->
+                    <div class="modal fade" id="addNewsModal" tabindex="-1" aria-hidden="true">
+                        <form class="form-control" th:action="@{'/addNews'}" method="post">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <label> Title:
+                                            <input type="text" class="form-control" name="newsTitle" required>
+                                        </label>
+                                        <label>Description:
+                                            <textarea class="form-control" name="newsDescription"></textarea>
+                                        </label>
+                                        <select class="form-select" aria-label="Default select example" name="game">
+                                            <option th:each="game : ${allGames}" th:text="${game.gameName}" th:value="${game.gameId}"></option>
+                                        </select>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button class="btn btn-primary">Add news</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- ALL NEWS TABLE -->
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Create date</th>
+                            <th scope="col">Game</th>
+                            <th scope="col">Details</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="news : ${allNews}">
+                            <th scope="row" th:text="${news.newsId}"></th>
+                            <td th:text="${news.newsTitle}"></td>
+                            <td th:text="${news.newsCreateDate}"></td>
+                            <td th:text="${news.getGame().gameName}"></td>
+                            <td><a class="btn btn-primary" th:href="@{'/detailsNewsAdmin/' + ${news.newsId}}">Details</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- Blogs Collapse -->
+        <div class="d-flex">
+            <div class="admin-collapse">
+                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#blogsCollapseAdmin" aria-expanded="false" aria-controls="collapseExample">
+                    Blogs
+                </button>
+            </div>
+            <div class="collapse admin-collapse__show" id="blogsCollapseAdmin">
+                <div class="card card-body">
+                    <!-- ALL BLOGS TABLE -->
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Create date</th>
+                            <th scope="col">Update date</th>
+                            <th scope="col">Game</th>
+                            <th scope="col">Details</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="blog : ${allBlogs}">
+                            <th scope="row" th:text="${blog.blogId}"></th>
+                            <td th:text="${blog.blogTitle}"></td>
+                            <td th:text="${blog.blogCreateDate}"></td>
+                            <td th:text="${blog.blogUpdateDate}"></td>
+                            <td th:text="${blog.getGames().gameName}"></td>
+                            <td><a class="btn btn-primary" th:href="@{'/detailsBlogAdmin/' + ${blog.blogId}}">Details</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- ApplicationFormsBlogger Collapse -->
+        <div class="d-flex">
+            <div class="admin-collapse">
+                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#applicationForBloggerRole" aria-expanded="false" aria-controls="collapseExample">
+                    Applications for Blogger Role
+                </button>
+            </div>
+            <div class="collapse admin-collapse__show" id="applicationForBloggerRole">
+                <div class="card card-body">
+                    <!-- ALL ApplicationFormsBlogger TABLE -->
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Receipt date</th>
+                            <th scope="col">Update date</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Author</th>
+                            <th scope="col">Details</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="app : ${allApplicationForBloggerRole}">
+                            <th scope="row" th:text="${app.applicationFormBloggerId}"></th>
+                            <td th:text="${app.applicationFormBloggerReceiptDate}"></td>
+                            <td th:text="${app.applicationFormBloggerUpdateDate}"></td>
+                            <td th:text="${app.getApplicationBloggerStatus().getApplicationBloggerStatus()}"></td>
+                            <td th:text="${app.getUsers().getUserFirstName() + ' ' + app.getUsers().getUserSurname()}"></td>
+                            <td><a class="btn btn-primary" th:href="@{'/detailsApplicationFormBloggerAdmin/' + ${app.applicationFormBloggerId}}">Details</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- Feedback Collapse -->
+        <div class="d-flex">
+            <div class="admin-collapse">
+                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#feedbackAdmin" aria-expanded="false">
+                    Feedback
+                </button>
+            </div>
+            <div class="collapse admin-collapse__show" id="feedbackAdmin">
+                <div class="card card-body">
+                    <!-- ALL FEEDBACK TABLE -->
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Subject</th>
+                            <th scope="col">Receipt date</th>
+                            <th scope="col">Update date</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Details</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="feedback : ${allFeedback}">
+                            <th scope="row" th:text="${feedback.feedbackId}"></th>
+                            <td th:text="${feedback.feedbackName}"></td>
+                            <td th:text="${feedback.feedbackEmail}"></td>
+                            <td th:text="${feedback.feedbackSubject}"></td>
+                            <td th:text="${feedback.feedbackReceiptDate}"></td>
+                            <td th:text="${feedback.feedbackUpdateDate}"></td>
+                            <td th:text="${feedback.getFeedbackStatus().getFeedbackStatus()}"></td>
+                            <td><a class="btn btn-primary" th:href="@{'/detailsFeedbackAdmin/' + ${feedback.feedbackId}}">Details</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer section -->
+    <footer class="footer-section" th:insert="~{/toInsert/footer.html}">
+    </footer>
+    <!-- Footer section end -->
+
+    <div th:insert="~{/toInsert/scripts.html}"></div>
+</body>
+</html>

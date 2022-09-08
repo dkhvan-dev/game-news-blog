@@ -30,8 +30,8 @@ public class ApplicationFormBlogger {
     private Date applicationFormBloggerUpdateDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private ApplicationBloggerStatus status;
+    private ApplicationBloggerStatus applicationBloggerStatus;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private User author;
+    private User users;
 }

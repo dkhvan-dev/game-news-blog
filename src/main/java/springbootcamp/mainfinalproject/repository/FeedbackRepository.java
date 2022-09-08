@@ -5,8 +5,10 @@ import org.springframework.stereotype.Repository;
 import springbootcamp.mainfinalproject.model.Feedback;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Repository
 @Transactional
 public interface FeedbackRepository extends JpaRepository<Feedback, Long> {
+    List<Feedback> findAllByOrderByFeedbackReceiptDate();
 }

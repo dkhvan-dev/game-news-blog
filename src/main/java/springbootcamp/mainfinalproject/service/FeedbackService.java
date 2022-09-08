@@ -1,5 +1,9 @@
 package springbootcamp.mainfinalproject.service;
 
-public interface FeedbackService {
+import springbootcamp.mainfinalproject.model.Feedback;
 
+import java.util.List;
+
+public interface FeedbackService {
+    List<Feedback> getAllFeedback();
 }
