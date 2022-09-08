@@ -36,7 +36,7 @@
 			<div class="row">
 				<div class="col-xl-7 col-lg-8 col-md-7">
 					<div class="row">
-						<div class="col-lg-4 col-md-6" th:each="game : ${allGamesByPlatform}">
+						<div class="col-lg-4 col-md-6" th:each="game : ${allGamesByGenre}">
 							<div class="game-item">
 								<img th:src="'/' + ${game.gameImage}" alt="#">
 								<h5 th:text="${game.gameName}"></h5>
@@ -53,7 +53,7 @@
 								<h4 class="widget-title">platform</h4>
 								<ul>
 									<li th:each="platform : ${allPlatforms}">
-										<a th:class="${platform.platformId == selectedPlatformId} ? 'disabled' : ''" th:href="@{'/gamesByPlatform/' + ${platform.platformId}}" th:text="${platform.platformName}"></a>
+										<a th:href="@{'/gamesByPlatform/' + ${platform.platformId}}" th:text="${platform.platformName}"></a>
 									</li>
 								</ul>
 							</div>
@@ -63,7 +63,7 @@
 								<h4 class="widget-title">Genre</h4>
 								<ul>
 									<li th:each="genre : ${allGenres}">
-										<a th:href="@{'/gamesByGenre/' + ${genre.genreId}}" th:text="${genre.genreName}"></a>
+										<a th:class="${genre.genreId == selectedGenreId} ? 'disabled' : ''" th:href="@{'/gamesByGenre/' + ${genre.genreId}}" th:text="${genre.genreName}"></a>
 									</li>
 								</ul>
 							</div>

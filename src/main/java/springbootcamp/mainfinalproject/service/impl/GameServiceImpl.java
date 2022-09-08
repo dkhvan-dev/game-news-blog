@@ -4,8 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import springbootcamp.mainfinalproject.model.Game;
 import springbootcamp.mainfinalproject.model.GamePlatform;
+import springbootcamp.mainfinalproject.model.Genre;
 import springbootcamp.mainfinalproject.repository.GamePlatformRepository;
 import springbootcamp.mainfinalproject.repository.GameRepository;
+import springbootcamp.mainfinalproject.repository.GenreRepository;
 import springbootcamp.mainfinalproject.service.GameService;
 
 import java.util.List;
@@ -16,6 +18,7 @@ public class GameServiceImpl implements GameService {
 
     private final GameRepository gameRepository;
     private final GamePlatformRepository gamePlatformRepository;
+    private final GenreRepository genreRepository;
 
     @Override
     public List<Game> getAllGames() {
@@ -34,5 +37,19 @@ public class GameServiceImpl implements GameService {
             return gameRepository.findAllByPlatformId(platformId);
         }
         return null;
+    }
+
+    @Override
+    public List<Game> getGamesByGenre(Long genreId) {
+        Genre checkGenre = genreRepository.findById(genreId).orElse(null);
+        if (checkGenre != null) {
+            return gameRepository.findAllByGenreId(genreId);
+        }
+        return null;
+    }
+
+    @Override
+    public List<Game> getTop5Games() {
+        return gameRepository.searchTop5Games();
     }
 }

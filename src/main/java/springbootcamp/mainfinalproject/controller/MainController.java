@@ -29,6 +29,8 @@ public class MainController {
         model.addAttribute("allGames", allGames);
         List<Blog> last3Blogs = blogService.getTop3Blogs();
         model.addAttribute("last3Blogs", last3Blogs);
+        List<Game> top5Games = gameService.getTop5Games();
+        model.addAttribute("top5Games", top5Games);
         return "index";
     }
 
@@ -104,12 +106,29 @@ public class MainController {
                                       Model model) {
         List<Game> allGamesByPlatform = gameService.getGamesByPlatform(platformId);
         if (allGamesByPlatform != null) {
+            model.addAttribute("selectedPlatformId", platformId);
             model.addAttribute("allGamesByPlatform", allGamesByPlatform);
             List<GamePlatform> allPlatforms = gamePlatformService.getAllPlatforms();
             model.addAttribute("allPlatforms", allPlatforms);
             List<Genre> allGenres = genreService.getAllGenres();
             model.addAttribute("allGenres", allGenres);
             return "gamesByPlatform";
+        }
+        return "redirect:/allGames";
+    }
+
+    @GetMapping("/gamesByGenre/{genreId}")
+    public String gamesByGenrePage(@PathVariable(name = "genreId") Long genreId,
+                                   Model model) {
+        List<Game> allGamesByGenre = gameService.getGamesByGenre(genreId);
+        if (allGamesByGenre != null) {
+            model.addAttribute("selectedGenreId", genreId);
+            model.addAttribute("allGamesByGenre", allGamesByGenre);
+            List<GamePlatform> allPlatforms = gamePlatformService.getAllPlatforms();
+            model.addAttribute("allPlatforms", allPlatforms);
+            List<Genre> allGenres = genreService.getAllGenres();
+            model.addAttribute("allGenres", allGenres);
+            return "gamesByGenre";
         }
         return "redirect:/allGames";
     }

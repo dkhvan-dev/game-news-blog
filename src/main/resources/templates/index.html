@@ -40,28 +40,15 @@
 	<section class="intro-section">
 		<div class="container">
 			<div class="row">
-				<div class="col-md-4">
-					<div class="intro-text-box text-box text-white">
-						<div class="top-meta">11.11.18  /  in <a href="">Games</a></div>
-						<h3>The best online game is out now!</h3>
-						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida....</p>
-						<a href="#" class="read-more">Read More  <img src="img/icons/double-arrow.png" alt="#"/></a>
-					</div>
-				</div>
-				<div class="col-md-4">
-					<div class="intro-text-box text-box text-white">
-						<div class="top-meta">11.11.18  /  in <a href="">Playstation</a></div>
-						<h3>Top 5 best games in november</h3>
-						<p>Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum  labore suspendisse ultrices gravida....</p>
-						<a href="#" class="read-more">Read More  <img src="img/icons/double-arrow.png" alt="#"/></a>
-					</div>
-				</div>
-				<div class="col-md-4">
-					<div class="intro-text-box text-box text-white">
-						<div class="top-meta">11.11.18  /  in <a href="">Reviews</a></div>
-						<h3>Get this game at a promo price</h3>
-						<p>Sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida ncididunt ut labore ....</p>
-						<a href="#" class="read-more">Read More  <img src="img/icons/double-arrow.png" alt="#"/></a>
+				<div class="col-md-4" th:each="blog : ${last3Blogs}">
+					<div class="intro-text-box text-box text-white d-flex flex-column">
+						<div class="top-meta">
+							<span th:text="${blog.blogCreateDate} + '  /  in'"></span>
+							<a th:href="@{'/allGames'}">Games</a>
+						</div>
+						<h3 th:text="${blog.blogTitle}"></h3>
+						<p th:text="${blog.blogDescription}"></p>
+						<a th:href="${'/detailsBlog/' + blog.blogId}" class="read-more justify-content-end align-content-end">Read More  <img th:src="@{'/img/icons/double-arrow.png'}" th:alt="${blog.blogTitle}" /></a>
 					</div>
 				</div>
 			</div>
@@ -80,7 +67,7 @@
 					</div>
 					<ul class="blog-filter">
 						<li th:each="game : ${allGames}">
-							<a href="#" th:text="${game.gameName}"></a>
+							<a th:href="@{'/blogsByGameId/' + ${game.gameId}}" th:text="${game.gameName}"></a>
 						</li>
 					</ul>
 					<div class="container d-flex flex-column">
@@ -96,7 +83,7 @@
 								</div>
 								<h3 th:text="${blog.blogTitle}"></h3>
 								<p th:text="${blog.blogDescription}"></p>
-								<a href="#" class="read-more">Read More  <img src="img/icons/double-arrow.png" alt="#"/></a>
+								<a th:href="@{'/detailsBlog/' + ${blog.blogId}}" class="read-more">Read More  <img th:src="@{'/img/icons/double-arrow.png'}" alt="double arrow"/></a>
 							</div>
 						</div>
 					</div>
@@ -107,40 +94,15 @@
 						<div class="widget-item">
 							<h4 class="widget-title">Trending</h4>
 							<div class="trending-widget">
-								<div class="tw-item">
+								<div class="tw-item" th:each="game : ${top5Games}">
 									<div class="tw-thumb">
-										<img src="./img/blog-widget/1.jpg" alt="#">
+										<img th:src="'/' + ${game.gameImage}" alt="#">
 									</div>
 									<div class="tw-text">
-										<div class="tw-meta">11.11.18  /  in <a href="">Games</a></div>
-										<h5>The best online game is out now!</h5>
-									</div>
-								</div>
-								<div class="tw-item">
-									<div class="tw-thumb">
-										<img src="./img/blog-widget/2.jpg" alt="#">
-									</div>
-									<div class="tw-text">
-										<div class="tw-meta">11.11.18  /  in <a href="">Games</a></div>
-										<h5>The best online game is out now!</h5>
-									</div>
-								</div>
-								<div class="tw-item">
-									<div class="tw-thumb">
-										<img src="./img/blog-widget/3.jpg" alt="#">
-									</div>
-									<div class="tw-text">
-										<div class="tw-meta">11.11.18  /  in <a href="">Games</a></div>
-										<h5>The best online game is out now!</h5>
-									</div>
-								</div>
-								<div class="tw-item">
-									<div class="tw-thumb">
-										<img src="./img/blog-widget/4.jpg" alt="#">
-									</div>
-									<div class="tw-text">
-										<div class="tw-meta">11.11.18  /  in <a href="">Games</a></div>
-										<h5>The best online game is out now!</h5>
+										<div class="tw-meta">
+											<a th:href="@{'/detailsGame/' + ${game.gameId}}" th:text="${game.gameName}"></a>
+										</div>
+										<h5 th:text="${game.getGameRatings().getGameRatingAvg()} + ' / 5'"></h5>
 									</div>
 								</div>
 							</div>

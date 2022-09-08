@@ -113,4 +113,14 @@
                  stripComments="true" />
     </changeSet>
 
+    <changeSet id="2022_09_08_0.0.1_update_column_name_in_platform_table" author="denis">
+        <sqlFile dbms="postgresql"
+                 encoding="utf-8"
+                 endDelimiter=";"
+                 path="changes/2022_09_08_0.0.1_update_column_name_in_platform_table.sql"
+                 relativeToChangelogFile="true"
+                 splitStatements="true"
+                 stripComments="true" />
+    </changeSet>
+
 </databaseChangeLog>

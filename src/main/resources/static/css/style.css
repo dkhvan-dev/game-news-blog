@@ -773,6 +773,13 @@ ol {
 	background-position: right center;
 }
 
+.categories-widget a.disabled {
+	color: #b01ba5;
+	background-position: right center;
+	cursor: default;
+	pointer-events: none;
+}
+
 .search-widget {
 	position: relative;
 }
@@ -1211,7 +1218,7 @@ ol {
 	margin-left: 0;
 }
 
-.game-page-sideber .widget-item {
+.game-page-sidebar .widget-item {
 	margin-bottom: 55px;
 }
 

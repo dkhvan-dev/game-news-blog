@@ -13,6 +13,6 @@ import java.util.List;
 public interface BlogRepository extends JpaRepository<Blog, Long> {
     List<Blog> findAllByOrderByBlogId();
     @Query(nativeQuery = true, value = "SELECT * FROM blogs ORDER BY blogs.create_date DESC LIMIT 3")
-    List<Blog> findAllTop3OrderByCreateDate();
-    List<Blog> searchAllByGames_GameIdOrderByBlogId(Long gameId);
+    List<Blog> findAllTop3OrderByCreateDateDesc();
+    List<Blog> searchAllByGames_GameIdOrderByBlogCreateDateDesc(Long gameId);
 }

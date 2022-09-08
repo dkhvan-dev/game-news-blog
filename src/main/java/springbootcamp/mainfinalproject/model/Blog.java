@@ -27,10 +27,10 @@ public class Blog {
     private String blogDescription;
 
     @Column(name = "create_date")
-    private Date blogCreateDate;
+    private String blogCreateDate;
 
     @Column(name = "update_date")
-    private Date blogUpdateDate;
+    private String blogUpdateDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Game games;
