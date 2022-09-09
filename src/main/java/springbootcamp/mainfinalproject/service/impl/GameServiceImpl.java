@@ -2,6 +2,7 @@ package springbootcamp.mainfinalproject.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import springbootcamp.mainfinalproject.model.Game;
 import springbootcamp.mainfinalproject.model.GamePlatform;
 import springbootcamp.mainfinalproject.model.Genre;
@@ -51,5 +52,11 @@ public class GameServiceImpl implements GameService {
     @Override
     public List<Game> getTop5Games() {
         return gameRepository.searchTop5Games();
+    }
+
+    @Override
+    public Game addNewGame(MultipartFile gameImage, Game game) {
+
+        return null;
     }
 }

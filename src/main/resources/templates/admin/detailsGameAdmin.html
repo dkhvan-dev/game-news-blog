@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:insert="~{/toInsert/head.html}">
+    <title>Admin Panel</title>
+</head>
+<body>
+
+    <div th:insert="~{/toInsert/preloader.html}"></div>
+
+    <!-- Header section -->
+    <header th:insert="~{/toInsert/header.html}">
+    </header>
+    <!-- Header section end -->
+
+    <main class="d-flex flex-column">
+        <!-- Game Collapse -->
+        <div class="container mt-3">
+
+            <!-- AddGame Modal -->
+            <div>
+                <form class="form-control" th:action="@{'/editGame'}" method="post" enctype="multipart/form-data">
+                    <div class="mt-3">
+                        <label>Name:
+                            <input type="text" class="form-control" name="gameName" th:value="${game.gameName}" th:placeholder="${game.gameName}" required>
+                        </label>
+                    </div>
+                    <div class="mt-3">
+                        <label>Age:
+                            <input type="number" class="form-control" name="gameAge" th:value="${game.gameAge}" th:placeholder="${game.gameAge}" required>
+                        </label>
+                    </div>
+                    <div class="mt-3">
+                        <label class="form-label">Image:
+                            <image th:src="${game.gameImage}"></image>
+                            <input class="form-control" type="file" name="gameImage">
+                        </label>
+                    </div>
+                    <div class="mt-3">
+                        <label>Description:
+                            <textarea class="form-control" name="gameDescription" th:text="${game.gameDescription}"></textarea>
+                        </label>
+                    </div>
+                    <div class="mt-3">
+                        <div class="form-check" th:each="platform : ${}">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" value="">
+                                Default checkbox
+                            </label>
+                        </div>
+                        <label>Platform:
+                            <select class="form-select" name="platform">
+                                <option th:each="platform : ${allPlatforms}" th:text="${platform.platformName}" th:value="${platform.platformId}"></option>
+                            </select>
+                        </label>
+                    </div>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button class="btn btn-primary">Add game</button>
+                </form>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer section -->
+    <footer class="footer-section" th:insert="~{/toInsert/footer.html}">
+    </footer>
+    <!-- Footer section end -->
+
+    <div th:insert="~{/toInsert/scripts.html}"></div>
+</body>
+</html>
