@@ -1801,3 +1801,7 @@ main {
 .admin-collapse__show {
 	margin-top: 20px;
 }
+
+.gameImageAdmin {
+	width: 300px;
+}

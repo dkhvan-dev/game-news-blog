@@ -1,0 +1,1 @@
+UPDATE roles SET name = 'ROLE_MODERATOR' WHERE id = 3;

@@ -3,12 +3,9 @@ package springbootcamp.mainfinalproject.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import springbootcamp.mainfinalproject.model.Game;
-import springbootcamp.mainfinalproject.model.GamePlatform;
-import springbootcamp.mainfinalproject.model.Genre;
-import springbootcamp.mainfinalproject.repository.GamePlatformRepository;
-import springbootcamp.mainfinalproject.repository.GameRepository;
-import springbootcamp.mainfinalproject.repository.GenreRepository;
+import springbootcamp.mainfinalproject.model.*;
+import springbootcamp.mainfinalproject.repository.*;
+import springbootcamp.mainfinalproject.service.FileUploadService;
 import springbootcamp.mainfinalproject.service.GameService;
 
 import java.util.List;
@@ -20,6 +17,10 @@ public class GameServiceImpl implements GameService {
     private final GameRepository gameRepository;
     private final GamePlatformRepository gamePlatformRepository;
     private final GenreRepository genreRepository;
+    private final FileUploadService fileUploadService;
+    private final GameRatingRepository gameRatingRepository;
+    private final GameRequirementsRepository gameRequirementsRepository;
+    private final BlogRepository blogRepository;
 
     @Override
     public List<Game> getAllGames() {
@@ -55,8 +56,40 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public Game addNewGame(MultipartFile gameImage, Game game) {
-
+    public Game addNewGame(MultipartFile gameImage, Game game, GameRequirements gameRequirements, GameRating gameRating) {
+        if (game != null && gameRequirements != null && gameRating != null) {
+            fileUploadService.uploadGameImage(gameImage, game);
+            gameRequirementsRepository.save(gameRequirements);
+            gameRatingRepository.save(gameRating);
+            game.setGameRequirement(gameRequirements);
+            game.setGameRatings(gameRating);
+            return gameRepository.save(game);
+        }
         return null;
+    }
+
+    @Override
+    public Game editGame(MultipartFile gameImageToken, Game game, GameRequirements gameRequirements, GameRating gameRating) {
+        if (game != null && gameRequirements != null && gameRating != null) {
+            fileUploadService.uploadGameImage(gameImageToken, game);
+            gameRequirementsRepository.save(gameRequirements);
+            gameRatingRepository.save(gameRating);
+            game.setGameRequirement(gameRequirements);
+            game.setGameRatings(gameRating);
+            return gameRepository.save(game);
+        }
+        return null;
+    }
+
+    @Override
+    public void deleteGame(Long gameId) {
+        Game game = gameRepository.findById(gameId).orElseThrow();
+        if (game != null) {
+            gameRequirementsRepository.deleteById(game.getGameRequirement().getGameRequirementsId());
+            gameRatingRepository.deleteById(game.getGameRatings().getGameRatingId());
+            List<Blog> blogs = blogRepository.findAllByGames_GameId(game.getGameId());
+            blogRepository.deleteAll(blogs);
+            gameRepository.deleteById(gameId);
+        }
     }
 }

@@ -15,4 +15,5 @@ public interface BlogRepository extends JpaRepository<Blog, Long> {
     @Query(nativeQuery = true, value = "SELECT * FROM blogs ORDER BY blogs.create_date DESC LIMIT 3")
     List<Blog> findAllTop3OrderByCreateDateDesc();
     List<Blog> searchAllByGames_GameIdOrderByBlogCreateDateDesc(Long gameId);
+    List<Blog> findAllByGames_GameId(Long gameId);
 }

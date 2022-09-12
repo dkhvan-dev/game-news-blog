@@ -133,4 +133,24 @@
                  stripComments="true" />
     </changeSet>
 
+    <changeSet id="2022_12_09_0.0.1_rename_role" author="denis">
+        <sqlFile dbms="postgresql"
+                 encoding="utf-8"
+                 endDelimiter=";"
+                 path="changes/2022_12_09_0.0.1_rename_role.sql"
+                 relativeToChangelogFile="true"
+                 splitStatements="true"
+                 stripComments="true" />
+    </changeSet>
+
+    <changeSet id="2022_12_09_0.0.2_add_role_moderator_to_denis" author="denis">
+        <sqlFile dbms="postgresql"
+                 encoding="utf-8"
+                 endDelimiter=";"
+                 path="changes/2022_12_09_0.0.2_add_role_moderator_to_denis.sql"
+                 relativeToChangelogFile="true"
+                 splitStatements="true"
+                 stripComments="true" />
+    </changeSet>
+
 </databaseChangeLog>

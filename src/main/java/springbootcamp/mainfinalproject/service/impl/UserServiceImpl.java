@@ -40,6 +40,15 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
 
     @Override
+    public User getUserById(Long userId) {
+        User user = userRepository.findById(userId).orElse(null);
+        if (user != null) {
+            return user;
+        }
+        return null;
+    }
+
+    @Override
     public String editUser(User user, String oldPassword, String newPassword, String reNewPassword) {
         if (newPassword.equals(reNewPassword)) {
             if (getCurrentUser().getUserId().equals(user.getUserId())) {

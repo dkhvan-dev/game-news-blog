@@ -15,6 +15,9 @@
 
     <main class="d-flex flex-column">
         <!-- News Collapse -->
+        <div class="alert alert-primary" role="alert" th:if="${param.errorAddNews}">
+            Couldn't add a news item. Check the correctness of the entered data!
+        </div>
         <div class="d-flex">
             <div class="admin-collapse">
                 <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#newsCollapseAdmin" aria-expanded="false" aria-controls="collapseExample">
@@ -32,21 +35,21 @@
 
                     <!-- AddNews Modal -->
                     <div class="modal fade" id="addNewsModal" tabindex="-1" aria-hidden="true">
-                        <form class="form-control" th:action="@{'/addNews'}" method="post">
-                            <div class="modal-dialog">
+                        <div class="modal-dialog">
+                            <form class="form-control" th:action="@{'/addNews'}" method="post">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                        <h5 class="modal-title">Add News</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
-                                    <div class="modal-body">
-                                        <label> Title:
+                                    <div class="modal-body d-flex flex-column">
+                                        <label class="form-label mt-3"> Title:
                                             <input type="text" class="form-control" name="newsTitle" required>
                                         </label>
-                                        <label>Description:
+                                        <label class="form-label mt-3">Description:
                                             <textarea class="form-control" name="newsDescription"></textarea>
                                         </label>
-                                        <select class="form-select" aria-label="Default select example" name="game">
+                                        <select class="form-select mt-3" aria-label="Default select example" name="game">
                                             <option th:each="game : ${allGames}" th:text="${game.gameName}" th:value="${game.gameId}"></option>
                                         </select>
                                     </div>
@@ -55,8 +58,8 @@
                                         <button class="btn btn-primary">Add news</button>
                                     </div>
                                 </div>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
                     </div>
 
                     <!-- ALL NEWS TABLE -->
@@ -68,6 +71,7 @@
                             <th scope="col">Create date</th>
                             <th scope="col">Game</th>
                             <th scope="col">Details</th>
+                            <th scope="col">Delete</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -77,9 +81,37 @@
                             <td th:text="${news.newsCreateDate}"></td>
                             <td th:text="${news.getGame().gameName}"></td>
                             <td><a class="btn btn-primary" th:href="@{'/detailsNewsAdmin/' + ${news.newsId}}">Details</a></td>
+                            <td>
+                                <button type="button" class="btn btn-danger deleteNewsModal" data-bs-toggle="modal" data-bs-target="#deleteNewsAdmin"
+                                        th:data-id="${news.newsId}">
+                                    Delete
+                                </button>
+                            </td>
                         </tr>
                         </tbody>
                     </table>
+                    <!-- Delete News Modal -->
+                    <form th:action="@{'/deleteNewsAdmin'}" method="post">
+                        <div class="modal fade" id="deleteNewsAdmin" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Delete News</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Are you sure?
+                                        <input type="hidden" name="newsId" value="" id="newsId">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                        <button class="btn btn-danger">Delete News</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
                 </div>
             </div>
         </div>
@@ -121,7 +153,7 @@
                                         </div>
                                         <div class="mt-3">
                                             <label class="form-label">Image:
-                                                <input class="form-control" type="file" name="gameImage">
+                                                <input class="form-control" type="file" name="gameImageToken">
                                             </label>
                                         </div>
                                         <div class="mt-3">
@@ -130,10 +162,54 @@
                                             </label>
                                         </div>
                                         <div class="mt-3">
-                                            <label>Platform:
-                                                <select class="form-select" name="platform">
-                                                    <option th:each="platform : ${allPlatforms}" th:text="${platform.platformName}" th:value="${platform.platformId}"></option>
-                                                </select>
+                                            <span>Platform:</span>
+                                            <div class="form-check" th:each="platform : ${allPlatforms}">
+                                                <input class="form-check-input" type="checkbox" name="platform" th:value="${platform.platformId}" th:id="${platform.platformId}">
+                                                <label class="form-check-label" th:for="${platform.platformId}" th:text="${platform.platformName}">
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="mt-3">
+                                            <span>Game requirements:</span>
+                                            <label class="form-label mt-3">
+                                                Operation system:
+                                                <input class="form-control" type="text" name="gameRequirementsOS">
+                                            </label>
+                                            <label class="form-label mt-3">
+                                                CPU:
+                                                <input class="form-control" type="text" name="gameRequirementsCPU">
+                                            </label>
+                                            <label class="form-label mt-3">
+                                                Memory:
+                                                <input class="form-control" type="text" name="gameRequirementsMemory">
+                                            </label>
+                                            <label class="form-label mt-3">
+                                                GPU:
+                                                <input class="form-control" type="text" name="gameRequirementsGPU">
+                                            </label>
+                                            <label class="form-label mt-3">
+                                                Storage:
+                                                <input class="form-control" type="text" name="gameRequirementsStorage">
+                                            </label>
+                                        </div>
+
+                                        <div class="mt-3">
+                                            <span>Game rating</span>
+                                            <label class="form-label mt-3">
+                                                Gameplay:
+                                                <input class="form-control" type="number" step="0.1" name="gameRatingGameplay">
+                                            </label>
+                                            <label class="form-label mt-3">
+                                                Graphics:
+                                                <input class="form-control" type="number" step="0.1" name="gameRatingGraphics">
+                                            </label>
+                                            <label class="form-label mt-3">
+                                                Difficulty:
+                                                <input class="form-control" type="number" step="0.1" name="gameRatingDifficulty">
+                                            </label>
+                                            <label class="form-label mt-3">
+                                                Average rating:
+                                                <input class="form-control" type="number" step="0.1" name="gameRatingAvg">
                                             </label>
                                         </div>
                                     </div>
@@ -155,6 +231,7 @@
                             <th scope="col">Age</th>
                             <th scope="col">Platform</th>
                             <th scope="col">Details</th>
+                            <th scope="col">Delete</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -164,9 +241,53 @@
                             <td th:text="${game.gameAge}"></td>
                             <td><span th:each="platform : ${game.getPlatform()}" th:text="${platform.getPlatformName()} + '--'"></span></td>
                             <td><a class="btn btn-primary" th:href="@{'/detailsGameAdmin/' + ${game.gameId}}">Details</a></td>
+                            <td>
+                                <button type="button" class="btn btn-danger deleteGameModal" data-bs-toggle="modal" data-bs-target="#deleteGameAdmin"
+                                        th:data-id="${game.gameId}">
+                                Delete
+                                </button>
+                            </td>
                         </tr>
                         </tbody>
                     </table>
+
+                    <form th:action="@{'/deleteGameAdmin'}" method="post">
+                        <div class="modal fade" id="deleteGameAdmin" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Delete Game</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Are you sure?
+                                        <input type="hidden" name="gameId" value="" id="gameId">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                        <button class="btn btn-danger">Delete Game</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <script>
+                        $(document).on("click", ".deleteGameModal", function () {
+                            var gameId = $(this).data("id");
+                            $(".modal-body #gameId").val( gameId );
+                        });
+
+                        $(document).on("click", ".deleteNewsModal", function () {
+                            var newsId = $(this).data("id");
+                            $(".modal-body #newsId").val( newsId );
+                        });
+
+                        $(document).on("click", ".deleteBlogModal", function () {
+                            var blogId = $(this).data("id");
+                            $(".modal-body #blogId").val( blogId );
+                        });
+                    </script>
                 </div>
             </div>
         </div>
@@ -189,6 +310,7 @@
                             <th scope="col">Update date</th>
                             <th scope="col">Game</th>
                             <th scope="col">Details</th>
+                            <th scope="col">Delete</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -199,9 +321,37 @@
                             <td th:text="${blog.blogUpdateDate}"></td>
                             <td th:text="${blog.getGames().gameName}"></td>
                             <td><a class="btn btn-primary" th:href="@{'/detailsBlogAdmin/' + ${blog.blogId}}">Details</a></td>
+                            <td>
+                                <button type="button" class="btn btn-danger deleteBlogModal" data-bs-toggle="modal" data-bs-target="#deleteBlogAdmin"
+                                        th:data-id="${blog.blogId}">
+                                    Delete
+                                </button>
+                            </td>
                         </tr>
                         </tbody>
                     </table>
+
+                    <!-- Delete Blog Modal -->
+                    <form th:action="@{'/deleteBlogAdmin'}" method="post">
+                        <div class="modal fade" id="deleteBlogAdmin" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Delete Blog</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Are you sure?
+                                        <input type="hidden" name="blogId" value="" id="blogId">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                        <button class="btn btn-danger">Delete Blog</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

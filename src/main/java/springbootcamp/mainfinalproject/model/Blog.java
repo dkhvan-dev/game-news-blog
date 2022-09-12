@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -27,10 +28,10 @@ public class Blog {
     private String blogDescription;
 
     @Column(name = "create_date")
-    private String blogCreateDate;
+    private LocalDate blogCreateDate;
 
     @Column(name = "update_date")
-    private String blogUpdateDate;
+    private LocalDate blogUpdateDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Game games;
