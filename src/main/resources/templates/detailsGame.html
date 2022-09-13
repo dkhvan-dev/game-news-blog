@@ -32,7 +32,7 @@
 	<section class="games-single-page">
 		<div class="container">
 			<div class="game-single-preview">
-				<img th:src="'/' + ${game.gameImage}" th:alt="${game.gameName}">
+				<img th:src="@{'/getGameImage/' + ${game.gameImage}}" th:alt="${game.gameName}">
 			</div>
 			<div class="row">
 				<div class="col-xl-9 col-lg-8 col-md-7 game-single-content">

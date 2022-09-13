@@ -32,12 +32,6 @@ public class Feedback {
     @Column(name = "description")
     private String feedbackDescription;
 
-    @Column(name = "receipt_date")
-    private Date feedbackReceiptDate;
-
-    @Column(name = "update_date")
-    private Date feedbackUpdateDate;
-
     @ManyToOne(fetch = FetchType.LAZY)
     private FeedbackStatus feedbackStatus;
 }

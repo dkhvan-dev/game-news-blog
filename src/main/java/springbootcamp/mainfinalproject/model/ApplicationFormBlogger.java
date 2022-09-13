@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -24,10 +25,10 @@ public class ApplicationFormBlogger {
     private String applicationFormBloggerDescription;
 
     @Column(name = "receipt_date")
-    private Date applicationFormBloggerReceiptDate;
+    private LocalDate applicationFormBloggerReceiptDate;
 
     @Column(name = "update_date")
-    private Date applicationFormBloggerUpdateDate;
+    private LocalDate applicationFormBloggerUpdateDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private ApplicationBloggerStatus applicationBloggerStatus;

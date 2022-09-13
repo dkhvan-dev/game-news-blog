@@ -8,6 +8,7 @@ import springbootcamp.mainfinalproject.repository.*;
 import springbootcamp.mainfinalproject.service.FileUploadService;
 import springbootcamp.mainfinalproject.service.GameService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -85,11 +86,15 @@ public class GameServiceImpl implements GameService {
     public void deleteGame(Long gameId) {
         Game game = gameRepository.findById(gameId).orElseThrow();
         if (game != null) {
-            gameRequirementsRepository.deleteById(game.getGameRequirement().getGameRequirementsId());
-            gameRatingRepository.deleteById(game.getGameRatings().getGameRatingId());
+            gameRepository.deleteById(gameId);
+            if (game.getGameRequirement() != null) {
+                gameRequirementsRepository.deleteById(game.getGameRequirement().getGameRequirementsId());
+            }
+            if (game.getGameRatings() != null) {
+                gameRatingRepository.deleteById(game.getGameRatings().getGameRatingId());
+            }
             List<Blog> blogs = blogRepository.findAllByGames_GameId(game.getGameId());
             blogRepository.deleteAll(blogs);
-            gameRepository.deleteById(gameId);
         }
     }
 }

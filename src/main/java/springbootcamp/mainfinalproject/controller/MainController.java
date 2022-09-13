@@ -22,6 +22,8 @@ public class MainController {
     private final BlogService blogService;
     private final GamePlatformService gamePlatformService;
     private final GenreService genreService;
+    private final FeedbackService feedbackService;
+    private final FeedbackStatusService feedbackStatusService;
 
     @GetMapping("/")
     public String homePage(Model model) {
@@ -32,6 +34,14 @@ public class MainController {
         List<Game> top5Games = gameService.getTop5Games();
         model.addAttribute("top5Games", top5Games);
         return "index";
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/footer")
+    public String footerPage(Model model) {
+        List<FeedbackStatus> allFeedbackStatus = feedbackStatusService.getAllFeedbackStatus();
+        model.addAttribute("allFeedbackStatus", allFeedbackStatus);
+        return "toInsert/footer";
     }
 
     @GetMapping("/signIn")
@@ -131,6 +141,12 @@ public class MainController {
             return "gamesByGenre";
         }
         return "redirect:/allGames";
+    }
+
+    @PostMapping("/feedback")
+    public String feedback(Feedback feedback) {
+        feedbackService.addFeedback(feedback);
+        return "redirect:/";
     }
 
 }

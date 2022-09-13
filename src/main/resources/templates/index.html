@@ -74,7 +74,7 @@
 						<!-- Blog item -->
 						<div class="blog-item" th:each="blog : ${last3Blogs}">
 							<div class="blog-thumb">
-								<img th:src="${blog.blogImage}" th:alt="${blog.blogTitle}">
+								<img th:src="@{'/getBlogImage/' + ${blog.blogImage}}" th:alt="${blog.blogTitle}">
 							</div>
 							<div class="blog-text text-box text-white">
 								<div class="top-meta">
@@ -96,7 +96,7 @@
 							<div class="trending-widget">
 								<div class="tw-item" th:each="game : ${top5Games}">
 									<div class="tw-thumb">
-										<img th:src="'/' + ${game.gameImage}" alt="#">
+										<img th:src="@{'/getGameImage/' + ${game.gameImage}}" alt="#">
 									</div>
 									<div class="tw-text">
 										<div class="tw-meta">

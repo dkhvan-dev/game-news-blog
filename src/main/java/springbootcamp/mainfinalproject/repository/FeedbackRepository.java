@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 @Transactional
 public interface FeedbackRepository extends JpaRepository<Feedback, Long> {
-    List<Feedback> findAllByOrderByFeedbackReceiptDate();
+    List<Feedback> findAllByOrderByFeedbackId();
 }

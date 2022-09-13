@@ -36,6 +36,9 @@ public class Game {
     @ManyToMany(fetch = FetchType.EAGER)
     private List<GamePlatform> platform;
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    private List<Genre> genres;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private GameRequirements gameRequirement;
 

@@ -14,10 +14,24 @@
     <!-- Header section end -->
 
     <main class="d-flex flex-column">
-        <!-- News Collapse -->
-        <div class="alert alert-primary" role="alert" th:if="${param.errorAddNews}">
+        <!-- ADDNEWS ALERT -->
+        <div class="alert alert-danger" role="alert" th:if="${param.errorAddNews}">
             Couldn't add a news item. Check the correctness of the entered data!
         </div>
+        <!-- ADDGAME ALERT -->
+        <div class="alert alert-danger" role="alert" th:if="${param.errorAddGame}">
+            Couldn't add a game item. Check the correctness of the entered data!
+        </div>
+        <!-- APPLICATION FORM BLOGGER ALERT -->
+        <div class="alert alert-danger" role="alert" th:if="${param.errorNotFoundApplication}">
+            Application not found!
+        </div>
+        <!-- FEEDBACK ALERT -->
+        <div class="alert alert-danger" role="alert" th:if="${param.errorFeedbackNotFound}">
+            Feedback not found!
+        </div>
+
+        <!-- News Collapse -->
         <div class="d-flex">
             <div class="admin-collapse">
                 <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#newsCollapseAdmin" aria-expanded="false" aria-controls="collapseExample">
@@ -49,7 +63,7 @@
                                         <label class="form-label mt-3">Description:
                                             <textarea class="form-control" name="newsDescription"></textarea>
                                         </label>
-                                        <select class="form-select mt-3" aria-label="Default select example" name="game">
+                                        <select class="form-select mt-3" name="game">
                                             <option th:each="game : ${allGames}" th:text="${game.gameName}" th:value="${game.gameId}"></option>
                                         </select>
                                     </div>
@@ -170,6 +184,14 @@
                                             </div>
                                         </div>
                                         <div class="mt-3">
+                                            <span>Genre:</span>
+                                            <div class="form-check" th:each="genre : ${allGenres}">
+                                                <input class="form-check-input" type="checkbox" name="genres" th:value="${genre.genreId}" th:id="${genre.genreId}">
+                                                <label class="form-check-label" th:for="${genre.genreId}" th:text="${genre.genreName}">
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="mt-3">
                                             <span>Game requirements:</span>
                                             <label class="form-label mt-3">
                                                 Operation system:
@@ -230,6 +252,7 @@
                             <th scope="col">Name</th>
                             <th scope="col">Age</th>
                             <th scope="col">Platform</th>
+                            <th scope="col">Genre</th>
                             <th scope="col">Details</th>
                             <th scope="col">Delete</th>
                         </tr>
@@ -239,7 +262,8 @@
                             <th scope="row" th:text="${game.gameId}"></th>
                             <td th:text="${game.gameName}"></td>
                             <td th:text="${game.gameAge}"></td>
-                            <td><span th:each="platform : ${game.getPlatform()}" th:text="${platform.getPlatformName()} + '--'"></span></td>
+                            <td><span th:each="platform : ${game.getPlatform()}" th:text="${platform.getPlatformName()} + '/'"></span></td>
+                            <td><span th:each="genre : ${game.getGenres()}" th:text="${genre.getGenreName()} + '/'"></span>
                             <td><a class="btn btn-primary" th:href="@{'/detailsGameAdmin/' + ${game.gameId}}">Details</a></td>
                             <td>
                                 <button type="button" class="btn btn-danger deleteGameModal" data-bs-toggle="modal" data-bs-target="#deleteGameAdmin"
@@ -381,7 +405,7 @@
                             <th scope="row" th:text="${app.applicationFormBloggerId}"></th>
                             <td th:text="${app.applicationFormBloggerReceiptDate}"></td>
                             <td th:text="${app.applicationFormBloggerUpdateDate}"></td>
-                            <td th:text="${app.getApplicationBloggerStatus().getApplicationBloggerStatus()}"></td>
+                            <td th:text="${app.getApplicationBloggerStatus().getApplicationBloggerStatus()}" th:style="'color: ' + ${app.getApplicationBloggerStatus().getApplicationBloggerStatusColor()}"></td>
                             <td th:text="${app.getUsers().getUserFirstName() + ' ' + app.getUsers().getUserSurname()}"></td>
                             <td><a class="btn btn-primary" th:href="@{'/detailsApplicationFormBloggerAdmin/' + ${app.applicationFormBloggerId}}">Details</a></td>
                         </tr>
@@ -407,8 +431,6 @@
                                 <th scope="col">Name</th>
                                 <th scope="col">Email</th>
                                 <th scope="col">Subject</th>
-                                <th scope="col">Receipt date</th>
-                                <th scope="col">Update date</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Details</th>
                             </tr>
@@ -419,9 +441,8 @@
                                 <td th:text="${feedback.feedbackName}"></td>
                                 <td th:text="${feedback.feedbackEmail}"></td>
                                 <td th:text="${feedback.feedbackSubject}"></td>
-                                <td th:text="${feedback.feedbackReceiptDate}"></td>
-                                <td th:text="${feedback.feedbackUpdateDate}"></td>
-                                <td th:text="${feedback.getFeedbackStatus().getFeedbackStatus()}"></td>
+                                <td th:text="${feedback.getFeedbackStatus().getFeedbackStatus()}"
+                                    th:style="'color: ' + ${feedback.getFeedbackStatus().feedbackStatusColor}"></td>
                                 <td><a class="btn btn-primary" th:href="@{'/detailsFeedbackAdmin/' + ${feedback.feedbackId}}">Details</a></td>
                             </tr>
                         </tbody>

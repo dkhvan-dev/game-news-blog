@@ -15,9 +15,6 @@ import springbootcamp.mainfinalproject.service.*;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
@@ -27,8 +24,11 @@ public class AdminController {
     private final GameService gameService;
     private final NewsService newsService;
     private final BlogService blogService;
+    private final GenreService genreService;
     private final ApplicationFormBloggerService applicationFormBloggerService;
+    private final ApplicationBloggerStatusService applicationBloggerStatusService;
     private final FeedbackService feedbackService;
+    private final FeedbackStatusService feedbackStatusService;
     private final GamePlatformService gamePlatformService;
     private final FileUploadService fileUploadService;
 
@@ -50,6 +50,8 @@ public class AdminController {
         model.addAttribute("allFeedback", allFeedback);
         List<GamePlatform> allPlatforms = gamePlatformService.getAllPlatforms();
         model.addAttribute("allPlatforms", allPlatforms);
+        List<Genre> allGenres = genreService.getAllGenres();
+        model.addAttribute("allGenres", allGenres);
         return "admin/adminPanel";
     }
 
@@ -67,7 +69,7 @@ public class AdminController {
                 return "redirect:/detailsGameAdmin/" + game.getGameId();
             }
         }
-        return "redirect:/addGame?error";
+        return "redirect:/adminPanel?errorAddGame";
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -83,6 +85,8 @@ public class AdminController {
             model.addAttribute("gameRequirements", gameRequirements);
             GameRating gameRating = game.getGameRatings();
             model.addAttribute("gameRating", gameRating);
+            List<Genre> allGenres = genreService.getAllGenres();
+            model.addAttribute("allGenres", allGenres);
             return "admin/detailsGameAdmin";
         }
         return "redirect:/adminPanel";
@@ -186,6 +190,75 @@ public class AdminController {
         return "redirect:/adminPanel";
     }
 
+    //APPLICATION FOR ROLE BLOGGER
+    @PostMapping("/applicationFormBlogger")
+    public String applicationFormBlogger(ApplicationFormBlogger applicationFormBlogger) {
+        applicationFormBloggerService.addApplicationFormBlogger(applicationFormBlogger);
+        return "redirect:/profile";
+    }
+
+    @PreAuthorize("hasRole('ROLE_MODERATOR')")
+    @GetMapping("/detailsApplicationFormBloggerAdmin/{applicationFormId}")
+    public String updateFormBloggerPage(@PathVariable(name = "applicationFormId") Long applicationFormId,
+                                    Model model) {
+        ApplicationFormBlogger applicationForm = applicationFormBloggerService.getApplicationFormById(applicationFormId);
+        if (applicationForm != null) {
+            model.addAttribute("applicationForm", applicationForm);
+            List<ApplicationBloggerStatus> allBloggerStatus = applicationBloggerStatusService.getAllBloggerStatus();
+            model.addAttribute("allBloggerStatus", allBloggerStatus);
+
+            boolean canUpdateApplication = true;
+            if (applicationForm.getApplicationBloggerStatus().getApplicationBloggerStatusId() == 2 || applicationForm.getApplicationBloggerStatus().getApplicationBloggerStatusId() == 3) {
+                canUpdateApplication = false;
+            }
+            model.addAttribute("canUpdateApplication", canUpdateApplication);
+            return "admin/detailsApplicationFormBloggerAdmin";
+        }
+        return "redirect:/adminPanel?errorNotFoundApplication";
+    }
+
+    @PreAuthorize("hasRole('ROLE_MODERATOR')")
+    @PostMapping("/updateFormBlogger")
+    public String updateFormBlogger(ApplicationFormBlogger applicationFormBlogger,
+                                    @RequestParam(name = "receiptDate") String receiptDate,
+                                    @RequestParam(name = "updateDate") String updateDate,
+                                    @RequestParam(name = "authorId") Long authorId) {
+        ApplicationFormBlogger updatedApplicationForm = applicationFormBloggerService.updateApplicationForm(applicationFormBlogger, receiptDate, updateDate, authorId);
+        if (updatedApplicationForm != null) {
+            return "redirect:/detailsApplicationFormBloggerAdmin/" + applicationFormBlogger.getApplicationFormBloggerId() + "?success";
+        }
+        return "redirect:/detailsApplicationFormBloggerAdmin/" + applicationFormBlogger.getApplicationFormBloggerId() + "?errorUpdateApplication";
+    }
+
+    // Feedback
+    @PreAuthorize("hasRole('ROLE_MODERATOR')")
+    @GetMapping("/detailsFeedbackAdmin/{feedbackId}")
+    public String detailsFeedbackPage(@PathVariable(name = "feedbackId") Long feedbackId,
+                                      Model model) {
+        Feedback feedback = feedbackService.getFeedbackById(feedbackId);
+        if (feedback != null) {
+            model.addAttribute("feedback", feedback);
+            List<FeedbackStatus> allFeedbackStatus = feedbackStatusService.getAllFeedbackStatus();
+            model.addAttribute("allFeedbackStatus", allFeedbackStatus);
+            boolean canUpdateFeedback = true;
+            if (feedback.getFeedbackStatus().getFeedbackStatusId() == 2) {
+                canUpdateFeedback = false;
+            }
+            model.addAttribute("canUpdateFeedback", canUpdateFeedback);
+            return "moderator/detailsFeedbackAdmin";
+        }
+        return "redirect:/adminPanel?errorFeedbackNotFound";
+    }
+
+    @PreAuthorize("hasRole('ROLE_MODERATOR')")
+    @PostMapping("/editFeedback")
+    public String editFeedback(Feedback feedback) {
+        Feedback editedFeedback = feedbackService.editFeedback(feedback);
+        if (editedFeedback != null) {
+            return "redirect:/detailsFeedbackAdmin/" + feedback.getFeedbackId() + "?success";
+        }
+        return "redirect:/detailsFeedbackAdmin/" + feedback.getFeedbackId() + "?errorEditFeedback";
+    }
 
     // Load Image
     @GetMapping(value = "/getGameImage/{gameImageToken}", produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE})

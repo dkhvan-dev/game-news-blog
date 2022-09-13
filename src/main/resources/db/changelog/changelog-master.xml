@@ -153,4 +153,33 @@
                  stripComments="true" />
     </changeSet>
 
+    <changeSet id="2022_13_09_0.0.1_recreate_table_games_genres" author="denis">
+        <sqlFile dbms="postgresql"
+                 encoding="utf-8"
+                 endDelimiter=";"
+                 path="changes/2022_13_09_0.0.1_recreate_table_games_genres.sql"
+                 relativeToChangelogFile="true"
+                 splitStatements="true"
+                 stripComments="true" />
+    </changeSet>
+
+    <changeSet id="2022_13_09_0.0.2_drop_not_null_update_date_in_tables" author="denis">
+        <sqlFile dbms="postgresql"
+                 encoding="utf-8"
+                 endDelimiter=";"
+                 path="changes/2022_13_09_0.0.2_drop_not_null_update_date_in_tables.sql"
+                 relativeToChangelogFile="true"
+                 splitStatements="true"
+                 stripComments="true" />
+    </changeSet>
+
+    <changeSet id="2022_13_09_0.0.3_delete_columns_dates_from_feedback_table" author="denis">
+        <sqlFile dbms="postgresql"
+                 encoding="utf-8"
+                 endDelimiter=";"
+                 path="changes/2022_13_09_0.0.3_delete_columns_dates_from_feedback_table.sql"
+                 relativeToChangelogFile="true"
+                 splitStatements="true"
+                 stripComments="true" />
+    </changeSet>
 </databaseChangeLog>

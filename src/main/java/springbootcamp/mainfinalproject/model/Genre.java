@@ -22,7 +22,4 @@ public class Genre {
 
     @Column(name = "name")
     private String genreName;
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    private List<Game> games;
 }

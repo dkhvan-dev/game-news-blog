@@ -14,7 +14,43 @@
     <li><a href="">Reviews</a></li>
     <li><a href="">News</a></li>
     <li><a href="">Contact</a></li>
+    <li><a href="" data-bs-toggle="modal" data-bs-target="#feedbackModal">Feedback</a></li>
   </ul>
+
+  <div class="modal fade" id="feedbackModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form class="form-control" th:action="@{'/feedback'}" method="post">
+          <div class="modal-header">
+            <h5 class="modal-title">Send feedback</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <label class="form-label mt-3">
+                Your name:
+                <input type="text" name="feedbackName" required>
+              </label>
+              <label class="form-label mt-3">
+                Your email address:
+                <input type="email" name="feedbackEmail" required>
+              </label>
+              <label class="form-label mt-3">
+                Subject:
+                <input type="text" name="feedbackSubject" required>
+              </label>
+              <label class="form-label mt-3">
+                Description:
+                <textarea name="feedbackDescription"></textarea>
+              </label>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button class="btn btn-primary">Send</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
   <div class="footer-social d-flex justify-content-center">
     <a href="#"><i class="fa fa-pinterest"></i></a>
     <a href="#"><i class="fa fa-facebook"></i></a>

@@ -53,6 +53,24 @@
                 <button class="btn btn-primary mt-3">Edit user</button>
                 <a th:href="@{'/signOut'}" class="btn btn-danger mt-3">Logout</a>
             </form>
+
+            <div class="mt-3">
+                <button class="btn btn-primary" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#applicationFormBlogger" aria-expanded="false">
+                    Application for blogger's role
+                </button>
+            </div>
+            <div class="collapse" id="applicationFormBlogger">
+                <div class="card card-body">
+                    <form class="form-control" th:action="@{'/applicationFormBlogger'}" method="post">
+                        <label class="mt-3">
+                            Description: <br>
+                            <input type="text" name="applicationFormBloggerDescription">
+                        </label>
+                        <button class="btn btn-primary mt-3">Submit</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </main>
 

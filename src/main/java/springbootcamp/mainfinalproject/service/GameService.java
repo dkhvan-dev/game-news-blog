@@ -1,10 +1,7 @@
 package springbootcamp.mainfinalproject.service;
 
 import org.springframework.web.multipart.MultipartFile;
-import springbootcamp.mainfinalproject.model.Game;
-import springbootcamp.mainfinalproject.model.GamePlatform;
-import springbootcamp.mainfinalproject.model.GameRating;
-import springbootcamp.mainfinalproject.model.GameRequirements;
+import springbootcamp.mainfinalproject.model.*;
 
 import java.util.List;
 

@@ -51,6 +51,13 @@
                         </div>
                     </div>
                     <div class="mt-3">
+                        <div class="form-check" th:each="genre : ${allGenres}">
+                            <input class="form-check-input" type="checkbox" name="genres" th:value="${genre.genreId}" th:id="${genre.genreId}" th:checked="${game.getGenres().contains(genre)}">
+                            <label class="form-check-label" th:for="${genre.genreId}" th:text="${genre.genreName}">
+                            </label>
+                        </div>
+                    </div>
+                    <div class="mt-3">
                         <input type="hidden" name="gameRequirementsId" th:value="${gameRequirements.getGameRequirementsId()}">
                         <span>Game requirements:</span><br>
                         <label class="form-label mt-3">
