@@ -3,8 +3,10 @@ package springbootcamp.mainfinalproject.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import springbootcamp.mainfinalproject.model.Game;
+import springbootcamp.mainfinalproject.model.GamePlatform;
 import springbootcamp.mainfinalproject.model.News;
 import springbootcamp.mainfinalproject.repository.NewsRepository;
+import springbootcamp.mainfinalproject.service.GamePlatformService;
 import springbootcamp.mainfinalproject.service.GameService;
 import springbootcamp.mainfinalproject.service.NewsService;
 import springbootcamp.mainfinalproject.service.UserService;
@@ -19,6 +21,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class NewsServiceImpl implements NewsService {
     private final NewsRepository newsRepository;
+    private final GamePlatformService gamePlatformService;
     private final UserService userService;
     private final GameService gameService;
 
@@ -64,5 +67,19 @@ public class NewsServiceImpl implements NewsService {
         if (news != null) {
             newsRepository.deleteById(newsId);
         }
+    }
+
+    @Override
+    public News getLastNews() {
+        return newsRepository.findLastNews();
+    }
+
+    @Override
+    public News getLastNewsByPlatform(Long platformId) {
+        GamePlatform checkPlatform = gamePlatformService.getPlatformById(platformId);
+        if (checkPlatform != null) {
+            return newsRepository.findLastNewsByPlatform(platformId);
+        }
+        return null;
     }
 }

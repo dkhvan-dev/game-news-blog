@@ -10,4 +10,6 @@ public interface NewsService {
     News addNews(News news);
     News editNews(News news, String newsCreateDate);
     void deleteNews(Long newsId);
+    News getLastNews();
+    News getLastNewsByPlatform(Long platformId);
 }

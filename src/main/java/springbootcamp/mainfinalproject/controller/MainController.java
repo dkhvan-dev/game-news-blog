@@ -20,6 +20,7 @@ public class MainController {
     private final UserService userService;
     private final GameService gameService;
     private final BlogService blogService;
+    private final NewsService newsService;
     private final GamePlatformService gamePlatformService;
     private final GenreService genreService;
     private final FeedbackService feedbackService;
@@ -97,6 +98,8 @@ public class MainController {
         model.addAttribute("allPlatforms", allPlatforms);
         List<Genre> allGenres = genreService.getAllGenres();
         model.addAttribute("allGenres", allGenres);
+        News lastNews = newsService.getLastNews();
+        model.addAttribute("lastNews", lastNews);
         return "allGames";
     }
 
@@ -122,6 +125,8 @@ public class MainController {
             model.addAttribute("allPlatforms", allPlatforms);
             List<Genre> allGenres = genreService.getAllGenres();
             model.addAttribute("allGenres", allGenres);
+            News lastNewsByPlatform = newsService.getLastNewsByPlatform(platformId);
+            model.addAttribute("lastNewsByPlatform", lastNewsByPlatform);
             return "gamesByPlatform";
         }
         return "redirect:/allGames";

@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface GamePlatformService {
     List<GamePlatform> getAllPlatforms();
+    GamePlatform getPlatformById(Long platformId);
 }

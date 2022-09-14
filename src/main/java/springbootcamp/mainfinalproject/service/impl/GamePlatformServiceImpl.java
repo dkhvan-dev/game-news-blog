@@ -18,4 +18,13 @@ public class GamePlatformServiceImpl implements GamePlatformService {
     public List<GamePlatform> getAllPlatforms() {
         return gamePlatformRepository.findAllByOrderByPlatformId();
     }
+
+    @Override
+    public GamePlatform getPlatformById(Long platformId) {
+        GamePlatform checkPlatform = gamePlatformRepository.findById(platformId).orElse(null);
+        if (checkPlatform != null) {
+            return checkPlatform;
+        }
+        return null;
+    }
 }
