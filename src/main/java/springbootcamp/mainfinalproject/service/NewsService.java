@@ -12,4 +12,8 @@ public interface NewsService {
     void deleteNews(Long newsId);
     News getLastNews();
     News getLastNewsByPlatform(Long platformId);
+    News getLastNewsByGenre(Long genreId);
+    List<News> getAllNewsByGame(Long gameId);
+    List<News> getAllNewsByGenre(Long genreId);
+    List<News> getAllNewsByPlatform(Long platformId);
 }

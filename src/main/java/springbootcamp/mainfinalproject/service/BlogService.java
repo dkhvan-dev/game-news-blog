@@ -9,7 +9,10 @@ public interface BlogService {
     List<Blog> getAllBlogs();
     Blog getBlogById(Long blogId);
     List<Blog> getTop3Blogs();
+    Blog getLastBlogByGame(Long gameId);
     List<Blog> getAllBlogsByGame(Long gameId);
+    List<Blog> getAllBlogsByPlatform(Long platformId);
+    List<Blog> getAllBlogsByGenre(Long genreId);
     Blog editBlogAdmin(Blog blog, MultipartFile blogImageToken, String blogCreateDate, String blogUpdateDate, Long authorId);
     void deleteBlogAdmin(Long blogId);
 }

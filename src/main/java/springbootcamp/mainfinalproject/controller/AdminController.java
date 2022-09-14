@@ -30,6 +30,7 @@ public class AdminController {
     private final FeedbackService feedbackService;
     private final FeedbackStatusService feedbackStatusService;
     private final GamePlatformService gamePlatformService;
+    private final CommentsService commentsService;
     private final FileUploadService fileUploadService;
 
     @Value("${loadURL}")
@@ -52,6 +53,8 @@ public class AdminController {
         model.addAttribute("allPlatforms", allPlatforms);
         List<Genre> allGenres = genreService.getAllGenres();
         model.addAttribute("allGenres", allGenres);
+        List<Comments> allComments = commentsService.getAllComments();
+        model.addAttribute("allComments", allComments);
         return "admin/adminPanel";
     }
 
@@ -258,6 +261,18 @@ public class AdminController {
             return "redirect:/detailsFeedbackAdmin/" + feedback.getFeedbackId() + "?success";
         }
         return "redirect:/detailsFeedbackAdmin/" + feedback.getFeedbackId() + "?errorEditFeedback";
+    }
+
+    // COMMENTS
+    @PreAuthorize("hasRole('ROLE_MODERATOR')")
+    @PostMapping("/deleteCommentAdmin")
+    public String deleteCommentAdmin(@RequestParam(name = "commentId") Long commentId) {
+        Comments comment = commentsService.getCommentById(commentId);
+        if (comment != null) {
+            commentsService.deleteComment(commentId);
+            return "redirect:/detailsBlog/" + comment.getBlog().getBlogId();
+        }
+        return "redirect:/detailsBlog/" + comment.getBlog().getBlogId() + "?errorCommentNotFound";
     }
 
     // Load Image

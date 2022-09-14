@@ -4,12 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import springbootcamp.mainfinalproject.model.Game;
 import springbootcamp.mainfinalproject.model.GamePlatform;
+import springbootcamp.mainfinalproject.model.Genre;
 import springbootcamp.mainfinalproject.model.News;
 import springbootcamp.mainfinalproject.repository.NewsRepository;
-import springbootcamp.mainfinalproject.service.GamePlatformService;
-import springbootcamp.mainfinalproject.service.GameService;
-import springbootcamp.mainfinalproject.service.NewsService;
-import springbootcamp.mainfinalproject.service.UserService;
+import springbootcamp.mainfinalproject.service.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -22,12 +20,13 @@ import java.util.Objects;
 public class NewsServiceImpl implements NewsService {
     private final NewsRepository newsRepository;
     private final GamePlatformService gamePlatformService;
+    private final GenreService genreService;
     private final UserService userService;
     private final GameService gameService;
 
     @Override
     public List<News> getAllNews() {
-        return newsRepository.findAllByOrderByNewsCreateDate();
+        return newsRepository.findAllByOrderByNewsCreateDateDesc();
     }
 
     @Override
@@ -82,4 +81,41 @@ public class NewsServiceImpl implements NewsService {
         }
         return null;
     }
+
+    @Override
+    public News getLastNewsByGenre(Long genreId) {
+        Genre checkGenre = genreService.getGenreById(genreId);
+        if (checkGenre != null) {
+            return newsRepository.findLastNewsByGenre(genreId);
+        }
+        return null;
+    }
+
+    @Override
+    public List<News> getAllNewsByGame(Long gameId) {
+        Game checkGame = gameService.getGameById(gameId);
+        if (checkGame != null) {
+            return newsRepository.findAllByGameGameId(gameId);
+        }
+        return null;
+    }
+
+    @Override
+    public List<News> getAllNewsByPlatform(Long platformId) {
+        GamePlatform checkPlatform = gamePlatformService.getPlatformById(platformId);
+        if (checkPlatform != null) {
+            return newsRepository.findAllNewsByPlatform(platformId);
+        }
+        return null;
+    }
+
+    @Override
+    public List<News> getAllNewsByGenre(Long genreId) {
+        Genre checkGenre = genreService.getGenreById(genreId);
+        if (checkGenre != null) {
+            return newsRepository.findAllNewsByGenre(genreId);
+        }
+        return null;
+    }
+
 }

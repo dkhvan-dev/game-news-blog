@@ -202,4 +202,14 @@
                  splitStatements="true"
                  stripComments="true" />
     </changeSet>
+
+    <changeSet id="2022_14_09_0.0.3_create_table_comments_and_add_column_avatar_to_user" author="denis">
+        <sqlFile dbms="postgresql"
+                 encoding="utf-8"
+                 endDelimiter=";"
+                 path="changes/2022_14_09_0.0.3_create_table_comments_and_add_column_avatar_to_user.sql"
+                 relativeToChangelogFile="true"
+                 splitStatements="true"
+                 stripComments="true" />
+    </changeSet>
 </databaseChangeLog>

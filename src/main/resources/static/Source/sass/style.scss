@@ -1030,7 +1030,7 @@ ol {
 	a:first-child {
 		margin-left: 0;
 	}
-	span {
+	span, .site-breadcrumb-disabled-span {
 		color: #c313b7;
 	}
 }

@@ -39,6 +39,9 @@ public class User implements UserDetails {
     @Column(name = "birthdate")
     private Date userBirthdate;
 
+    @Column(name = "avatar")
+    private String userAvatar;
+
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roles;
 

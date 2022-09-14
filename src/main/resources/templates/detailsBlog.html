@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:insert="~{/toInsert/head.html}">
+	<title>Blog Page</title>
+</head>
+<body>
+	<!-- Page Preloder -->
+	<div th:insert="~{/toInsert/preloader.html}">
+	</div>
+
+	<!-- Header section -->
+	<header th:insert="~{/toInsert/header.html}">
+	</header>
+	<!-- Header section end -->
+
+	<!-- Page top section -->
+	<section class="page-top-section set-bg" data-setbg="/img/page-top-bg/1.jpg">
+		<div class="page-info">
+			<h2>News</h2>
+			<div class="site-breadcrumb">
+				<a th:href="@{'/'}">Home</a>  /
+				<a th:href="@{'/allBlogs'}">Blogs</a>	 /
+				<span th:text="${blog.blogTitle}"></span>
+			</div>
+		</div>
+	</section>
+	<!-- Page top end-->
+
+
+	<!-- Blog section -->
+	<section class="games-single-page">
+		<div class="container">
+			<div class="game-single-preview">
+				<img th:src="@{'/getBlogImage/' + ${blog.blogImage}}" th:alt="${blog.blogTitle}">
+			</div>
+			<div class="row">
+				<div class="col-xl-9 col-lg-8 col-md-7 game-single-content">
+					<h2 class="gs-title" th:text="${blog.blogTitle}"></h2>
+					<p class="text-white" th:text="${blog.blogDescription}"></p>
+					<p>Date of publication: <span th:text="${blog.blogCreateDate}"></span></p>
+					<p>Author: <span th:text="${blog.getUsers().userFirstName + ' ' + blog.getUsers().userSurname}"></span></p>
+					<div class="geme-social-share pt-5 d-flex">
+						<p>Share:</p>
+						<a href="#"><i class="fa fa-pinterest"></i></a>
+						<a href="#"><i class="fa fa-facebook"></i></a>
+						<a href="#"><i class="fa fa-twitter"></i></a>
+						<a href="#"><i class="fa fa-dribbble"></i></a>
+						<a href="#"><i class="fa fa-behance"></i></a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- COMMENTS -->
+		<section class="container-fluid pb-lg-5">
+			<div class="container">
+				<form class="add-comment-form" th:action="@{'/addComment'}" method="post" sec:authorize="isAuthenticated()">
+					<input type="hidden" name="blogId" th:value="${blog.blogId}">
+					<div class="d-flex justify-content-between">
+						<label class="form-label mt-3 text-white" for="commentText">
+							Comment:
+						</label> <br>
+						<button class="btn btn-primary">Send</button>
+					</div>
+					<textarea class="comment-text" name="commentText" id="commentText" required></textarea>
+				</form>
+				<div class="pt-3 added-comment" th:each="comment : ${allComments}">
+					<div class="d-flex justify-content-between col-12">
+						<p class="text-white" th:text="${comment.commentText}"></p>
+						<button type="button" class="btn btn-danger deleteCommentModal"
+								th:data-id="${comment.commentId}"
+								data-bs-toggle="modal"
+								data-bs-target="#deleteCommentModal" th:if="${comment.getAuthor().getUserEmail().equals(#authentication.getName())}">
+							x
+						</button>
+					</div>
+					<p>
+						<span class="text-white">Author:</span>
+						<span class="comment-author-name" th:text="${comment.getAuthor().userFirstName + ' ' + comment.getAuthor().userSurname}">
+					</span> |
+						<span class="text-white" th:text="${comment.commentCreateDate}"></span>
+					</p>
+				</div>
+				<div class="modal fade" id="deleteCommentModal" tabindex="-1" aria-hidden="true">
+					<div class="modal-dialog">
+						<form th:action="@{'/deleteComment'}" method="post">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title">Delete comment</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<div class="modal-body">
+									<input type="hidden" name="commentId" value="" id="commentId">
+									Do you really want to delete this comment?
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+									<button class="btn btn-danger">Delete</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+				<script>
+					$(document).on("click", ".deleteCommentModal", function () {
+						var commentId = $(this).data("id");
+						$(".modal-body #commentId").val(commentId);
+					});
+				</script>
+			</div>
+		</section>
+	</section>
+	<!-- Games end-->
+
+	<!-- Footer section -->
+	<footer class="footer-section" th:insert="~{/toInsert/footer.html}">
+	</footer>
+	<!-- Footer section end -->
+
+	<!--====== Javascripts & Jquery ======-->
+	<div th:insert="~{/toInsert/scripts.html}"></div>
+
+	</body>
+</html>

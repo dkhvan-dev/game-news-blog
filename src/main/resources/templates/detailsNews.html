@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:insert="~{/toInsert/head.html}">
+	<title>Game Page</title>
+</head>
+<body>
+	<!-- Page Preloder -->
+	<div th:insert="~{/toInsert/preloader.html}">
+	</div>
+
+	<!-- Header section -->
+	<header th:insert="~{/toInsert/header.html}">
+	</header>
+	<!-- Header section end -->
+
+	<!-- Page top section -->
+	<section class="page-top-section set-bg" data-setbg="/img/page-top-bg/1.jpg">
+		<div class="page-info">
+			<h2>News</h2>
+			<div class="site-breadcrumb">
+				<a th:href="@{'/'}">Home</a>  /
+				<a th:href="@{'/allNews'}">News</a>	 /
+				<span th:text="${news.newsTitle}"></span>
+			</div>
+		</div>
+	</section>
+	<!-- Page top end-->
+
+
+	<!-- Games section -->
+	<section class="games-single-page">
+		<div class="container">
+			<div class="game-single-preview">
+				<img th:src="@{'/getGameImage/' + ${news.getGame().gameImage}}" th:alt="${news.getGame().gameName}">
+			</div>
+			<div class="row">
+				<div class="col-xl-9 col-lg-8 col-md-7 game-single-content">
+					<h2 class="gs-title" th:text="${news.newsTitle}"></h2>
+					<p class="text-white" th:text="${news.newsDescription}"></p>
+					<p>Date of publication: <span th:text="${news.newsCreateDate}"></span></p>
+					<div class="geme-social-share pt-5 d-flex">
+						<p>Share:</p>
+						<a href="#"><i class="fa fa-pinterest"></i></a>
+						<a href="#"><i class="fa fa-facebook"></i></a>
+						<a href="#"><i class="fa fa-twitter"></i></a>
+						<a href="#"><i class="fa fa-dribbble"></i></a>
+						<a href="#"><i class="fa fa-behance"></i></a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- Games end-->
+
+	<!-- Footer section -->
+	<footer class="footer-section" th:insert="~{/toInsert/footer.html}">
+	</footer>
+	<!-- Footer section end -->
+
+	<!--====== Javascripts & Jquery ======-->
+	<div th:insert="~{/toInsert/scripts.html}"></div>
+
+	</body>
+</html>

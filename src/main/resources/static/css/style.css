@@ -1157,14 +1157,14 @@ main {
 	margin-bottom: 80px;
 }
 
-.game-item h5 {
+.game-item h5, .big-blog-item h5 {
 	font-size: 20px;
 	color: #fff;
 	padding-top: 30px;
 	margin-bottom: 20px;
 }
 
-.game-item .read-more {
+.game-item .read-more, .big-blog-item .read-more {
 	font-size: 15px;
 	text-transform: uppercase;
 	font-weight: 700;
@@ -1176,7 +1176,7 @@ main {
 	color: #ad1000;
 }
 
-.game-item .read-more img {
+.game-item .read-more img, .big-blog-item .read-more img {
 	margin-left: 13px;
 }
 
@@ -1248,6 +1248,7 @@ main {
 }
 
 .game-single-preview {
+	width: 300px;
 	margin-bottom: 108px;
 }
 
@@ -1264,7 +1265,7 @@ main {
 
 .game-single-content .gs-title {
 	font-size: 60px;
-	color: #fff;
+	color: #b01ba5;
 	margin-bottom: 40px;
 }
 
@@ -1490,17 +1491,18 @@ main {
 }
 
 .contact-form input,
-.contact-form textarea {
-	width: 100%;
+.comment-text {
+	width: 50%;
 	border: none;
-	background-color: transparent;
+	padding: 10px;
+	background-color: #fff;
+	border-radius: 10px;
 	border-bottom: 2px solid rgba(255, 255, 255, 0.54);
-	padding-bottom: 20px;
 	margin-bottom: 30px;
 	font-weight: 500;
 	font-size: 16px;
 	font-style: italic;
-	color: #fff;
+	color: #808080;
 	line-height: 1;
 }
 
@@ -1804,4 +1806,23 @@ main {
 
 .gameImageAdmin {
 	width: 300px;
+}
+
+.news-image {
+	width: 300px;
+}
+
+.add-comment-form {
+	width: 50%;
+}
+
+.added-comment {
+	width: 50%;
+	padding: 20px;
+	border: 1px solid #c313b7;
+	border-radius: 10px;
+}
+
+.comment-author-name {
+	color: #c313b7;
 }

@@ -3,14 +3,10 @@ package springbootcamp.mainfinalproject.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import springbootcamp.mainfinalproject.model.Blog;
-import springbootcamp.mainfinalproject.model.Game;
-import springbootcamp.mainfinalproject.model.User;
+import springbootcamp.mainfinalproject.model.*;
 import springbootcamp.mainfinalproject.repository.BlogRepository;
 import springbootcamp.mainfinalproject.repository.GameRepository;
-import springbootcamp.mainfinalproject.service.BlogService;
-import springbootcamp.mainfinalproject.service.FileUploadService;
-import springbootcamp.mainfinalproject.service.UserService;
+import springbootcamp.mainfinalproject.service.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -21,13 +17,15 @@ import java.util.List;
 public class BlogServiceImpl implements BlogService {
 
     private final BlogRepository blogRepository;
-    private final GameRepository gameRepository;
+    private final GameService gameService;
+    private final GamePlatformService gamePlatformService;
+    private final GenreService genreService;
     private final UserService userService;
     private final FileUploadService fileUploadService;
 
     @Override
     public List<Blog> getAllBlogs() {
-        return blogRepository.findAllByOrderByBlogId();
+        return blogRepository.findAllByOrderByBlogCreateDateDesc();
     }
 
     @Override
@@ -45,10 +43,37 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
+    public Blog getLastBlogByGame(Long gameId) {
+        Game checkGame = gameService.getGameById(gameId);
+        if (checkGame != null) {
+            return blogRepository.findLastBlogByGame(gameId);
+        }
+        return null;
+    }
+
+    @Override
     public List<Blog> getAllBlogsByGame(Long gameId) {
-        Game checkGame = gameRepository.findById(gameId).orElse(null);
+        Game checkGame = gameService.getGameById(gameId);
         if (checkGame != null) {
             return blogRepository.searchAllByGames_GameIdOrderByBlogCreateDateDesc(gameId);
+        }
+        return null;
+    }
+
+    @Override
+    public List<Blog> getAllBlogsByPlatform(Long platformId) {
+        GamePlatform platform = gamePlatformService.getPlatformById(platformId);
+        if (platform != null) {
+            return blogRepository.findAllBlogsByPlatform(platformId);
+        }
+        return null;
+    }
+
+    @Override
+    public List<Blog> getAllBlogsByGenre(Long genreId) {
+        Genre checkGenre = genreService.getGenreById(genreId);
+        if (checkGenre != null) {
+            return blogRepository.findAllBlogsByGenre(genreId);
         }
         return null;
     }

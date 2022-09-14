@@ -18,17 +18,16 @@
 	<!-- Page top section -->
 	<section class="page-top-section set-bg" data-setbg="/img/page-top-bg/1.jpg">
 		<div class="page-info">
-			<h2>Games</h2>
+			<h2>News</h2>
 			<div class="site-breadcrumb">
 				<a th:href="@{'/'}">Home</a>  /
-				<span>Games</span>
+				<a th:href="@{'/allNews'}">News</a>  /
+				<span class="site-breadcrumb-disabled-span">Platform</span>  /
+				<span th:text="${platform.platformName}"></span>
 			</div>
 		</div>
 	</section>
 	<!-- Page top end-->
-
-
-
 
 	<!-- Games section -->
 	<section class="games-section">
@@ -36,28 +35,26 @@
 			<div class="row">
 				<div class="col-xl-7 col-lg-8 col-md-7">
 					<div class="row">
-						<div class="col-lg-4 col-md-6" th:each="game : ${allGames}">
-							<div class="game-item">
-								<img th:src="@{'/getGameImage/' + ${game.gameImage}}" alt="#">
-								<h5 th:text="${game.gameName}"></h5>
-								<p>Age restriction: <span class="age-limit" th:text="${game.gameAge} + '+'"></span></p>
-								<a th:href="@{'/detailsGame/' + ${game.gameId}}" class="read-more">Read More  <img src="img/icons/double-arrow.png" th:alt="${game.gameName}"/></a>
+						<div class="col-12" th:each="news : ${allNewsByPlatform}">
+							<div class="big-blog-item">
+								<h5 th:text="${news.newsCreateDate + ' | ' + news.newsTitle}"></h5>
+								<img class="news-image" th:src="@{'/getGameImage/' + ${news.game.gameImage}}">
+								<p th:text="${news.newsDescription}"></p>
+								<p>Game: <span th:text="${news.game.gameName}"></span></p>
+								<a th:href="@{'/detailsNews/' + ${news.newsId}}" class="read-more">Read More  <img th:src="@{'/img/icons/double-arrow.png'}" /></a>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="col-xl-3 col-lg-4 col-md-5 sidebar game-page-sideber">
+				<div class="col-xl-3 col-lg-4 col-md-5 sidebar game-page-sidebar">
 					<div id="stickySidebar">
 						<div class="widget-item">
 							<div class="categories-widget">
-								<h4 class="widget-title">categories</h4>
+								<h4 class="widget-title">game</h4>
 								<ul>
-									<li><a href="">Games</a></li>
-									<li><a href="">Gaming Tips & Tricks</a></li>
-									<li><a href="">Online Games</a></li>
-									<li><a href="">Team Games</a></li>
-									<li><a href="">Community</a></li>
-									<li><a href="">Uncategorized</a></li>
+									<li th:each="game : ${allGames}">
+										<a th:href="@{'/newsByGame/' + ${game.gameId}}" th:text="${game.gameName}"></a>
+									</li>
 								</ul>
 							</div>
 						</div>
@@ -66,7 +63,7 @@
 								<h4 class="widget-title">platform</h4>
 								<ul>
 									<li th:each="platform : ${allPlatforms}">
-										<a th:href="@{'/gamesByPlatform/' + ${platform.platformId}}" th:text="${platform.platformName}"></a>
+										<a th:class="${platform.platformId == selectedPlatformId} ? 'disabled' : ''" th:href="@{'/newsByPlatform/' + ${platform.platformId}}" th:text="${platform.platformName}"></a>
 									</li>
 								</ul>
 							</div>
@@ -76,7 +73,7 @@
 								<h4 class="widget-title">Genre</h4>
 								<ul>
 									<li th:each="genre : ${allGenres}">
-										<a th:href="@{'/gamesByGenre/' + ${genre.genreId}}" th:text="${genre.genreName}"></a>
+										<a th:href="@{'/newsByGenre/' + ${genre.genreId}}" th:text="${genre.genreName}"></a>
 									</li>
 								</ul>
 							</div>
@@ -87,25 +84,6 @@
 		</div>
 	</section>
 	<!-- Games end-->
-
-
-	<!-- Featured section -->
-	<section class="featured-section">
-		<div class="featured-bg set-bg" data-setbg="img/featured-bg.jpg"></div>
-		<div class="featured-box">
-			<div class="text-box">
-				<div class="top-meta">
-					<span th:text="${lastNews.newsCreateDate} + '  /  in'"></span>
-					<a th:href="@{'/allGames'}">Games</a>
-				</div>
-				<h3 th:text="${lastNews.newsTitle}"></h3>
-				<p th:text="${lastNews.newsDescription}"></p>
-				<a th:href="@{'/detailsNews/' + ${lastNews.newsId}}" class="read-more">Read More <img th:src="@{/img/icons/double-arrow.png}" alt="#"/></a>
-			</div>
-		</div>
-	</section>
-	<!-- Featured section end-->
-
 
 	<!-- Newsletter section -->
 	<section class="newsletter-section">

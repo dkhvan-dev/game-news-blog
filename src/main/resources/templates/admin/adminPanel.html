@@ -450,6 +450,72 @@
                 </div>
             </div>
         </div>
+        <!-- Comments Collapse -->
+        <div class="d-flex">
+            <div class="admin-collapse">
+                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#commentsAdmin" aria-expanded="false">
+                    Comments
+                </button>
+            </div>
+            <div class="collapse admin-collapse__show" id="commentsAdmin">
+                <div class="card card-body">
+                    <!-- ALL COMMENTS TABLE -->
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Comment</th>
+                            <th scope="col">Author</th>
+                            <th scope="col">Create date</th>
+                            <th scope="col">Delete</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="comment : ${allComments}">
+                            <th scope="row" th:text="${comment.commentId}"></th>
+                            <td th:text="${comment.commentText}"></td>
+                            <td th:text="${comment.getAuthor().getUserEmail()}"></td>
+                            <td th:text="${comment.commentCreateDate}"></td>
+                            <td>
+                                <button type="button" class="btn btn-danger deleteCommentModal"
+                                        th:data-id="${comment.commentId}"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#deleteCommentModal">
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="modal fade" id="deleteCommentModal" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <form th:action="@{'/deleteCommentAdmin'}" method="post">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Delete comment</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <input type="hidden" name="commentId" value="" id="commentId">
+                                        Do you really want to delete this comment?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button class="btn btn-danger">Delete</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <script>
+                        $(document).on("click", ".deleteCommentModal", function () {
+                            var commentId = $(this).data("id");
+                            $(".modal-body #commentId").val(commentId);
+                        });
+                    </script>
+                </div>
+            </div>
+        </div>
 
     </main>
 

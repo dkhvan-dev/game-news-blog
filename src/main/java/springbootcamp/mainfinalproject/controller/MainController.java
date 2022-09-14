@@ -18,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MainController {
     private final UserService userService;
+    private final RoleService roleService;
     private final GameService gameService;
     private final BlogService blogService;
     private final NewsService newsService;
@@ -25,6 +26,7 @@ public class MainController {
     private final GenreService genreService;
     private final FeedbackService feedbackService;
     private final FeedbackStatusService feedbackStatusService;
+    private final CommentsService commentsService;
 
     @GetMapping("/")
     public String homePage(Model model) {
@@ -109,6 +111,8 @@ public class MainController {
         Game game = gameService.getGameById(gameId);
         if (gameId != null) {
             model.addAttribute("game", game);
+            Blog lastBlogByGame = blogService.getLastBlogByGame(gameId);
+            model.addAttribute("lastBlogByGame", lastBlogByGame);
             return "detailsGame";
         }
         return "redirect:/allGames";
@@ -143,6 +147,8 @@ public class MainController {
             model.addAttribute("allPlatforms", allPlatforms);
             List<Genre> allGenres = genreService.getAllGenres();
             model.addAttribute("allGenres", allGenres);
+            News lastNewsByGenre = newsService.getLastNewsByGenre(genreId);
+            model.addAttribute("lastNewsByGenre", lastNewsByGenre);
             return "gamesByGenre";
         }
         return "redirect:/allGames";
@@ -154,4 +160,190 @@ public class MainController {
         return "redirect:/";
     }
 
+    @GetMapping("/allNews")
+    public String allNewsPage(Model model) {
+        List<News> allNews = newsService.getAllNews();
+        model.addAttribute("allNews", allNews);
+        List<Game> allGames = gameService.getAllGames();
+        model.addAttribute("allGames", allGames);
+        List<GamePlatform> allPlatforms = gamePlatformService.getAllPlatforms();
+        model.addAttribute("allPlatforms", allPlatforms);
+        List<Genre> allGenres = genreService.getAllGenres();
+        model.addAttribute("allGenres", allGenres);
+        return "allNews";
+    }
+
+    @GetMapping("/newsByGame/{gameId}")
+    public String newsByGamePage(@PathVariable(name = "gameId") Long gameId,
+                                     Model model) {
+        Game game = gameService.getGameById(gameId);
+        if (game != null) {
+            model.addAttribute("game", game);
+            List<Game> allGames = gameService.getAllGames();
+            model.addAttribute("allGames", allGames);
+            List<GamePlatform> allPlatforms = gamePlatformService.getAllPlatforms();
+            model.addAttribute("allPlatforms", allPlatforms);
+            List<Genre> allGenres = genreService.getAllGenres();
+            model.addAttribute("allGenres", allGenres);
+            model.addAttribute("selectedGameId", gameId);
+            List<News> allNewsByGame = newsService.getAllNewsByGame(gameId);
+            model.addAttribute("allNewsByGame", allNewsByGame);
+            return "newsByGame";
+        }
+        return "redirect:/allNews?errorGameNotFound";
+    }
+
+    @GetMapping("/newsByPlatform/{platformId}")
+    public String newsByPlatformPage(@PathVariable(name = "platformId") Long platformId,
+                                  Model model) {
+        GamePlatform platform = gamePlatformService.getPlatformById(platformId);
+        if (platform != null) {
+            model.addAttribute("platform", platform);
+            List<Game> allGames = gameService.getAllGames();
+            model.addAttribute("allGames", allGames);
+            List<GamePlatform> allPlatforms = gamePlatformService.getAllPlatforms();
+            model.addAttribute("allPlatforms", allPlatforms);
+            List<Genre> allGenres = genreService.getAllGenres();
+            model.addAttribute("allGenres", allGenres);
+            model.addAttribute("selectedPlatformId", platformId);
+            List<News> allNewsByPlatform = newsService.getAllNewsByPlatform(platformId);
+            model.addAttribute("allNewsByPlatform", allNewsByPlatform);
+            return "newsByPlatform";
+        }
+        return "redirect:/allNews?errorPlatformNotFound";
+    }
+
+    @GetMapping("/newsByGenre/{genreId}")
+    public String newsByGenrePage(@PathVariable(name = "genreId") Long genreId,
+                                  Model model) {
+        Genre genre = genreService.getGenreById(genreId);
+        if (genre != null) {
+            model.addAttribute("genre", genre);
+            List<Game> allGames = gameService.getAllGames();
+            model.addAttribute("allGames", allGames);
+            List<GamePlatform> allPlatforms = gamePlatformService.getAllPlatforms();
+            model.addAttribute("allPlatforms", allPlatforms);
+            List<Genre> allGenres = genreService.getAllGenres();
+            model.addAttribute("allGenres", allGenres);
+            model.addAttribute("selectedGenreId", genreId);
+            List<News> allNewsByGenre = newsService.getAllNewsByGenre(genreId);
+            model.addAttribute("allNewsByGenre", allNewsByGenre);
+            return "newsByGenre";
+        }
+        return "redirect:/allNews?errorGenreNotFound";
+    }
+
+    @GetMapping("/detailsNews/{newsId}")
+    public String detailsNewsPage(@PathVariable(name = "newsId") Long newsId,
+                                  Model model) {
+        News news = newsService.getNewsById(newsId);
+        if (news != null) {
+            model.addAttribute("news", news);
+            return "detailsNews";
+        }
+        return "redirect:/allNews?errorNewsNotFound";
+    }
+
+    @GetMapping("/allBlogs")
+    public String allBlogsPage(Model model) {
+        List<Blog> allBlogs = blogService.getAllBlogs();
+        model.addAttribute("allBlogs", allBlogs);
+        List<Game> allGames = gameService.getAllGames();
+        model.addAttribute("allGames", allGames);
+        List<GamePlatform> allPlatforms = gamePlatformService.getAllPlatforms();
+        model.addAttribute("allPlatforms", allPlatforms);
+        List<Genre> allGenres = genreService.getAllGenres();
+        model.addAttribute("allGenres", allGenres);
+        return "allBlogs";
+    }
+
+    @GetMapping("/blogsByGame/{gameId}")
+    public String blogsByGamePage(@PathVariable(name = "gameId") Long gameId,
+                                 Model model) {
+        Game game = gameService.getGameById(gameId);
+        if (game != null) {
+            model.addAttribute("game", game);
+            List<Game> allGames = gameService.getAllGames();
+            model.addAttribute("allGames", allGames);
+            List<GamePlatform> allPlatforms = gamePlatformService.getAllPlatforms();
+            model.addAttribute("allPlatforms", allPlatforms);
+            List<Genre> allGenres = genreService.getAllGenres();
+            model.addAttribute("allGenres", allGenres);
+            model.addAttribute("selectedGameId", gameId);
+            List<Blog> allBlogsByGame = blogService.getAllBlogsByGame(gameId);
+            model.addAttribute("allBlogsByGame", allBlogsByGame);
+            return "blogsByGame";
+        }
+        return "redirect:/allNews?errorGameNotFound";
+    }
+
+    @GetMapping("/blogsByPlatform/{platformId}")
+    public String blogsByPlatformPage(@PathVariable(name = "platformId") Long platformId,
+                                     Model model) {
+        GamePlatform platform = gamePlatformService.getPlatformById(platformId);
+        if (platform != null) {
+            model.addAttribute("platform", platform);
+            List<Game> allGames = gameService.getAllGames();
+            model.addAttribute("allGames", allGames);
+            List<GamePlatform> allPlatforms = gamePlatformService.getAllPlatforms();
+            model.addAttribute("allPlatforms", allPlatforms);
+            List<Genre> allGenres = genreService.getAllGenres();
+            model.addAttribute("allGenres", allGenres);
+            model.addAttribute("selectedPlatformId", platformId);
+            List<Blog> allBlogsByPlatform = blogService.getAllBlogsByPlatform(platformId);
+            model.addAttribute("allBlogsByPlatform", allBlogsByPlatform);
+            return "blogsByPlatform";
+        }
+        return "redirect:/allNews?errorPlatformNotFound";
+    }
+
+    @GetMapping("/blogsByGenre/{genreId}")
+    public String blogsByGenrePage(@PathVariable(name = "genreId") Long genreId,
+                                  Model model) {
+        Genre genre = genreService.getGenreById(genreId);
+        if (genre != null) {
+            model.addAttribute("genre", genre);
+            List<Game> allGames = gameService.getAllGames();
+            model.addAttribute("allGames", allGames);
+            List<GamePlatform> allPlatforms = gamePlatformService.getAllPlatforms();
+            model.addAttribute("allPlatforms", allPlatforms);
+            List<Genre> allGenres = genreService.getAllGenres();
+            model.addAttribute("allGenres", allGenres);
+            model.addAttribute("selectedGenreId", genreId);
+            List<Blog> allBlogsByGenre = blogService.getAllBlogsByGenre(genreId);
+            model.addAttribute("allBlogsByGenre", allBlogsByGenre);
+            return "blogsByGenre";
+        }
+        return "redirect:/allNews?errorGenreNotFound";
+    }
+
+    @GetMapping("/detailsBlog/{blogId}")
+    public String detailsBlogsPage(@PathVariable(name = "blogId") Long blogId,
+                                  Model model) {
+        Blog blog = blogService.getBlogById(blogId);
+        if (blog != null) {
+            model.addAttribute("blog", blog);
+            List<Comments> allComments = commentsService.getAllComments();
+            model.addAttribute("allComments", allComments);
+            return "detailsBlog";
+        }
+        return "redirect:/allBlogs?errorBlogNotFound";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/addComment")
+    public String addComment(Comments comment, @RequestParam(name = "blogId") Long blogId) {
+        commentsService.addComment(comment, blogId);
+        return "redirect:/detailsBlog/" + comment.getBlog().getBlogId();
+    }
+
+    @PostMapping("/deleteComment")
+    public String deleteComment(@RequestParam(name = "commentId") Long commentId) {
+        Comments comment = commentsService.getCommentById(commentId);
+        if (comment != null) {
+            commentsService.deleteComment(commentId);
+            return "redirect:/detailsBlog/" + comment.getBlog().getBlogId();
+        }
+        return "redirect:/detailsBlog/" + comment.getBlog().getBlogId() + "?errorCommentNotFound";
+    }
 }
