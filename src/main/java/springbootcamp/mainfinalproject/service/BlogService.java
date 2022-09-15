@@ -13,6 +13,7 @@ public interface BlogService {
     List<Blog> getAllBlogsByGame(Long gameId);
     List<Blog> getAllBlogsByPlatform(Long platformId);
     List<Blog> getAllBlogsByGenre(Long genreId);
+    Blog addBlog(Blog blog, MultipartFile blogImageToken);
     Blog editBlogAdmin(Blog blog, MultipartFile blogImageToken, String blogCreateDate, String blogUpdateDate, Long authorId);
     void deleteBlogAdmin(Long blogId);
 }

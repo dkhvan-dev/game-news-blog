@@ -29,18 +29,19 @@
 	</section>
 	<!-- Page top end-->
 
-	<!-- Games section -->
+	<!-- Blogs section -->
 	<section class="games-section" th:if="${allBlogsByGame != null}">
 		<div class="container">
+			<a th:href="@{'/addBlog'}" class="btn btn-primary w-25" sec:authorize="hasRole('ROLE_BLOGGER')">Add blog</a>
 			<div class="row">
 				<div class="col-xl-7 col-lg-8 col-md-7">
 					<div class="row">
 						<div class="col-12" th:each="blog : ${allBlogsByGame}">
 							<div class="big-blog-item">
-								<h5 th:text="${blog.blogCreateDate + ' | ' + blog.blogTitle}"></h5>
+								<h5 class="blog-title" th:text="${blog.blogCreateDate + ' | ' + blog.blogTitle}"></h5>
 								<img class="news-image" th:src="@{'/getBlogImage/' + ${blog.blogImage}}">
-								<p th:text="${blog.blogDescription}"></p>
-								<p>Game: <span th:text="${blog.getGames().gameName}"></span></p>
+								<p class="mt-lg-3 blog-description" th:text="${blog.blogDescription}"></p>
+								<p class="blog-game">Game: <span th:text="${blog.getGames().gameName}"></span></p>
 								<a th:href="@{'/detailsBlog/' + ${blog.blogId}}" class="read-more">Read More  <img th:src="@{'/img/icons/double-arrow.png'}" /></a>
 							</div>
 						</div>
@@ -83,19 +84,19 @@
 			</div>
 		</div>
 	</section>
-	<!-- Games end-->
+	<!-- Blogs end-->
 
-	<!-- Newsletter section -->
-	<section class="newsletter-section">
-		<div class="container">
-			<h2>Subscribe to our newsletter</h2>
-			<form class="newsletter-form">
-				<input type="text" placeholder="ENTER YOUR E-MAIL">
-				<button class="site-btn">subscribe  <img src="img/icons/double-arrow.png" alt="#"/></button>
-			</form>
-		</div>
-	</section>
-	<!-- Newsletter section end -->
+<!--	&lt;!&ndash; Newsletter section &ndash;&gt;-->
+<!--	<section class="newsletter-section">-->
+<!--		<div class="container">-->
+<!--			<h2>Subscribe to our newsletter</h2>-->
+<!--			<form class="newsletter-form">-->
+<!--				<input type="text" placeholder="ENTER YOUR E-MAIL">-->
+<!--				<button class="site-btn">subscribe  <img src="img/icons/double-arrow.png" alt="#"/></button>-->
+<!--			</form>-->
+<!--		</div>-->
+<!--	</section>-->
+<!--	&lt;!&ndash; Newsletter section end &ndash;&gt;-->
 
 
 	<!-- Footer section -->

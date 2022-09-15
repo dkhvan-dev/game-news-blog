@@ -33,7 +33,7 @@ public class FileUploadServiceImpl implements FileUploadService {
 
         if (multipartFile.getContentType().equals("image/jpeg") || multipartFile.getContentType().equals("image/png")) {
             try {
-                Path path = Paths.get(targetURL + "/" + gameImage);
+                Path path = Paths.get(targetURL + "/games/" + gameImage);
                 byte[] bytes = multipartFile.getBytes();
                 Files.write(path, bytes);
                 game.setGameImage(gameImageToken);
@@ -52,7 +52,7 @@ public class FileUploadServiceImpl implements FileUploadService {
 
         if (multipartFile.getContentType().equals("image/jpeg") || multipartFile.getContentType().equals("image/png")) {
             try {
-                Path path = Paths.get(targetURL + "/" + blogImage);
+                Path path = Paths.get(targetURL + "/blog/" + blogImage);
                 byte[] bytes = multipartFile.getBytes();
                 Files.write(path, bytes);
                 blog.setBlogImage(blogImageToken);

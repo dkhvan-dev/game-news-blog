@@ -79,6 +79,17 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
+    public Blog addBlog(Blog blog, MultipartFile blogImageToken) {
+        if (blog.getBlogId() == null) {
+            fileUploadService.uploadBlogImage(blogImageToken, blog);
+            blog.setBlogCreateDate(LocalDate.now());
+            blog.setUsers(userService.getCurrentUser());
+            return blogRepository.save(blog);
+        }
+        return null;
+    }
+
+    @Override
     public Blog editBlogAdmin(Blog blog, MultipartFile blogImageToken, String blogCreateDate, String blogUpdateDate, Long authorId) {
         if (blog != null) {
             DateTimeFormatter pattern = DateTimeFormatter.ofPattern("yyyy-MM-dd");

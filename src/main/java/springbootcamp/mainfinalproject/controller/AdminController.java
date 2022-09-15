@@ -276,18 +276,37 @@ public class AdminController {
     }
 
     // Load Image
-    @GetMapping(value = "/getGameImage/{gameImageToken}", produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE})
-    public @ResponseBody byte[] getGameImage(@PathVariable(name = "gameImageToken", required = false) String gameImageToken) throws IOException {
-        String pictureURL = loadURL + "defaultGameImage.jpg";
-        if (gameImageToken != null) {
-            pictureURL = loadURL + gameImageToken + ".jpg";
+    @GetMapping(value = "/getUserImage/{userImageToken}", produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE})
+    public @ResponseBody byte[] getUserImage(@PathVariable(name = "userImageToken", required = false) String userImageToken) throws IOException {
+        String pictureURL = loadURL + "defaultAvatar.png";
+        if (userImageToken != null) {
+            pictureURL = loadURL + "avatar/" + userImageToken + ".jpg";
         }
         InputStream inputStream;
         try {
             ClassPathResource resource = new ClassPathResource(pictureURL);
             inputStream = resource.getInputStream();
         } catch (Exception e) {
-            pictureURL = loadURL + "defaultGameImage.jpg";
+            pictureURL = loadURL + "defaultAvatar.png";
+            ClassPathResource resource = new ClassPathResource(pictureURL);
+            inputStream = resource.getInputStream();
+            e.printStackTrace();
+        }
+        return IOUtils.toByteArray(inputStream);
+    }
+
+    @GetMapping(value = "/getGameImage/{gameImageToken}", produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE})
+    public @ResponseBody byte[] getGameImage(@PathVariable(name = "gameImageToken", required = false) String gameImageToken) throws IOException {
+        String pictureURL = loadURL + "games/defaultGameImage.jpg";
+        if (gameImageToken != null) {
+            pictureURL = loadURL + "games/" + gameImageToken + ".jpg";
+        }
+        InputStream inputStream;
+        try {
+            ClassPathResource resource = new ClassPathResource(pictureURL);
+            inputStream = resource.getInputStream();
+        } catch (Exception e) {
+            pictureURL = loadURL + "games/defaultGameImage.jpg";
             ClassPathResource resource = new ClassPathResource(pictureURL);
             inputStream = resource.getInputStream();
             e.printStackTrace();
@@ -297,16 +316,16 @@ public class AdminController {
 
     @GetMapping(value = "/getBlogImage/{blogImageToken}", produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE})
     public @ResponseBody byte[] getBlogImage(@PathVariable(name = "blogImageToken", required = false) String blogImageToken) throws IOException {
-        String pictureURL = loadURL + "defaultGameImage.jpg";
+        String pictureURL = loadURL + "games/defaultGameImage.jpg";
         if (blogImageToken != null) {
-            pictureURL = loadURL + blogImageToken + ".jpg";
+            pictureURL = loadURL + "blog/" + blogImageToken + ".jpg";
         }
         InputStream inputStream;
         try {
             ClassPathResource resource = new ClassPathResource(pictureURL);
             inputStream = resource.getInputStream();
         } catch (Exception e) {
-            pictureURL = loadURL + "defaultGameImage.jpg";
+            pictureURL = loadURL + "games/defaultGameImage.jpg";
             ClassPathResource resource = new ClassPathResource(pictureURL);
             inputStream = resource.getInputStream();
             e.printStackTrace();

@@ -1,7 +1,9 @@
 package springbootcamp.mainfinalproject.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -11,12 +13,18 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import springbootcamp.mainfinalproject.model.Role;
 import springbootcamp.mainfinalproject.model.User;
 import springbootcamp.mainfinalproject.repository.RoleRepository;
 import springbootcamp.mainfinalproject.repository.UserRepository;
+import springbootcamp.mainfinalproject.service.FileUploadService;
+import springbootcamp.mainfinalproject.service.NewsService;
 import springbootcamp.mainfinalproject.service.UserService;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -39,6 +47,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Value("${targetURL}")
+    private String targetURL;
+
     @Override
     public User getUserById(Long userId) {
         User user = userRepository.findById(userId).orElse(null);
@@ -46,6 +57,15 @@ public class UserServiceImpl implements UserService {
             return user;
         }
         return null;
+    }
+
+    @Override
+    public String swapAvatar(MultipartFile userImageToken, User user) {
+        if (uploadUserImage(userImageToken, user)) {
+            userRepository.save(user);
+            return "successSwapAvatar";
+        }
+        return "errorSwapAvatar";
     }
 
     @Override
@@ -99,6 +119,25 @@ public class UserServiceImpl implements UserService {
             return user;
         }
         return null;
+    }
+
+    public boolean uploadUserImage(MultipartFile multipartFile, User user) {
+        User currentUser = getCurrentUser();
+        if (user.equals(currentUser)) {
+            String userImageToken = DigestUtils.sha1Hex(currentUser.getUserId() + "_avatar_" + Math.random());
+            String userImage = userImageToken + ".jpg";
+            if (multipartFile.getContentType().equals("image/jpeg") || multipartFile.getContentType().equals("image/png")) {
+                try {
+                    Path path = Paths.get(targetURL + "/" + userImage);
+                    byte[] bytes = multipartFile.getBytes();
+                    Files.write(path, bytes);
+                    user.setUserAvatar(userImageToken);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return true;
     }
 
     public void updateUserData(String firstName, String surname, String password) {

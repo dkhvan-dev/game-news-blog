@@ -25,4 +25,8 @@ public interface NewsRepository extends JpaRepository<News, Long> {
     List<News> findAllNewsByPlatform(Long platformId);
     @Query(nativeQuery = true, value = "SELECT * FROM news JOIN games g on news.game_id = g.id JOIN games_genres gg on g.id = gg.game_id WHERE gg.genres_id = :genreId")
     List<News> findAllNewsByGenre(Long genreId);
+    @Query(nativeQuery = true, value = "SELECT * FROM news ORDER BY news.create_date DESC LIMIT 3")
+    List<News> findLatest3News();
+    @Query(nativeQuery = true, value = "SELECT * FROM news WHERE news.game_id = :gameId ORDER BY create_date DESC")
+    List<News> findLatest3NewsByGame(Long gameId);
 }

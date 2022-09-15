@@ -698,7 +698,14 @@ main {
 	font-weight: 700;
 	font-style: italic;
 	padding-left: 38px;
+	padding-right: 38px;
 	margin-bottom: 48px;
+}
+
+.widget-item p {
+	white-space: pre-wrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .trending-widget .tw-item {
@@ -1249,7 +1256,7 @@ main {
 
 .game-single-preview {
 	width: 300px;
-	margin-bottom: 108px;
+	margin-bottom: 40px;
 }
 
 .game-single-content .gs-meta {
@@ -1277,8 +1284,12 @@ main {
 .game-single-content p {
 	font-size: 16px;
 	font-weight: 500;
-	color: #68647d;
+	color: #fff;
 	line-height: 1.8;
+}
+
+.game-single-content p span {
+	color: #b01ba5;
 }
 
 .detailsGameRequirements p {
@@ -1347,7 +1358,7 @@ main {
 }
 
 .testimonials-widget .testim-text {
-	padding: 0 30px;
+	padding: 0 20px;
 }
 
 .testimonials-widget .testim-text p {
@@ -1355,6 +1366,7 @@ main {
 	font-weight: 500;
 	color: #68647d;
 	line-height: 1.8;
+	margin-left: 5px;
 	margin-bottom: 40px;
 }
 
@@ -1825,4 +1837,24 @@ main {
 
 .comment-author-name {
 	color: #c313b7;
+}
+
+.blog-title {
+	color: #c313b7;
+}
+
+.blog-game {
+	color: #fff;
+}
+
+.blog-game span {
+	color: #c313b7;
+}
+
+.blog-description {
+	color: #fff;
+}
+
+.user-avatar-img {
+	width: 300px;
 }

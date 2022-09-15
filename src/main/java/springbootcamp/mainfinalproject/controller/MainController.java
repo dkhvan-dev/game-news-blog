@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import springbootcamp.mainfinalproject.model.*;
 import springbootcamp.mainfinalproject.service.*;
 
@@ -27,11 +28,14 @@ public class MainController {
     private final FeedbackService feedbackService;
     private final FeedbackStatusService feedbackStatusService;
     private final CommentsService commentsService;
+    private final FileUploadService fileUploadService;
 
     @GetMapping("/")
     public String homePage(Model model) {
         List<Game> allGames = gameService.getAllGames();
         model.addAttribute("allGames", allGames);
+        List<News> last3News = newsService.getLatest3News();
+        model.addAttribute("last3News", last3News);
         List<Blog> last3Blogs = blogService.getTop3Blogs();
         model.addAttribute("last3Blogs", last3Blogs);
         List<Game> top5Games = gameService.getTop5Games();
@@ -63,7 +67,7 @@ public class MainController {
                          @RequestParam(name = "birthdate") String userBirthdate) throws ParseException {
         if (user.getUserPassword().equals(rePassword)) {
             User newUser = userService.signUp(user, userBirthdate);
-            if (newUser == null) {
+            if (newUser != null) {
                 return "redirect:/profile";
             } else {
                 return "redirect:/signUp?userExist";
@@ -77,6 +81,13 @@ public class MainController {
     public String profilePage(Model model) {
         model.addAttribute("currentUser", userService.getCurrentUser());
         return "profile";
+    }
+
+    @PostMapping("/swapUserAvatar")
+    public String swapUserAvatar(@RequestParam(name = "userImageToken") MultipartFile userImageToken) {
+
+        String param = userService.swapAvatar(userImageToken, userService.getCurrentUser());
+        return "redirect:/profile?" + param;
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -113,6 +124,8 @@ public class MainController {
             model.addAttribute("game", game);
             Blog lastBlogByGame = blogService.getLastBlogByGame(gameId);
             model.addAttribute("lastBlogByGame", lastBlogByGame);
+            List<News> last3NewsByGame = newsService.getLast3NewsByGame(gameId);
+            model.addAttribute("last3NewsByGame", last3NewsByGame);
             return "detailsGame";
         }
         return "redirect:/allGames";
@@ -328,6 +341,25 @@ public class MainController {
             return "detailsBlog";
         }
         return "redirect:/allBlogs?errorBlogNotFound";
+    }
+
+    @PreAuthorize("hasRole('ROLE_BLOGGER')")
+    @GetMapping("/addBlog")
+    public String addBlogPage(Model model) {
+        List<Game> allGames = gameService.getAllGames();
+        model.addAttribute("allGames", allGames);
+        return "addBlog";
+    }
+
+    @PreAuthorize("hasRole('ROLE_BLOGGER')")
+    @PostMapping("/addBlog")
+    public String addBlog(Blog blog,
+                          @RequestParam(name = "blogImageToken") MultipartFile blogImageToken) {
+        Blog newBlog = blogService.addBlog(blog, blogImageToken);
+        if (newBlog != null) {
+            return "redirect:/addBlog?success";
+        }
+        return "redirect:/addBlog?errorAddBlog";
     }
 
     @PreAuthorize("isAuthenticated()")

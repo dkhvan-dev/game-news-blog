@@ -43,7 +43,7 @@ public class NewsServiceImpl implements NewsService {
         if (news.getNewsId() == null) {
             news.setAuthor(userService.getCurrentUser());
             news.setNewsCreateDate(LocalDate.now());
-            newsRepository.save(news);
+            return newsRepository.save(news);
         }
         return null;
     }
@@ -118,4 +118,17 @@ public class NewsServiceImpl implements NewsService {
         return null;
     }
 
+    @Override
+    public List<News> getLatest3News() {
+        return newsRepository.findLatest3News();
+    }
+
+    @Override
+    public List<News> getLast3NewsByGame(Long gameId) {
+        Game checkGame = gameService.getGameById(gameId);
+        if (checkGame != null) {
+            return newsRepository.findLatest3NewsByGame(gameId);
+        }
+        return null;
+    }
 }

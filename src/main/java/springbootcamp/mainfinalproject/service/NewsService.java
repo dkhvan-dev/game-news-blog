@@ -16,4 +16,6 @@ public interface NewsService {
     List<News> getAllNewsByGame(Long gameId);
     List<News> getAllNewsByGenre(Long genreId);
     List<News> getAllNewsByPlatform(Long platformId);
+    List<News> getLatest3News();
+    List<News> getLast3NewsByGame(Long gameId);
 }

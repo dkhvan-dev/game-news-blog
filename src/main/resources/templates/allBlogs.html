@@ -30,15 +30,16 @@
 	<!-- Games section -->
 	<section class="games-section">
 		<div class="container">
+			<a th:href="@{'/addBlog'}" class="btn btn-primary w-25" sec:authorize="hasRole('ROLE_BLOGGER')">Add blog</a>
 			<div class="row" th:if="${allBlogs != null}">
 				<div class="col-xl-7 col-lg-8 col-md-7">
 					<div class="row">
 						<div class="col-12" th:each="blog : ${allBlogs}">
 							<div class="big-blog-item">
 								<h5 th:text="${blog.blogCreateDate + ' | ' + blog.blogTitle}"></h5>
-								<img class="news-image" th:src="@{'/getGameImage/' + ${blog.getGames().gameImage}}">
-								<p th:text="${blog.blogDescription}"></p>
-								<p>Game: <span th:text="${blog.getGames().gameName}"></span></p>
+								<img class="news-image" th:src="@{'/getBlogImage/' + ${blog.blogImage}}">
+								<p class="mt-lg-3 blog-description" th:text="${blog.blogDescription}"></p>
+								<p class="blog-game">Game: <span th:text="${blog.getGames().gameName}"></span></p>
 								<a th:href="@{'/detailsBlog/' + ${blog.blogId}}" class="read-more">Read More  <img th:src="@{'/img/icons/double-arrow.png'}" /></a>
 							</div>
 						</div>
@@ -83,36 +84,17 @@
 	</section>
 	<!-- Games end-->
 
-
-	<!-- Featured section -->
-<!--	<section class="featured-section">-->
-<!--		<div class="featured-bg set-bg" data-setbg="img/featured-bg.jpg"></div>-->
-<!--		<div class="featured-box">-->
-<!--			<div class="text-box">-->
-<!--				<div class="top-meta">-->
-<!--					<span th:text="${lastNews.newsCreateDate} + '  /  in'"></span>-->
-<!--					<a th:href="@{'/allGames'}">Games</a>-->
-<!--				</div>-->
-<!--				<h3 th:text="${lastNews.newsTitle}"></h3>-->
-<!--				<p th:text="${lastNews.newsDescription}"></p>-->
-<!--				<a th:href="@{'/detailsNews/' + ${lastNews.newsId}}" class="read-more">Read More <img th:src="@{/img/icons/double-arrow.png}" alt="#"/></a>-->
-<!--			</div>-->
+<!--	&lt;!&ndash; Newsletter section &ndash;&gt;-->
+<!--	<section class="newsletter-section">-->
+<!--		<div class="container">-->
+<!--			<h2>Subscribe to our newsletter</h2>-->
+<!--			<form class="newsletter-form">-->
+<!--				<input type="text" placeholder="ENTER YOUR E-MAIL">-->
+<!--				<button class="site-btn">subscribe  <img src="img/icons/double-arrow.png" alt="#"/></button>-->
+<!--			</form>-->
 <!--		</div>-->
 <!--	</section>-->
-	<!-- Featured section end-->
-
-
-	<!-- Newsletter section -->
-	<section class="newsletter-section">
-		<div class="container">
-			<h2>Subscribe to our newsletter</h2>
-			<form class="newsletter-form">
-				<input type="text" placeholder="ENTER YOUR E-MAIL">
-				<button class="site-btn">subscribe  <img src="img/icons/double-arrow.png" alt="#"/></button>
-			</form>
-		</div>
-	</section>
-	<!-- Newsletter section end -->
+<!--	&lt;!&ndash; Newsletter section end &ndash;&gt;-->
 
 
 	<!-- Footer section -->

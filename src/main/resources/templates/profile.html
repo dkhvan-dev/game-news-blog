@@ -12,6 +12,12 @@
 
     <main class="main">
         <div class="container mt-3">
+            <div class="alert alert-success" role="alert" th:if="${param.successSwapAvatar}">
+                Avatar successfully replaced!
+            </div>
+            <div class="alert alert-danger" role="alert" th:if="${param.errorSwapAvatar}">
+                Failed to update avatar. Try to choose a different image!
+            </div>
             <div class="alert alert-success" role="alert" th:if="${param.success}">
                 Profile was edited successfully!
             </div>
@@ -22,9 +28,20 @@
                 The old password does not match the current password!
             </div>
             <h1 class="mb-3" th:text="${currentUser.userFirstName} + ' ' + ${currentUser.userSurname}"></h1>
+            <form class="form-control col-6" th:action="@{'/swapUserAvatar'}" method="post" enctype="multipart/form-data">
+                <div class="mt-3">
+                    <label>Avatar: <br>
+                        <input class="form-control" type="file" name="userImageToken">
+                    </label>
+                    <button class="btn btn-primary mt-3">Swap avatar</button>
+                </div>
+            </form>
             <form class="form-control col-6" th:action="@{'/editUser'}" method="post">
                 <input type="hidden" name="userId" th:value="${currentUser.userId}">
                 <input type="hidden" name="userEmail" th:value="${currentUser.userEmail}">
+                <div class="mt-3">
+                    <img class="user-avatar-img" th:src="@{'/getUserImage/' + ${currentUser.getUserAvatar()}}">
+                </div>
                 <div class="mt-3">
                     <label>Name:
                         <input type="text" class="form-control" name="userFirstName" th:placeholder="${currentUser.userFirstName}" required>
@@ -60,7 +77,7 @@
                     Application for blogger's role
                 </button>
             </div>
-            <div class="collapse" id="applicationFormBlogger">
+            <div class="collapse mb-lg-5" id="applicationFormBlogger">
                 <div class="card card-body">
                     <form class="form-control" th:action="@{'/applicationFormBlogger'}" method="post">
                         <label class="mt-3">
