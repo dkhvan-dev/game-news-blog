@@ -30,9 +30,9 @@ public class ApplicationFormBlogger {
     @Column(name = "update_date")
     private LocalDate applicationFormBloggerUpdateDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private ApplicationBloggerStatus applicationBloggerStatus;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private User users;
 }

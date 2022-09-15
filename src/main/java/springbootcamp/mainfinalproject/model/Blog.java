@@ -33,10 +33,10 @@ public class Blog {
     @Column(name = "update_date")
     private LocalDate blogUpdateDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Game games;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private User users;
 
     @Column(name = "image")

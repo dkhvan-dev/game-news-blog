@@ -18,14 +18,11 @@ public class NewsController {
 
     @GetMapping()
     public ResponseEntity<List<News>> getAllNews() {
-        List<News> allNews = newsService.getAllNews();
-        return new ResponseEntity<>(allNews, HttpStatus.OK);
+        return new ResponseEntity<>(newsService.getAllNews(), HttpStatus.OK);
     }
 
     @GetMapping("{newsId}")
     public ResponseEntity<News> getNewsById(@PathVariable(name = "newsId") Long newsId) {
-        News news = newsService.getNewsById(newsId);
-
-        return new ResponseEntity<>(news, HttpStatus.OK);
+        return new ResponseEntity<>(newsService.getNewsById(newsId), HttpStatus.OK);
     }
 }

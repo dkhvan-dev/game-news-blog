@@ -26,9 +26,9 @@ public class Comments {
     @Column(name = "create_date")
     private LocalDate commentCreateDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Blog blog;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private User author;
 }

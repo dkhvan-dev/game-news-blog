@@ -51,6 +51,11 @@ public class UserServiceImpl implements UserService {
     private String targetURL;
 
     @Override
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    @Override
     public User getUserById(Long userId) {
         User user = userRepository.findById(userId).orElse(null);
         if (user != null) {

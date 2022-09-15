@@ -32,6 +32,6 @@ public class Feedback {
     @Column(name = "description")
     private String feedbackDescription;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private FeedbackStatus feedbackStatus;
 }

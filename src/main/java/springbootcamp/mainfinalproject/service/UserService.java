@@ -5,8 +5,10 @@ import org.springframework.web.multipart.MultipartFile;
 import springbootcamp.mainfinalproject.model.User;
 
 import java.text.ParseException;
+import java.util.List;
 
 public interface UserService extends UserDetailsService {
+    List<User> getAllUsers();
     User getUserById(Long userId);
     String swapAvatar(MultipartFile userImageToken, User user);
     String editUser(User user, String oldPassword, String newPassword, String reNewPassword);

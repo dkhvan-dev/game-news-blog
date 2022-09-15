@@ -24,10 +24,18 @@ public class GamesController {
 
     @GetMapping("{gameId}")
     public ResponseEntity<Game> getGameById(@PathVariable(name = "gameId") Long gameId) {
-        Game game = gameService.getGameById(gameId);
-        if (gameId != null) {
-            return new ResponseEntity<>(game, HttpStatus.OK);
-        }
-        return null;
+        return new ResponseEntity<>(gameService.getGameById(gameId), HttpStatus.OK);
     }
+
+    @GetMapping("/byPlatform/{platformId}")
+    public ResponseEntity<List<Game>> getGamesByPlatform(@PathVariable(name = "platformId") Long platformId) {
+        return new ResponseEntity<>(gameService.getGamesByPlatform(platformId), HttpStatus.OK);
+    }
+
+    @GetMapping("/byGenre/{genreId}")
+    public ResponseEntity<List<Game>> getGamesByGenre(@PathVariable(name = "genreId") Long genreId) {
+        return new ResponseEntity<>(gameService.getGamesByGenre(genreId), HttpStatus.OK);
+    }
+
+    
 }
