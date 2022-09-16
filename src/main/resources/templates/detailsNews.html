@@ -4,7 +4,7 @@
 <head th:insert="~{/toInsert/head.html}">
 	<title>Game Page</title>
 </head>
-<body>
+<body onload="getNewsInfo()">
 	<!-- Page Preloder -->
 	<div th:insert="~{/toInsert/preloader.html}">
 	</div>
@@ -32,13 +32,13 @@
 	<section class="games-single-page">
 		<div class="container">
 			<div class="game-single-preview">
-				<img th:src="@{'/getGameImage/' + ${news.getGame().gameImage}}" th:alt="${news.getGame().gameName}">
+
 			</div>
 			<div class="row">
-				<div class="col-xl-9 col-lg-8 col-md-7 game-single-content">
-					<h2 class="gs-title" th:text="${news.newsTitle}"></h2>
-					<p class="text-white" th:text="${news.newsDescription}"></p>
-					<p>Date of publication: <span th:text="${news.newsCreateDate}"></span></p>
+				<div class="col-xl-9 col-lg-8 col-md-7">
+					<div class="game-single-content">
+
+					</div>
 					<div class="geme-social-share pt-5 d-flex">
 						<p>Share:</p>
 						<a href="#"><i class="fa fa-pinterest"></i></a>
@@ -60,6 +60,26 @@
 
 	<!--====== Javascripts & Jquery ======-->
 	<div th:insert="~{/toInsert/scripts.html}"></div>
+
+	<script>
+		function getNewsInfo() {
+			const result = new XMLHttpRequest()
+			var url = document.location.href.charAt(document.location.href.length-1)
+			result.open("GET", "http://localhost:8000/news/" + url)
+			result.send()
+			result.onload = function () {
+				let news = JSON.parse(this.responseText)
+				let gameImage = "<img src='/getGameImage/" + news.game.gameImage + "' alt='#'>"
+				let content = ""
+				content += "<h2 class='gs-title'>" + news.newsTitle + "</h2>"
+				content += "<p class='text-white'>" + news.newsDescription + "</p>"
+				content += "<p>Date of publication: <span>" + news.newsCreateDate + "</span></p>"
+
+				document.querySelector(".game-single-preview").innerHTML = gameImage
+				document.querySelector(".game-single-content").innerHTML = content
+			}
+		}
+	</script>
 
 	</body>
 </html>

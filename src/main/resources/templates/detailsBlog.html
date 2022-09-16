@@ -4,7 +4,7 @@
 <head th:insert="~{/toInsert/head.html}">
 	<title>Blog Page</title>
 </head>
-<body>
+<body onload="getBlogInfo()">
 	<!-- Page Preloder -->
 	<div th:insert="~{/toInsert/preloader.html}">
 	</div>
@@ -32,14 +32,13 @@
 	<section class="games-single-page">
 		<div class="container">
 			<div class="game-single-preview">
-				<img th:src="@{'/getBlogImage/' + ${blog.blogImage}}" th:alt="${blog.blogTitle}">
+
 			</div>
 			<div class="row">
-				<div class="col-xl-9 col-lg-8 col-md-7 game-single-content">
-					<h2 class="gs-title" th:text="${blog.blogTitle}"></h2>
-					<p class="text-white" th:text="${blog.blogDescription}"></p>
-					<p>Date of publication: <span th:text="${blog.blogCreateDate}"></span></p>
-					<p>Author: <span th:text="${blog.getUsers().userFirstName + ' ' + blog.getUsers().userSurname}"></span></p>
+				<div class="col-xl-9 col-lg-8 col-md-7">
+					<div class="game-single-content">
+
+					</div>
 					<div class="geme-social-share pt-5 d-flex">
 						<p>Share:</p>
 						<a href="#"><i class="fa fa-pinterest"></i></a>
@@ -119,6 +118,28 @@
 
 	<!--====== Javascripts & Jquery ======-->
 	<div th:insert="~{/toInsert/scripts.html}"></div>
+
+	<script>
+		function getBlogInfo() {
+			const result = new XMLHttpRequest()
+			var url = document.location.href.charAt(document.location.href.length-1)
+			result.open("GET", "http://localhost:8000/blogs/" + url)
+			result.send()
+			result.onload = function () {
+				let blog = JSON.parse(this.responseText)
+				let blogImage = "<img src='/getBlogImage/" + blog.blogImage + "' alt='#'>"
+				let content = ""
+				content += "<h2 class='gs-title'>" + blog.blogTitle + "</h2>"
+				content += "<p class='text-white'>" + blog.blogDescription + "</p>"
+				content += "<p>Date of publication: <span>" + blog.blogCreateDate + "</span></p>"
+				content += "<p>Author: <span>" + blog.users.userFirstName + " " + blog.users.userSurname + "</span></p>"
+
+
+				document.querySelector(".game-single-preview").innerHTML = blogImage
+				document.querySelector(".game-single-content").innerHTML = content
+			}
+		}
+	</script>
 
 	</body>
 </html>

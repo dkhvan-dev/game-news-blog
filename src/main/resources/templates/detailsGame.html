@@ -4,7 +4,7 @@
 <head th:insert="~{/toInsert/head.html}">
 	<title>Game Page</title>
 </head>
-<body>
+<body onload="getGameInfo(); getLast3NewsByGame(); getLastBLogByGame()">
 	<!-- Page Preloder -->
 	<div th:insert="~{/toInsert/preloader.html}">
 	</div>
@@ -32,31 +32,13 @@
 	<section class="games-single-page">
 		<div class="container">
 			<div class="game-single-preview">
-				<img th:src="@{'/getGameImage/' + ${game.gameImage}}" th:alt="${game.gameName}">
+
 			</div>
 			<div class="row">
-				<div class="col-xl-9 col-lg-8 col-md-7 game-single-content">
-					<h2 class="gs-title" th:text="${game.gameName}"></h2>
-					<h4>Об игре</h4>
-					<p th:text="${game.gameDescription}"></p>
-					<h4>Минимальные требования:</h4>
-					<div class="d-flex detailsGameRequirements">
-						<p>ОС: </p>
-						<span th:text="${game.gameRequirement.getGameRequirementsOS()}"></span>
-					</div>
-					<div class="d-flex detailsGameRequirements">
-						<p>Процессор: <span th:text="${game.gameRequirement.getGameRequirementsCPU()}"></span></p>
-					</div>
-					<div class="d-flex detailsGameRequirements">
-						<p>ОЗУ: <span th:text="${game.gameRequirement.getGameRequirementsMemory()}"></span></p>
-					</div>
-					<div class="d-flex detailsGameRequirements">
-						<p>Видеокарта: <span th:text="${game.gameRequirement.getGameRequirementsGPU()}"></span></p>
-					</div>
-					<div class="d-flex detailsGameRequirements">
-						<p>Жесткий диск: <span th:text="${game.gameRequirement.getGameRequirementsStorage()}"></span></p>
-					</div>
+				<div class="col-xl-9 col-lg-8 col-md-7 ">
+					<div class="game-single-content">
 
+					</div>
 					<div class="geme-social-share pt-5 d-flex">
 						<p>Share:</p>
 						<a href="#"><i class="fa fa-pinterest"></i></a>
@@ -70,37 +52,12 @@
 					<div id="stickySidebar">
 						<div class="widget-item">
 							<div class="rating-widget">
-								<h4 class="widget-title">Ratings</h4>
-								<ul>
-									<li>Геймплей
-										<span th:text="${game.gameRatings.getGameRatingGameplay()} + ' /5'"></span>
-									</li>
-									<li>Графика
-										<span th:text="${game.gameRatings.getGameRatingGraphics()} + ' /5'"></span>
-									</li>
-									<li>Сложность
-										<span th:text="${game.gameRatings.getGameRatingDifficulty()} + ' /5'"></span>
-									</li>
-									<li>Допустимый возраст
-										<span th:text="${game.gameAge} + '+'"></span>
-									</li>
-								</ul>
-								<div class="rating">
-									<h5>
-										<i>Rating</i>
-										<span th:text="${game.gameRatings.getGameRatingAvg()}"></span> / 5
-									</h5>
-								</div>
+
 							</div>
 						</div>
 						<div class="widget-item">
 							<div class="testimonials-widget">
-								<h4 class="widget-title">LAST BLOG BY GAME <span th:text="${game.gameName}"></span></h4>
-								<a th:href="@{'/detailsBlog/' + ${lastBlogByGame.blogId}}" class="widget-title" th:text="${lastBlogByGame.blogTitle}"></a>
-								<div class="testim-text">
-									<p class="mt-3" th:text="${lastBlogByGame.blogDescription}"></p>
-									<h6>Author: <span th:text="${lastBlogByGame.getUsers().userFirstName + ' ' + lastBlogByGame.getUsers().userSurname}"></span></h6>
-								</div>
+
 							</div>
 						</div>
 					</div>
@@ -116,18 +73,8 @@
 			<div class="col-md-4 text-center mx-auto">
 				<h2 class="text-white">LATEST NEWS</h2>
 			</div>
-			<div class="row mt-lg-5">
-				<div class="col-md-4" th:each="news : ${last3NewsByGame}">
-					<div class="intro-text-box text-box text-white d-flex flex-column">
-						<div class="top-meta">
-							<span th:text="${news.newsCreateDate} + '&nbsp;&nbsp;/&nbsp;&nbsp;in&nbsp;&nbsp;'"></span>
-							<a th:href="@{'/allNews'}">News</a>
-						</div>
-						<h3 th:text="${news.newsTitle}"></h3>
-						<p th:text="${news.newsDescription}"></p>
-						<a th:href="${'/detailsNews/' + news.newsId}" class="read-more justify-content-end align-content-end">Read More  <img th:src="@{'/img/icons/double-arrow.png'}" th:alt="${news.newsTitle}" /></a>
-					</div>
-				</div>
+			<div class="row mt-lg-5 last3NewsByGame">
+
 			</div>
 		</div>
 	</section>
@@ -140,6 +87,114 @@
 
 	<!--====== Javascripts & Jquery ======-->
 	<div th:insert="~{/toInsert/scripts.html}"></div>
+
+	<script>
+		function getGameInfo() {
+			const result = new XMLHttpRequest()
+			var url = document.location.href.charAt(document.location.href.length-1)
+			result.open("GET", "http://localhost:8000/games/" + url)
+			result.send()
+			result.onload = function () {
+				let game = JSON.parse(this.responseText)
+				let gameImage = "<img src='/getGameImage/" + game.gameImage + "' alt='#'>"
+				let content = ""
+				content += "<h2 class='gs-title'>" + game.gameName + "</h2>"
+				content += "<h4>Об игре</h4>"
+				content += "<p>" + game.gameDescription + "</p>"
+				content += "<h4>Минимальные требования:</h4>"
+				content += "<div class='d-flex detailsGameRequirements'>"
+				content += "<p>ОС: </p>"
+				content += "<span>" + game.gameRequirement.gameRequirementsOS + "</span>"
+				content += "</div>"
+				content += "<div class='d-flex detailsGameRequirements'>"
+				content += "<p>Процессор: <span>" + game.gameRequirement.gameRequirementsCPU + "</span></p>"
+				content += "</div>"
+				content += "<div class='d-flex detailsGameRequirements'>"
+				content += "<p>ОЗУ: <span>" + game.gameRequirement.gameRequirementsMemory + "</span></p>"
+				content += "</div>"
+				content += "<div class='d-flex detailsGameRequirements'>"
+				content += "<p>Видеокарта: <span>" + game.gameRequirement.gameRequirementsGPU + "</span></p>"
+				content += "</div>"
+				content += "<div class='d-flex detailsGameRequirements'>"
+				content += "<p>Жесткий диск: <span>" + game.gameRequirement.gameRequirementsStorage + "</span></p>"
+				content += "</div>"
+
+				let gameRatings = ""
+				gameRatings += "<h4 class='widget-title'>Ratings</h4>"
+				gameRatings += "<ul>"
+					gameRatings += "<li>Геймплей"
+						gameRatings += "<span>" + game.gameRatings.gameRatingGameplay + "&nbsp;&nbsp;/5</span>"
+					gameRatings += "</li>"
+					gameRatings += "<li>Графика"
+						gameRatings += "<span>" + game.gameRatings.gameRatingGraphics + "&nbsp;&nbsp;/5</span>"
+					gameRatings += "</li>"
+					gameRatings += "<li>Сложность"
+						gameRatings += "<span>" + game.gameRatings.gameRatingDifficulty + "&nbsp;&nbsp;/5</span>"
+					gameRatings += "</li>"
+					gameRatings += "<li>Допустимый возраст"
+						gameRatings += "<span>" + game.gameAge + "+</span>"
+					gameRatings += "</li>"
+				gameRatings += "</ul>"
+				gameRatings += "<div class='rating'>"
+					gameRatings += "<h5><i>Rating</i><span>" + game.gameRatings.gameRatingAvg + "</span>&nbsp;&nbsp;/5</h5>"
+				gameRatings += "</div>"
+
+				document.querySelector(".game-single-preview").innerHTML = gameImage
+				document.querySelector(".game-single-content").innerHTML = content
+				document.querySelector(".rating-widget").innerHTML = gameRatings
+			}
+		}
+
+		function getLastBLogByGame() {
+			const result = new XMLHttpRequest()
+			var url = document.location.href.charAt(document.location.href.length-1)
+			result.open("GET", "http://localhost:8000/blogs/lastBlogByGame/" + url)
+			result.send()
+			result.onload = function () {
+				let lastBlogByGame = JSON.parse(this.responseText)
+				const gameResult = new XMLHttpRequest()
+				gameResult.open("GET", "http://localhost:8000/games/" + url)
+				gameResult.send()
+				gameResult.onload = function () {
+					let game = JSON.parse(gameResult.responseText)
+					let content = ""
+					content += "<h4 class='widget-title'>LAST BLOG BY GAME<span>" + game.gameName + "</span></h4>"
+					content += "<a href='/detailsBlog/" + lastBlogByGame.blogId + "' class='widget-title'>" + lastBlogByGame.blogTitle + "</a>"
+					content += "<div class='testim-text'>"
+					content += "<p class='mt-3'>" + lastBlogByGame.blogDescription + "</p>"
+					content += "<h6>Author: <span>" + lastBlogByGame.users.userFirstName + ' ' + lastBlogByGame.users.userSurname + "</span>"
+					content += "</h6>"
+					content += "</div>"
+					document.querySelector(".testimonials-widget").innerHTML = content
+				}
+			}
+		}
+
+		function getLast3NewsByGame() {
+			const result = new XMLHttpRequest()
+			var url = document.location.href.charAt(document.location.href.length-1)
+			result.open("GET", "http://localhost:8000/news/last3NewsByGame/" + url)
+			result.send()
+			result.onload = function () {
+				let last3NewsByGame = JSON.parse(this.responseText)
+				let content = ""
+				for (i = 0; i < last3NewsByGame.length; i++) {
+					content += "<div class='col-md-4'>"
+					content += "<div class='intro-text-box text-box text-white d-flex flex-column'>"
+					content += "<div class='top-meta'>"
+					content += "<span>" + last3NewsByGame[i].newsCreateDate + "&nbsp;&nbsp;/&nbsp;&nbsp;in&nbsp;&nbsp;</span>"
+					content += "<a href='/allNews'>News</a>"
+					content += "</div>"
+					content += "<h3>" + last3NewsByGame[i].newsTitle + "</h3>"
+					content += "<p>" + last3NewsByGame[i].newsDescription + "</p>"
+					content += "<a href='/detailsNews/" + last3NewsByGame[i].newsId + "' class='read-more justify-content-end align-content-end'>Read More <img src='/img/icons/double-arrow.png' th:alt='#'/></a>"
+					content += "</div>"
+					content += "</div>"
+				}
+				document.querySelector(".last3NewsByGame").innerHTML = content
+			}
+		}
+	</script>
 
 	</body>
 </html>
