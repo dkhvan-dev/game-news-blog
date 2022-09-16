@@ -37,5 +37,8 @@ public class GamesController {
         return new ResponseEntity<>(gameService.getGamesByGenre(genreId), HttpStatus.OK);
     }
 
-    
+    @GetMapping("/top5Games")
+    public ResponseEntity<List<Game>> getTop5Games() {
+        return new ResponseEntity<>(gameService.getTop5Games(), HttpStatus.OK);
+    }
 }

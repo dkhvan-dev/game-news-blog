@@ -4,7 +4,7 @@
 <head th:insert="~{/toInsert/head.html}">
 	<title>EndGame - Gaming Magazine Template</title>
 </head>
-<body>
+<body onload="getAllGames(); getLastNews(); getAllPlatforms(); getAllGenres()">
 	<!-- Page Preloder -->
 	<div th:insert="~{/toInsert/preloader.html}">
 	</div>
@@ -27,57 +27,30 @@
 	</section>
 	<!-- Page top end-->
 
-
-
-
 	<!-- Games section -->
 	<section class="games-section">
 		<div class="container">
 			<div class="row">
 				<div class="col-xl-7 col-lg-8 col-md-7">
-					<div class="row">
-						<div class="col-lg-4 col-md-6" th:each="game : ${allGames}">
-							<div class="game-item">
-								<img th:src="@{'/getGameImage/' + ${game.gameImage}}" alt="#">
-								<h5 th:text="${game.gameName}"></h5>
-								<p>Age restriction: <span class="age-limit" th:text="${game.gameAge} + '+'"></span></p>
-								<a th:href="@{'/detailsGame/' + ${game.gameId}}" class="read-more">Read More  <img src="img/icons/double-arrow.png" th:alt="${game.gameName}"/></a>
-							</div>
-						</div>
+					<div class="row allGames">
+
 					</div>
 				</div>
 				<div class="col-xl-3 col-lg-4 col-md-5 sidebar game-page-sideber">
 					<div id="stickySidebar">
 						<div class="widget-item">
 							<div class="categories-widget">
-								<h4 class="widget-title">categories</h4>
-								<ul>
-									<li><a href="">Games</a></li>
-									<li><a href="">Gaming Tips & Tricks</a></li>
-									<li><a href="">Online Games</a></li>
-									<li><a href="">Team Games</a></li>
-									<li><a href="">Community</a></li>
-									<li><a href="">Uncategorized</a></li>
-								</ul>
-							</div>
-						</div>
-						<div class="widget-item">
-							<div class="categories-widget">
 								<h4 class="widget-title">platform</h4>
-								<ul>
-									<li th:each="platform : ${allPlatforms}">
-										<a th:href="@{'/gamesByPlatform/' + ${platform.platformId}}" th:text="${platform.platformName}"></a>
-									</li>
+								<ul class="allPlatforms">
+
 								</ul>
 							</div>
 						</div>
 						<div class="widget-item">
 							<div class="categories-widget">
 								<h4 class="widget-title">Genre</h4>
-								<ul>
-									<li th:each="genre : ${allGenres}">
-										<a th:href="@{'/gamesByGenre/' + ${genre.genreId}}" th:text="${genre.genreName}"></a>
-									</li>
+								<ul class="allGenres">
+
 								</ul>
 							</div>
 						</div>
@@ -94,13 +67,7 @@
 		<div class="featured-bg set-bg" data-setbg="img/featured-bg.jpg"></div>
 		<div class="featured-box">
 			<div class="text-box">
-				<div class="top-meta">
-					<span th:text="${lastNews.newsCreateDate} + '  /  in'"></span>
-					<a th:href="@{'/allGames'}">Games</a>
-				</div>
-				<h3 th:text="${lastNews.newsTitle}"></h3>
-				<p th:text="${lastNews.newsDescription}"></p>
-				<a th:href="@{'/detailsNews/' + ${lastNews.newsId}}" class="read-more">Read More <img th:src="@{/img/icons/double-arrow.png}" alt="#"/></a>
+
 			</div>
 		</div>
 	</section>
@@ -128,6 +95,79 @@
 
 	<!--====== Javascripts & Jquery ======-->
 	<div th:insert="~{/toInsert/scripts.html}"></div>
+
+	<script>
+		function getAllGames() {
+			const result = new XMLHttpRequest();
+			result.open("GET", "http://localhost:8000/games");
+			result.send();
+			result.onload = function() {
+				let allGames = JSON.parse(this.responseText);
+				let content = "";
+				for (i = 0; i < allGames.length; i++) {
+					content += "<div class='col-lg-4 col-md-6'>"
+					content += "<div class='game-item'>"
+					content += "<img src='/getGameImage/" + allGames[i].gameImage + "' alt='#'>"
+					content += "<h5>" + allGames[i].gameName + "</h5>"
+					content += "<p>Age restriction: <span class='age-limit'>" + allGames[i].gameAge + "+</span></p>"
+					content += "<a href='/detailsGame/" + allGames[i].gameId + "' class='read-more'>Read More <img src='img/icons/double-arrow.png' alt='#'/></a>"
+					content += "</div>"
+					content += "</div>"
+				}
+				document.querySelector(".allGames").innerHTML = content;
+			}
+		}
+
+		function getLastNews() {
+			const result = new XMLHttpRequest();
+			result.open("GET", "http://localhost:8000/news/lastNews")
+			result.send();
+			result.onload = function () {
+				let lastNews = JSON.parse(this.responseText);
+				let content = "<div class='top-meta'>";
+				content += "<span>" + lastNews.newsCreateDate + "&nbsp;&nbsp;in&nbsp;&nbsp;</span>"
+				content += "<a href='/allGames'>Games</a>"
+				content += "</div>"
+				content += "<h3>" + lastNews.newsTitle + "</h3>"
+				content += "<p>" + lastNews.newsDescription + "</p>"
+				content += "<a href='/detailsNews/" + lastNews.newsId + "' class='read-more'>Read More <img src='/img/icons/double-arrow.png' alt='#'/></a>"
+				document.querySelector(".text-box").innerHTML = content;
+			}
+		}
+
+		function getAllPlatforms() {
+			const result = new XMLHttpRequest();
+			result.open("GET", "http://localhost:8000/platforms")
+			result.send()
+			result.onload = function () {
+				let allPlatforms = JSON.parse(this.responseText)
+				let content = ""
+				for (i = 0; i < allPlatforms.length; i++) {
+					content += "<li>"
+					content += "<a href='/gamesByPlatform/" + allPlatforms[i].platformId + "'>" + allPlatforms[i].platformName + "</a>"
+					content += "</li>"
+				}
+				document.querySelector(".allPlatforms").innerHTML = content;
+			}
+		}
+
+		function getAllGenres() {
+			const result = new XMLHttpRequest();
+			result.open("GET", "http://localhost:8000/genres")
+			result.send()
+			result.onload = function () {
+				let allGenres = JSON.parse(this.responseText)
+				let content = ""
+				for (i = 0; i < allGenres.length; i++) {
+					content += "<li>"
+					content += "<a href='/gamesByGenre/" + allGenres[i].genreId + "'>" + allGenres[i].genreName + "</a>"
+					content += "</li>"
+				}
+				document.querySelector(".allGenres").innerHTML = content;
+			}
+		}
+
+	</script>
 
 	</body>
 </html>

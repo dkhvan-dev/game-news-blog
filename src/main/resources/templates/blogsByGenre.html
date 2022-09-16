@@ -4,7 +4,7 @@
 <head th:insert="~{/toInsert/head.html}">
 	<title>EndGame - Gaming Magazine Template</title>
 </head>
-<body>
+<body onload="getAllBlogsByGenre(); getAllGames(); getAllGenres(); getAllPlatforms()">
 	<!-- Page Preloder -->
 	<div th:insert="~{/toInsert/preloader.html}">
 	</div>
@@ -30,21 +30,13 @@
 	<!-- Page top end-->
 
 	<!-- Games section -->
-	<section class="games-section" th:if="${allBlogsByGenre != null}">
+	<section class="games-section">
 		<div class="container">
 			<a th:href="@{'/addBlog'}" class="btn btn-primary w-25" sec:authorize="hasRole('ROLE_BLOGGER')">Add blog</a>
 			<div class="row">
 				<div class="col-xl-7 col-lg-8 col-md-7">
-					<div class="row">
-						<div class="col-12" th:each="blog : ${allBlogsByGenre}">
-							<div class="big-blog-item">
-								<h5 class="blog-title" th:text="${blog.blogCreateDate + ' | ' + blog.blogTitle}"></h5>
-								<img class="news-image" th:src="@{'/getBlogImage/' + ${blog.blogImage}}">
-								<p class="mt-lg-3 blog-description" th:text="${blog.blogDescription}"></p>
-								<p class="blog-game">Game: <span th:text="${blog.getGames().gameName}"></span></p>
-								<a th:href="@{'/detailsBlog/' + ${blog.blogId}}" class="read-more">Read More  <img th:src="@{'/img/icons/double-arrow.png'}" /></a>
-							</div>
-						</div>
+					<div class="row allBlogsByGenre">
+
 					</div>
 				</div>
 				<div class="col-xl-3 col-lg-4 col-md-5 sidebar game-page-sidebar">
@@ -52,30 +44,24 @@
 						<div class="widget-item">
 							<div class="categories-widget">
 								<h4 class="widget-title">game</h4>
-								<ul>
-									<li th:each="game : ${allGames}">
-										<a th:href="@{'/blogsByGame/' + ${game.gameId}}" th:text="${game.gameName}"></a>
-									</li>
+								<ul class="allGames">
+
 								</ul>
 							</div>
 						</div>
 						<div class="widget-item">
 							<div class="categories-widget">
 								<h4 class="widget-title">platform</h4>
-								<ul>
-									<li th:each="platform : ${allPlatforms}">
-										<a th:href="@{'/blogsByPlatform/' + ${platform.platformId}}" th:text="${platform.platformName}"></a>
-									</li>
+								<ul class="allPlatforms">
+
 								</ul>
 							</div>
 						</div>
 						<div class="widget-item">
 							<div class="categories-widget">
 								<h4 class="widget-title">Genre</h4>
-								<ul>
-									<li th:each="genre : ${allGenres}">
-										<a th:class="${genre.genreId == selectedGenreId} ? 'disabled' : ''" th:href="@{'/blogsByGenre/' + ${genre.genreId}}" th:text="${genre.genreName}"></a>
-									</li>
+								<ul class="allGenres">
+
 								</ul>
 							</div>
 						</div>
@@ -107,6 +93,86 @@
 
 	<!--====== Javascripts & Jquery ======-->
 	<div th:insert="~{/toInsert/scripts.html}"></div>
+
+	<script>
+		function getAllBlogsByGenre() {
+			const result = new XMLHttpRequest();
+			var url = document.location.href.charAt(document.location.href.length-1)
+			result.open("GET", "http://localhost:8000/blogs/byGenre/" + url)
+			result.send()
+			result.onload = function () {
+				let allBlogsByGenre = JSON.parse(this.responseText)
+				let content = "";
+				if (allBlogsByGenre != null) {
+					for (i = 0; i < allBlogsByGenre.length; i++) {
+						content += "<div class='col-12'>"
+						content += "<div class='big-blog-item'>"
+						content += "<h5>" + allBlogsByGenre[i].blogCreateDate + " | " + allBlogsByGenre[i].blogTitle + "</h5>"
+						content += "<img class='news-image' src='/getBlogImage/" + allBlogsByGenre[i].blogImage + "'>"
+						content += "<p class='mt-lg-3 blog-description'>" + allBlogsByGenre[i].blogDescription + "</p>"
+						content += "<p class='blog-game'>Game: <span>" + allBlogsByGenre[i].games.gameName + "</span></p>"
+						content += "<a href='/detailsBlog/" + allBlogsByGenre[i].blogId + "' class='read-more'>Read More <img src='/img/icons/double-arrow.png'/></a>"
+						content += "</div>"
+						content += "</div>"
+					}
+				}
+				document.querySelector(".allBlogsByGenre").innerHTML = content;
+			}
+		}
+
+		function getAllGames() {
+			const result = new XMLHttpRequest();
+			result.open("GET", "http://localhost:8000/games")
+			result.send()
+			result.onload = function () {
+				let allGames = JSON.parse(this.responseText)
+				let content = ""
+				for (i = 0; i < allGames.length; i++) {
+					content += "<li>"
+					content += "<a href='/blogsByGame/" + allGames[i].gameId + "'>" + allGames[i].gameName + "</a>"
+					content += "</li>"
+				}
+				document.querySelector(".allGames").innerHTML = content;
+			}
+		}
+
+		function getAllPlatforms() {
+			const result = new XMLHttpRequest();
+			result.open("GET", "http://localhost:8000/platforms")
+			result.send()
+			result.onload = function () {
+				let allPlatforms = JSON.parse(this.responseText)
+				let content = ""
+				for (i = 0; i < allPlatforms.length; i++) {
+					content += "<li>"
+					content += "<a href='/blogsByPlatform/" + allPlatforms[i].platformId + "'>" + allPlatforms[i].platformName + "</a>"
+					content += "</li>"
+				}
+				document.querySelector(".allPlatforms").innerHTML = content;
+			}
+		}
+
+		function getAllGenres() {
+			const result = new XMLHttpRequest();
+			result.open("GET", "http://localhost:8000/genres")
+			result.send()
+			result.onload = function () {
+				let allGenres = JSON.parse(this.responseText)
+				let content = ""
+				var selectedGenreId = document.location.href.charAt(document.location.href.length-1)
+				for (i = 0; i < allGenres.length; i++) {
+					content += "<li>"
+					if (allGenres[i].genreId == selectedGenreId) {
+						content += "<a class='disabled' href='/blogsByGenre/" + allGenres[i].genreId + "'>" + allGenres[i].genreName + "</a>"
+					} else {
+						content += "<a href='/blogsByGenre/" + allGenres[i].genreId + "'>" + allGenres[i].genreName + "</a>"
+					}
+					content += "</li>"
+				}
+				document.querySelector(".allGenres").innerHTML = content;
+			}
+		}
+	</script>
 
 	</body>
 </html>

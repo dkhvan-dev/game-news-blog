@@ -1,0 +1,50 @@
+.admin-collapse {
+    margin: 20px 10px 0 10px;
+}
+
+.admin-collapse__show {
+    margin-top: 20px;
+}
+
+.gameImageAdmin {
+    width: 300px;
+}
+
+.news-image {
+    width: 300px;
+}
+
+.add-comment-form {
+    width: 50%;
+}
+
+.added-comment {
+    width: 50%;
+    padding: 20px;
+    border: 1px solid #c313b7;
+    border-radius: 10px;
+}
+
+.comment-author-name {
+    color: #c313b7;
+}
+
+.blog-title {
+    color: #c313b7;
+}
+
+.blog-game {
+    color: #fff;
+}
+
+.blog-game span {
+    color: #c313b7;
+}
+
+.blog-description {
+    color: #fff;
+}
+
+.user-avatar-img {
+    width: 300px;
+}

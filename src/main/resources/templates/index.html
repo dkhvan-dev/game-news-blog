@@ -4,7 +4,7 @@
 <head th:insert="~{/toInsert/head.html}">
 	<title>EndGame - Gaming Magazine Template</title>
 </head>
-<body>
+<body onload="getAllGames(); getLast3Blogs(); getTop5Games()">
 
 	<div th:insert="~{/toInsert/preloader.html}"></div>
 
@@ -37,26 +37,9 @@
 						<h2>Latest Blogs</h2>
 					</div>
 					<ul class="blog-filter">
-						<li th:each="game : ${allGames}">
-							<a th:href="@{'/blogsByGame/' + ${game.gameId}}" th:text="${game.gameName}"></a>
-						</li>
 					</ul>
-					<div class="container d-flex flex-column">
+					<div class="container d-flex flex-column last3Blogs">
 						<!-- Blog item -->
-						<div class="blog-item" th:each="blog : ${last3Blogs}">
-							<div class="blog-thumb">
-								<img th:src="@{'/getBlogImage/' + ${blog.blogImage}}" th:alt="${blog.blogTitle}">
-							</div>
-							<div class="blog-text text-box text-white">
-								<div class="top-meta">
-									<span th:text="${blog.blogCreateDate} + '&nbsp;&nbsp;/&nbsp;&nbsp;in&nbsp;&nbsp;'"></span>
-									<a th:href="@{'/allGames'}">Games</a>
-								</div>
-								<h3 th:text="${blog.blogTitle}"></h3>
-								<p th:text="${blog.blogDescription}"></p>
-								<a th:href="@{'/detailsBlog/' + ${blog.blogId}}" class="read-more">Read More  <img th:src="@{'/img/icons/double-arrow.png'}" alt="double arrow"/></a>
-							</div>
-						</div>
 					</div>
 
 				</div>
@@ -65,21 +48,7 @@
 						<div class="widget-item">
 							<h4 class="widget-title">Trending</h4>
 							<div class="trending-widget">
-								<div class="tw-item" th:each="game : ${top5Games}">
-									<div class="tw-thumb">
-										<img th:src="@{'/getGameImage/' + ${game.gameImage}}" alt="#">
-									</div>
-									<div class="tw-text">
-										<div class="tw-meta">
-											<a th:href="@{'/detailsGame/' + ${game.gameId}}" th:text="${game.gameName}"></a>
-										</div>
-										<div class="d-flex">
-											<span>Рейтинг игры:&nbsp;&nbsp;</span>
-											<span class="tw-text__rating" th:text="${game.getGameRatings().getGameRatingAvg()}"></span>
-											<span>&nbsp;&nbsp;/&nbsp;&nbsp;5</span>
-										</div>
-									</div>
-								</div>
+
 							</div>
 						</div>
 					</div>
@@ -93,6 +62,80 @@
 	<footer class="footer-section" th:insert="~{/toInsert/footer.html}">
 	</footer>
 	<!-- Footer section end -->
+
+	<script>
+
+		function getAllGames() {
+			const result = new XMLHttpRequest(); // формируем запрос
+			result.open("GET", "http://localhost:8000/games") // вид запроса и куда отправляем
+			result.send();
+			result.onload = function () {
+				let allGames = JSON.parse(this.responseText);
+				let content = "";
+				for (i = 0; i < allGames.length; i++) {
+					content += "<li>";
+					content += "<a href='/blogsByGame/" + allGames[i].gameId + "'>" + allGames[i].gameName + "</a>";
+					content += "</li>";
+				}
+				document.querySelector(".blog-filter").innerHTML = content;
+			}
+		}
+
+		function getLast3Blogs() {
+			const result = new XMLHttpRequest();
+			result.open("GET", "http://localhost:8000/blogs/last3Blogs");
+			result.send();
+			result.onload = function () {
+				let last3Blogs = JSON.parse(this.responseText);
+				let content = "";
+				for (i = 0; i < last3Blogs.length; i++) {
+					content += "<div class='blog-item'>"
+					content += "<div class='blog-thumb'>";
+					content += "<img src='/getBlogImage/" + last3Blogs[i].blogImage + "' alt='" + last3Blogs[i].blogTitle + "'>";
+					content += "</div>";
+					content += "<div class='blog-text text-box text-white'>";
+					content += "<div class='top-meta'>";
+					content += "<span>" + last3Blogs[i].blogCreateDate + "&nbsp;&nbsp;/&nbsp;&nbsp;in&nbsp;&nbsp;</span>";
+					content += "<a href='/allGames'>Games</a>";
+					content += "</div>";
+					content += "<h3>" + last3Blogs[i].blogTitle + "</h3>";
+					content += "<p>" + last3Blogs[i].blogDescription + "</p>";
+					content += "<a href='/detailsBlog/" + last3Blogs[i].blogId + "' class='read-more'>Read More <img src='/img/icons/double-arrow.png' alt='double arrow'/></a>";
+					content += "</div>";
+					content += "</div>";
+				}
+				document.querySelector(".last3Blogs").innerHTML = content;
+			}
+		}
+
+		function getTop5Games() {
+			const result = new XMLHttpRequest();
+			result.open("GET", "http://localhost:8000/games/top5Games");
+			result.send();
+			result.onload = function () {
+				let top5Games = JSON.parse(this.responseText);
+				let content = "";
+				for (i = 0; i < top5Games.length; i++) {
+					content += "<div class='tw-item'>";
+					content += "<div class='tw-thumb'>";
+					content += "<img src='/getGameImage/" + top5Games[i].gameImage + "' alt='#'>";
+					content += "</div>";
+					content += "<div class='tw-text'>";
+					content += "<div class='tw-meta'>";
+					content += "<a href='/detailsGame/" + top5Games[i].gameId + "'>" + top5Games[i].gameName + "</a>";
+					content += "</div>";
+					content += "<div class='d-flex'>";
+					content += "<span>Рейтинг игры:&nbsp;&nbsp;</span>";
+					content += "<span class='tw-text__rating'>" + top5Games[i].gameRatings.gameRatingAvg + "</span>";
+					content += "<span>&nbsp;&nbsp;/&nbsp;&nbsp;5</span>";
+					content += "</div>";
+					content += "</div>";
+					content += "</div>";
+				}
+				document.querySelector(".trending-widget").innerHTML = content;
+			}
+		}
+	</script>
 
 	<div th:insert="~{/toInsert/scripts.html}"></div>
 	</body>

@@ -4,7 +4,7 @@
 <head th:insert="~{/toInsert/head.html}">
 	<title>EndGame - Gaming Magazine Template</title>
 </head>
-<body>
+<body onload="getAllNews(); getAllGames(); getAllPlatforms(); getAllGenres()">
 	<!-- Page Preloder -->
 	<div th:insert="~{/toInsert/preloader.html}">
 	</div>
@@ -32,16 +32,8 @@
 		<div class="container">
 			<div class="row" th:if="${allNews != null}">
 				<div class="col-xl-7 col-lg-8 col-md-7">
-					<div class="row">
-						<div class="col-12" th:each="news : ${allNews}">
-							<div class="big-blog-item">
-								<h5 th:text="${news.newsCreateDate + ' | ' + news.newsTitle}"></h5>
-								<img class="news-image" th:src="@{'/getGameImage/' + ${news.game.gameImage}}">
-								<p th:text="${news.newsDescription}"></p>
-								<p>Game: <span th:text="${news.game.gameName}"></span></p>
-								<a th:href="@{'/detailsNews/' + ${news.newsId}}" class="read-more">Read More  <img th:src="@{'/img/icons/double-arrow.png'}" /></a>
-							</div>
-						</div>
+					<div class="row allNews">
+
 					</div>
 				</div>
 				<div class="col-xl-3 col-lg-4 col-md-5 sidebar game-page-sideber">
@@ -49,30 +41,24 @@
 						<div class="widget-item">
 							<div class="categories-widget">
 								<h4 class="widget-title">game</h4>
-								<ul>
-									<li th:each="game : ${allGames}">
-										<a th:href="@{'/newsByGame/' + ${game.gameId}}" th:text="${game.gameName}"></a>
-									</li>
+								<ul class="allGames">
+
 								</ul>
 							</div>
 						</div>
 						<div class="widget-item">
 							<div class="categories-widget">
 								<h4 class="widget-title">platform</h4>
-								<ul>
-									<li th:each="platform : ${allPlatforms}">
-										<a th:href="@{'/newsByPlatform/' + ${platform.platformId}}" th:text="${platform.platformName}"></a>
-									</li>
+								<ul class="allPlatforms">
+
 								</ul>
 							</div>
 						</div>
 						<div class="widget-item">
 							<div class="categories-widget">
 								<h4 class="widget-title">genre</h4>
-								<ul>
-									<li th:each="genre : ${allGenres}">
-										<a th:href="@{'/newsByGenre/' + ${genre.genreId}}" th:text="${genre.genreName}"></a>
-									</li>
+								<ul class="allGenres">
+
 								</ul>
 							</div>
 						</div>
@@ -82,25 +68,6 @@
 		</div>
 	</section>
 	<!-- Games end-->
-
-
-	<!-- Featured section -->
-<!--	<section class="featured-section">-->
-<!--		<div class="featured-bg set-bg" data-setbg="img/featured-bg.jpg"></div>-->
-<!--		<div class="featured-box">-->
-<!--			<div class="text-box">-->
-<!--				<div class="top-meta">-->
-<!--					<span th:text="${lastNews.newsCreateDate} + '  /  in'"></span>-->
-<!--					<a th:href="@{'/allGames'}">Games</a>-->
-<!--				</div>-->
-<!--				<h3 th:text="${lastNews.newsTitle}"></h3>-->
-<!--				<p th:text="${lastNews.newsDescription}"></p>-->
-<!--				<a th:href="@{'/detailsNews/' + ${lastNews.newsId}}" class="read-more">Read More <img th:src="@{/img/icons/double-arrow.png}" alt="#"/></a>-->
-<!--			</div>-->
-<!--		</div>-->
-<!--	</section>-->
-	<!-- Featured section end-->
-
 
 	<!-- Newsletter section -->
 	<section class="newsletter-section">
@@ -123,6 +90,79 @@
 
 	<!--====== Javascripts & Jquery ======-->
 	<div th:insert="~{/toInsert/scripts.html}"></div>
+
+	<script>
+		function getAllNews() {
+			const result = new XMLHttpRequest()
+			result.open("GET", "http://localhost:8000/news")
+			result.send()
+			result.onload = function () {
+				let allNews = JSON.parse(this.responseText)
+				let content = ""
+				for (i = 0; i < allNews.length; i++) {
+					content += "<div class='col-12'>"
+					content += "<div class='big-blog-item'>"
+					content += "<h5>" + allNews[i].newsCreateDate + ' | ' + allNews[i].newsTitle + "</h5>"
+					content += "<img class='news-image' src='/getGameImage/" + allNews[i].game.gameImage + "'>"
+					content += "<p>" + allNews[i].newsDescription + "</p>"
+					content += "<p>Game: <span>" + allNews[i].game.gameName + "</span></p>"
+					content += "<a href='/detailsNews/" + allNews[i].newsId + "' class='read-more'>Read More <img src='/img/icons/double-arrow.png'/></a>"
+					content += "</div>"
+					content += "</div>"
+				}
+				document.querySelector(".allNews").innerHTML = content;
+			}
+		}
+
+		function getAllGames() {
+			const result = new XMLHttpRequest();
+			result.open("GET", "http://localhost:8000/games")
+			result.send()
+			result.onload = function () {
+				let allGames = JSON.parse(this.responseText)
+				let content = ""
+				for (i = 0; i < allGames.length; i++) {
+					content += "<li>"
+					content += "<a href='/newsByGame/" + allGames[i].gameId + "'>" + allGames[i].gameName + "</a>"
+					content += "</li>"
+				}
+				document.querySelector(".allGames").innerHTML = content;
+			}
+		}
+
+		function getAllPlatforms() {
+			const result = new XMLHttpRequest();
+			result.open("GET", "http://localhost:8000/platforms")
+			result.send()
+			result.onload = function () {
+				let allPlatforms = JSON.parse(this.responseText)
+				let content = ""
+				for (i = 0; i < allPlatforms.length; i++) {
+					content += "<li>"
+					content += "<a href='/newsByPlatform/" + allPlatforms[i].platformId + "'>" + allPlatforms[i].platformName + "</a>"
+					content += "</li>"
+				}
+				document.querySelector(".allPlatforms").innerHTML = content;
+			}
+		}
+
+		function getAllGenres() {
+			const result = new XMLHttpRequest();
+			result.open("GET", "http://localhost:8000/genres")
+			result.send()
+			result.onload = function () {
+				let allGenres = JSON.parse(this.responseText)
+				let content = ""
+				for (i = 0; i < allGenres.length; i++) {
+					content += "<li>"
+					content += "<a href='/newsByGenre/" + allGenres[i].genreId + "'>" + allGenres[i].genreName + "</a>"
+					content += "</li>"
+				}
+				document.querySelector(".allGenres").innerHTML = content;
+			}
+		}
+
+	</script>
 
 	</body>
 </html>
