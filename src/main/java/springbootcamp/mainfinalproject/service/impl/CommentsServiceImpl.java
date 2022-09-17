@@ -2,9 +2,11 @@ package springbootcamp.mainfinalproject.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import springbootcamp.mainfinalproject.mapper.BlogMapper;
 import springbootcamp.mainfinalproject.model.Blog;
 import springbootcamp.mainfinalproject.model.Comments;
 import springbootcamp.mainfinalproject.model.Role;
+import springbootcamp.mainfinalproject.model.dto.BlogDto;
 import springbootcamp.mainfinalproject.repository.CommentsRepository;
 import springbootcamp.mainfinalproject.service.BlogService;
 import springbootcamp.mainfinalproject.service.CommentsService;
@@ -22,6 +24,7 @@ public class CommentsServiceImpl implements CommentsService {
     private final BlogService blogService;
     private final UserService userService;
     private final RoleService roleService;
+    private final BlogMapper blogMapper;
 
     @Override
     public List<Comments> getAllComments() {
@@ -42,8 +45,8 @@ public class CommentsServiceImpl implements CommentsService {
         if (comment != null) {
             comment.setCommentCreateDate(LocalDate.now());
             comment.setAuthor(userService.getCurrentUser());
-            Blog blog = blogService.getBlogById(blogId);
-            comment.setBlog(blog);
+            BlogDto blog = blogService.getBlogById(blogId);
+            comment.setBlog(blogMapper.toEntity(blog));
             return commentsRepository.save(comment);
         }
         return null;

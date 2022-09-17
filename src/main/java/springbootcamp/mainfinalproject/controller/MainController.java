@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import springbootcamp.mainfinalproject.model.*;
+import springbootcamp.mainfinalproject.model.dto.BlogDto;
+import springbootcamp.mainfinalproject.model.dto.NewsDto;
 import springbootcamp.mainfinalproject.service.*;
 
 import java.text.ParseException;
@@ -34,9 +36,9 @@ public class MainController {
     public String homePage(Model model) {
         List<Game> allGames = gameService.getAllGames();
         model.addAttribute("allGames", allGames);
-        List<News> last3News = newsService.getLatest3News();
+        List<NewsDto> last3News = newsService.getLatest3News();
         model.addAttribute("last3News", last3News);
-        List<Blog> last3Blogs = blogService.getTop3Blogs();
+        List<BlogDto> last3Blogs = blogService.getTop3Blogs();
         model.addAttribute("last3Blogs", last3Blogs);
         List<Game> top5Games = gameService.getTop5Games();
         model.addAttribute("top5Games", top5Games);
@@ -111,7 +113,7 @@ public class MainController {
         model.addAttribute("allPlatforms", allPlatforms);
         List<Genre> allGenres = genreService.getAllGenres();
         model.addAttribute("allGenres", allGenres);
-        News lastNews = newsService.getLastNews();
+        NewsDto lastNews = newsService.getLastNews();
         model.addAttribute("lastNews", lastNews);
         return "allGames";
     }
@@ -122,9 +124,9 @@ public class MainController {
         Game game = gameService.getGameById(gameId);
         if (gameId != null) {
             model.addAttribute("game", game);
-            Blog lastBlogByGame = blogService.getLastBlogByGame(gameId);
+            BlogDto lastBlogByGame = blogService.getLastBlogByGame(gameId);
             model.addAttribute("lastBlogByGame", lastBlogByGame);
-            List<News> last3NewsByGame = newsService.getLast3NewsByGame(gameId);
+            List<NewsDto> last3NewsByGame = newsService.getLast3NewsByGame(gameId);
             model.addAttribute("last3NewsByGame", last3NewsByGame);
             return "detailsGame";
         }
@@ -142,7 +144,7 @@ public class MainController {
             model.addAttribute("allPlatforms", allPlatforms);
             List<Genre> allGenres = genreService.getAllGenres();
             model.addAttribute("allGenres", allGenres);
-            News lastNewsByPlatform = newsService.getLastNewsByPlatform(platformId);
+            NewsDto lastNewsByPlatform = newsService.getLastNewsByPlatform(platformId);
             model.addAttribute("lastNewsByPlatform", lastNewsByPlatform);
             return "gamesByPlatform";
         }
@@ -160,14 +162,14 @@ public class MainController {
             model.addAttribute("allPlatforms", allPlatforms);
             List<Genre> allGenres = genreService.getAllGenres();
             model.addAttribute("allGenres", allGenres);
-            News lastNewsByGenre = newsService.getLastNewsByGenre(genreId);
+            NewsDto lastNewsByGenre = newsService.getLastNewsByGenre(genreId);
             model.addAttribute("lastNewsByGenre", lastNewsByGenre);
             return "gamesByGenre";
         }
         return "redirect:/allGames";
     }
 
-    @PostMapping("/feedback")
+    @PostMapping("/sendFeedback")
     public String feedback(Feedback feedback) {
         feedbackService.addFeedback(feedback);
         return "redirect:/";
@@ -175,7 +177,7 @@ public class MainController {
 
     @GetMapping("/allNews")
     public String allNewsPage(Model model) {
-        List<News> allNews = newsService.getAllNews();
+        List<NewsDto> allNews = newsService.getAllNews();
         model.addAttribute("allNews", allNews);
         List<Game> allGames = gameService.getAllGames();
         model.addAttribute("allGames", allGames);
@@ -199,7 +201,7 @@ public class MainController {
             List<Genre> allGenres = genreService.getAllGenres();
             model.addAttribute("allGenres", allGenres);
             model.addAttribute("selectedGameId", gameId);
-            List<News> allNewsByGame = newsService.getAllNewsByGame(gameId);
+            List<NewsDto> allNewsByGame = newsService.getAllNewsByGame(gameId);
             model.addAttribute("allNewsByGame", allNewsByGame);
             return "newsByGame";
         }
@@ -219,7 +221,7 @@ public class MainController {
             List<Genre> allGenres = genreService.getAllGenres();
             model.addAttribute("allGenres", allGenres);
             model.addAttribute("selectedPlatformId", platformId);
-            List<News> allNewsByPlatform = newsService.getAllNewsByPlatform(platformId);
+            List<NewsDto> allNewsByPlatform = newsService.getAllNewsByPlatform(platformId);
             model.addAttribute("allNewsByPlatform", allNewsByPlatform);
             return "newsByPlatform";
         }
@@ -239,7 +241,7 @@ public class MainController {
             List<Genre> allGenres = genreService.getAllGenres();
             model.addAttribute("allGenres", allGenres);
             model.addAttribute("selectedGenreId", genreId);
-            List<News> allNewsByGenre = newsService.getAllNewsByGenre(genreId);
+            List<NewsDto> allNewsByGenre = newsService.getAllNewsByGenre(genreId);
             model.addAttribute("allNewsByGenre", allNewsByGenre);
             return "newsByGenre";
         }
@@ -249,7 +251,7 @@ public class MainController {
     @GetMapping("/detailsNews/{newsId}")
     public String detailsNewsPage(@PathVariable(name = "newsId") Long newsId,
                                   Model model) {
-        News news = newsService.getNewsById(newsId);
+        NewsDto news = newsService.getNewsById(newsId);
         if (news != null) {
             model.addAttribute("news", news);
             return "detailsNews";
@@ -259,7 +261,7 @@ public class MainController {
 
     @GetMapping("/allBlogs")
     public String allBlogsPage(Model model) {
-        List<Blog> allBlogs = blogService.getAllBlogs();
+        List<BlogDto> allBlogs = blogService.getAllBlogs();
         model.addAttribute("allBlogs", allBlogs);
         List<Game> allGames = gameService.getAllGames();
         model.addAttribute("allGames", allGames);
@@ -283,7 +285,7 @@ public class MainController {
             List<Genre> allGenres = genreService.getAllGenres();
             model.addAttribute("allGenres", allGenres);
             model.addAttribute("selectedGameId", gameId);
-            List<Blog> allBlogsByGame = blogService.getAllBlogsByGame(gameId);
+            List<BlogDto> allBlogsByGame = blogService.getAllBlogsByGame(gameId);
             model.addAttribute("allBlogsByGame", allBlogsByGame);
             return "blogsByGame";
         }
@@ -303,7 +305,7 @@ public class MainController {
             List<Genre> allGenres = genreService.getAllGenres();
             model.addAttribute("allGenres", allGenres);
             model.addAttribute("selectedPlatformId", platformId);
-            List<Blog> allBlogsByPlatform = blogService.getAllBlogsByPlatform(platformId);
+            List<BlogDto> allBlogsByPlatform = blogService.getAllBlogsByPlatform(platformId);
             model.addAttribute("allBlogsByPlatform", allBlogsByPlatform);
             return "blogsByPlatform";
         }
@@ -323,7 +325,7 @@ public class MainController {
             List<Genre> allGenres = genreService.getAllGenres();
             model.addAttribute("allGenres", allGenres);
             model.addAttribute("selectedGenreId", genreId);
-            List<Blog> allBlogsByGenre = blogService.getAllBlogsByGenre(genreId);
+            List<BlogDto> allBlogsByGenre = blogService.getAllBlogsByGenre(genreId);
             model.addAttribute("allBlogsByGenre", allBlogsByGenre);
             return "blogsByGenre";
         }
@@ -333,7 +335,7 @@ public class MainController {
     @GetMapping("/detailsBlog/{blogId}")
     public String detailsBlogsPage(@PathVariable(name = "blogId") Long blogId,
                                   Model model) {
-        Blog blog = blogService.getBlogById(blogId);
+        BlogDto blog = blogService.getBlogById(blogId);
         if (blog != null) {
             model.addAttribute("blog", blog);
             List<Comments> allComments = commentsService.getAllComments();

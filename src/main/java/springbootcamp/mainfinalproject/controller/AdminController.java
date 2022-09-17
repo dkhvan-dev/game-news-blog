@@ -10,7 +10,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import springbootcamp.mainfinalproject.mapper.AppFormBloggerMapper;
 import springbootcamp.mainfinalproject.model.*;
+import springbootcamp.mainfinalproject.model.dto.BlogDto;
+import springbootcamp.mainfinalproject.model.dto.NewsDto;
 import springbootcamp.mainfinalproject.service.*;
 
 import java.io.IOException;
@@ -31,7 +34,10 @@ public class AdminController {
     private final FeedbackStatusService feedbackStatusService;
     private final GamePlatformService gamePlatformService;
     private final CommentsService commentsService;
+    private final UserService userService;
+    private final BlogStatusService blogStatusService;
     private final FileUploadService fileUploadService;
+    private final AppFormBloggerMapper appFormBloggerMapper;
 
     @Value("${loadURL}")
     private String loadURL;
@@ -41,9 +47,9 @@ public class AdminController {
     public String adminPanelPage(Model model) {
         List<Game> allGames = gameService.getAllGames();
         model.addAttribute("allGames", allGames);
-        List<News> allNews = newsService.getAllNews();
+        List<NewsDto> allNews = newsService.getAllNews();
         model.addAttribute("allNews", allNews);
-        List<Blog> allBlogs = blogService.getAllBlogs();
+        List<BlogDto> allBlogs = blogService.getAllBlogs();
         model.addAttribute("allBlogs", allBlogs);
         List<ApplicationFormBlogger> allApplicationForBloggerRole = applicationFormBloggerService.getAllApplications();
         model.addAttribute("allApplicationForBloggerRole", allApplicationForBloggerRole);
@@ -55,6 +61,8 @@ public class AdminController {
         model.addAttribute("allGenres", allGenres);
         List<Comments> allComments = commentsService.getAllComments();
         model.addAttribute("allComments", allComments);
+        List<User> allUsers = userService.getAllUsers();
+        model.addAttribute("allUsers", allUsers);
         return "admin/adminPanel";
     }
 
@@ -134,7 +142,7 @@ public class AdminController {
     @GetMapping("/detailsNewsAdmin/{newsId}")
     public String detailsNewsAdminPage(@PathVariable(name = "newsId") Long newsId,
                                        Model model) {
-        News news = newsService.getNewsById(newsId);
+        NewsDto news = newsService.getNewsById(newsId);
         if (news != null) {
             model.addAttribute("news", news);
             Game game = news.getGame();
@@ -162,11 +170,13 @@ public class AdminController {
     @GetMapping("/detailsBlogAdmin/{blogId}")
     public String detailsBlogAdminPage(@PathVariable(name = "blogId") Long blogId,
                                        Model model) {
-        Blog blog = blogService.getBlogById(blogId);
+        BlogDto blog = blogService.getBlogById(blogId);
         if (blog != null) {
             model.addAttribute("blog", blog);
             List<Game> allGames = gameService.getAllGames();
             model.addAttribute("allGames", allGames);
+            List<BlogStatus> blogStatusList = blogStatusService.getAllStatus();
+            model.addAttribute("blogStatusList", blogStatusList);
             return "moderator/detailsBlogAdmin";
         }
         return "redirect:/adminPanel";
@@ -194,6 +204,7 @@ public class AdminController {
     }
 
     //APPLICATION FOR ROLE BLOGGER
+    @PreAuthorize("!hasRole('ROLE_BLOGGER')")
     @PostMapping("/applicationFormBlogger")
     public String applicationFormBlogger(ApplicationFormBlogger applicationFormBlogger) {
         applicationFormBloggerService.addApplicationFormBlogger(applicationFormBlogger);
@@ -275,12 +286,24 @@ public class AdminController {
         return "redirect:/detailsBlog/" + comment.getBlog().getBlogId() + "?errorCommentNotFound";
     }
 
+    // USERS
+    @PreAuthorize("hasRole('ROLE_MODERATOR')")
+    @GetMapping("/detailsUser/{userId}")
+    public String detailsUser(@PathVariable(name = "userId") Long userId,
+                              Model model) {
+        User user = userService.getUserById(userId);
+        if (user != null) {
+            model.addAttribute("user", user);
+        }
+        return "moderator/detailsUser";
+    }
+
     // Load Image
     @GetMapping(value = "/getUserImage/{userImageToken}", produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE})
     public @ResponseBody byte[] getUserImage(@PathVariable(name = "userImageToken", required = false) String userImageToken) throws IOException {
         String pictureURL = loadURL + "defaultAvatar.png";
         if (userImageToken != null) {
-            pictureURL = loadURL + "avatar/" + userImageToken + ".jpg";
+            pictureURL = loadURL + "avatars/" + userImageToken + ".jpg";
         }
         InputStream inputStream;
         try {

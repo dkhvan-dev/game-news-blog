@@ -1353,6 +1353,8 @@ main {
 }
 
 .testimonials-widget {
+	display: flex;
+	flex-direction: column;
 	background: #34164b;
 	padding: 55px 0 50px;
 }

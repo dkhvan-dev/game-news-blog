@@ -84,8 +84,10 @@
 	<script>
 		function getAllBlogsByPlatform() {
 			const result = new XMLHttpRequest();
-			var url = document.location.href.charAt(document.location.href.length-1)
-			result.open("GET", "http://localhost:8000/blogs/byPlatform/" + url)
+			var url = document.location.href
+			let sections = url.split('/');
+			let lastSection = sections.pop();
+			result.open("GET", "http://localhost:8000/blogs/byPlatform/" + lastSection)
 			result.send()
 			result.onload = function () {
 				let allBlogsByPlatform = JSON.parse(this.responseText)
@@ -127,7 +129,9 @@
 			const result = new XMLHttpRequest();
 			result.open("GET", "http://localhost:8000/platforms")
 			result.send()
-			var selectedPlatformId = document.location.href.charAt(document.location.href.length-1)
+			var url = document.location.href
+			let sections = url.split('/');
+			let selectedPlatformId = sections.pop();
 			result.onload = function () {
 				let allPlatforms = JSON.parse(this.responseText)
 				let content = ""

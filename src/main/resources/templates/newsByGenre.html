@@ -96,8 +96,10 @@
 	<script>
 		function getAllNewsByGenre() {
 			const result = new XMLHttpRequest()
-			var url = document.location.href.charAt(document.location.href.length-1)
-			result.open("GET", "http://localhost:8000/news/byGenre/" + url)
+			var url = document.location.href
+			let sections = url.split('/');
+			let lastSection = sections.pop();
+			result.open("GET", "http://localhost:8000/news/byGenre/" + lastSection)
 			result.send()
 			result.onload = function () {
 				let allNewsByGenre = JSON.parse(this.responseText)
@@ -156,7 +158,9 @@
 			result.onload = function () {
 				let allGenres = JSON.parse(this.responseText)
 				let content = ""
-				var selectedGenreId = document.location.href.charAt(document.location.href.length-1)
+				var url = document.location.href
+				let sections = url.split('/');
+				let selectedGenreId = sections.pop();
 				for (i = 0; i < allGenres.length; i++) {
 					content += "<li>"
 					if (allGenres[i].genreId == selectedGenreId) {

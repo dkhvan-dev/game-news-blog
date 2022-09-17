@@ -95,7 +95,7 @@
 	<script>
 		function getAllBlogs() {
 			const result = new XMLHttpRequest();
-			result.open("GET", "http://localhost:8000/blogs")
+			result.open("GET", "http://localhost:8000/blogs/byStatus/2")
 			result.send()
 			result.onload = function () {
 				let allBlogs = JSON.parse(this.responseText)

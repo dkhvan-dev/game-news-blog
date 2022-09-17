@@ -33,7 +33,7 @@ public class Game {
     @Column(name = "description")
     private String gameDescription;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     private List<GamePlatform> platform;
 
     @ManyToMany(fetch = FetchType.LAZY)

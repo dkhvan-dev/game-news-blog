@@ -151,22 +151,16 @@
 			result.open("GET", "http://localhost:8000/blogs/lastBlogByGame/" + url)
 			result.send()
 			result.onload = function () {
-				let lastBlogByGame = JSON.parse(this.responseText)
-				const gameResult = new XMLHttpRequest()
-				gameResult.open("GET", "http://localhost:8000/games/" + url)
-				gameResult.send()
-				gameResult.onload = function () {
-					let game = JSON.parse(gameResult.responseText)
-					let content = ""
-					content += "<h4 class='widget-title'>LAST BLOG BY GAME<span>" + game.gameName + "</span></h4>"
-					content += "<a href='/detailsBlog/" + lastBlogByGame.blogId + "' class='widget-title'>" + lastBlogByGame.blogTitle + "</a>"
-					content += "<div class='testim-text'>"
-					content += "<p class='mt-3'>" + lastBlogByGame.blogDescription + "</p>"
-					content += "<h6>Author: <span>" + lastBlogByGame.users.userFirstName + ' ' + lastBlogByGame.users.userSurname + "</span>"
-					content += "</h6>"
-					content += "</div>"
-					document.querySelector(".testimonials-widget").innerHTML = content
-				}
+			let lastBlogByGame = JSON.parse(this.responseText)
+			let content = ""
+			content += "<h4 class='widget-title'>LAST BLOG BY GAME <span>" + lastBlogByGame.games.gameName + "</span></h4>"
+			content += "<a href='/detailsBlog/" + lastBlogByGame.blogId + "' class='widget-title'>" + lastBlogByGame.blogTitle + "</a>"
+			content += "<div class='testim-text'>"
+			content += "<p class='mt-3'>" + lastBlogByGame.blogDescription + "</p>"
+			content += "<h6>Author: <span>" + lastBlogByGame.users.userFirstName + ' ' + lastBlogByGame.users.userSurname + "</span>"
+			content += "</h6>"
+			content += "</div>"
+			document.querySelector(".testimonials-widget").innerHTML = content
 			}
 		}
 

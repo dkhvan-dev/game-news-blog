@@ -2,10 +2,12 @@ package springbootcamp.mainfinalproject.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import springbootcamp.mainfinalproject.mapper.NewsMapper;
 import springbootcamp.mainfinalproject.model.Game;
 import springbootcamp.mainfinalproject.model.GamePlatform;
 import springbootcamp.mainfinalproject.model.Genre;
 import springbootcamp.mainfinalproject.model.News;
+import springbootcamp.mainfinalproject.model.dto.NewsDto;
 import springbootcamp.mainfinalproject.repository.NewsRepository;
 import springbootcamp.mainfinalproject.service.*;
 
@@ -23,17 +25,18 @@ public class NewsServiceImpl implements NewsService {
     private final GenreService genreService;
     private final UserService userService;
     private final GameService gameService;
+    private final NewsMapper newsMapper;
 
     @Override
-    public List<News> getAllNews() {
-        return newsRepository.findAllByOrderByNewsCreateDateDesc();
+    public List<NewsDto> getAllNews() {
+        return newsMapper.toDtoList(newsRepository.findAllByOrderByNewsCreateDateDesc());
     }
 
     @Override
-    public News getNewsById(Long newsId) {
+    public NewsDto getNewsById(Long newsId) {
         News news = newsRepository.findById(newsId).orElse(null);
         if (news != null) {
-            return news;
+            return newsMapper.toDto(news);
         }
         return null;
     }
@@ -69,65 +72,65 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public News getLastNews() {
-        return newsRepository.findLastNews();
+    public NewsDto getLastNews() {
+        return newsMapper.toDto(newsRepository.findLastNews());
     }
 
     @Override
-    public News getLastNewsByPlatform(Long platformId) {
+    public NewsDto getLastNewsByPlatform(Long platformId) {
         GamePlatform checkPlatform = gamePlatformService.getPlatformById(platformId);
         if (checkPlatform != null) {
-            return newsRepository.findLastNewsByPlatform(platformId);
+            return newsMapper.toDto(newsRepository.findLastNewsByPlatform(platformId));
         }
         return null;
     }
 
     @Override
-    public News getLastNewsByGenre(Long genreId) {
+    public NewsDto getLastNewsByGenre(Long genreId) {
         Genre checkGenre = genreService.getGenreById(genreId);
         if (checkGenre != null) {
-            return newsRepository.findLastNewsByGenre(genreId);
+            return newsMapper.toDto(newsRepository.findLastNewsByGenre(genreId));
         }
         return null;
     }
 
     @Override
-    public List<News> getAllNewsByGame(Long gameId) {
+    public List<NewsDto> getAllNewsByGame(Long gameId) {
         Game checkGame = gameService.getGameById(gameId);
         if (checkGame != null) {
-            return newsRepository.findAllByGameGameId(gameId);
+            return newsMapper.toDtoList(newsRepository.findAllByGameGameId(gameId));
         }
         return null;
     }
 
     @Override
-    public List<News> getAllNewsByPlatform(Long platformId) {
+    public List<NewsDto> getAllNewsByPlatform(Long platformId) {
         GamePlatform checkPlatform = gamePlatformService.getPlatformById(platformId);
         if (checkPlatform != null) {
-            return newsRepository.findAllNewsByPlatform(platformId);
+            return newsMapper.toDtoList(newsRepository.findAllNewsByPlatform(platformId));
         }
         return null;
     }
 
     @Override
-    public List<News> getAllNewsByGenre(Long genreId) {
+    public List<NewsDto> getAllNewsByGenre(Long genreId) {
         Genre checkGenre = genreService.getGenreById(genreId);
         if (checkGenre != null) {
-            return newsRepository.findAllNewsByGenre(genreId);
+            return newsMapper.toDtoList(newsRepository.findAllNewsByGenre(genreId));
         }
         return null;
     }
 
     @Override
-    public List<News> getLatest3News() {
-        return newsRepository.findLatest3News();
+    public List<NewsDto> getLatest3News() {
+        return newsMapper.toDtoList(newsRepository.findLatest3News());
     }
 
     @Override
-    public List<News> getLast3NewsByGame(Long gameId) {
+    public List<NewsDto> getLast3NewsByGame(Long gameId) {
         Game checkGame = gameService.getGameById(gameId);
         if (checkGame != null) {
-            return newsRepository.findLatest3NewsByGame(gameId);
+            return newsMapper.toDtoList(newsRepository.findLatest3NewsByGame(gameId));
         }
         return null;
     }

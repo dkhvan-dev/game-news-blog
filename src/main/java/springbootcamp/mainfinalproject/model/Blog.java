@@ -34,6 +34,9 @@ public class Blog {
     private LocalDate blogUpdateDate;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    private BlogStatus blogStatus;
+
+    @ManyToOne(fetch = FetchType.EAGER)
     private Game games;
 
     @ManyToOne(fetch = FetchType.EAGER)

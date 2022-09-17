@@ -3,7 +3,9 @@ package springbootcamp.mainfinalproject.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import springbootcamp.mainfinalproject.mapper.BlogMapper;
 import springbootcamp.mainfinalproject.model.*;
+import springbootcamp.mainfinalproject.model.dto.BlogDto;
 import springbootcamp.mainfinalproject.repository.BlogRepository;
 import springbootcamp.mainfinalproject.repository.GameRepository;
 import springbootcamp.mainfinalproject.service.*;
@@ -22,58 +24,69 @@ public class BlogServiceImpl implements BlogService {
     private final GenreService genreService;
     private final UserService userService;
     private final FileUploadService fileUploadService;
+    private final BlogStatusService blogStatusService;
+    private final BlogMapper blogMapper;
 
     @Override
-    public List<Blog> getAllBlogs() {
-        return blogRepository.findAllByOrderByBlogCreateDateDesc();
+    public List<BlogDto> getAllBlogs() {
+        return blogMapper.toDtoList(blogRepository.findAllByBlogStatusBlogStatusNameOrderByBlogCreateDateDesc("APPROVED"));
     }
 
     @Override
-    public Blog getBlogById(Long blogId) {
+    public List<BlogDto> getAllBlogsByStatus(Long statusId) {
+        BlogStatus blogStatus = blogStatusService.getStatusById(statusId);
+        if (blogStatus != null) {
+            return blogMapper.toDtoList(blogRepository.findAllByBlogStatusBlogStatusNameOrderByBlogCreateDateDesc(blogStatus.getBlogStatusName()));
+        }
+        return null;
+    }
+
+    @Override
+    public BlogDto getBlogById(Long blogId) {
         Blog blog = blogRepository.findById(blogId).orElse(null);
         if (blog != null) {
-            return blog;
+            return blogMapper.toDto(blog);
         }
         return null;
     }
 
     @Override
-    public List<Blog> getTop3Blogs() {
-        return blogRepository.findAllTop3OrderByCreateDateDesc();
+    public List<BlogDto> getTop3Blogs() {
+        return blogMapper.toDtoList(blogRepository.findAllTop3OrderByCreateDateDesc());
     }
 
     @Override
-    public Blog getLastBlogByGame(Long gameId) {
+    public BlogDto getLastBlogByGame(Long gameId) {
         Game checkGame = gameService.getGameById(gameId);
         if (checkGame != null) {
-            return blogRepository.findLastBlogByGame(gameId);
+            return blogMapper.toDto(blogRepository.findLastBlogByGame(gameId));
         }
         return null;
     }
 
     @Override
-    public List<Blog> getAllBlogsByGame(Long gameId) {
+    public List<BlogDto> getAllBlogsByGame(Long gameId) {
         Game checkGame = gameService.getGameById(gameId);
         if (checkGame != null) {
-            return blogRepository.searchAllByGames_GameIdOrderByBlogCreateDateDesc(gameId);
+            return blogMapper.toDtoList(blogRepository.searchAllByGames_GameIdAndBlogStatusBlogStatusNameOrderByBlogCreateDateDesc(gameId, "APPROVED"));
         }
         return null;
     }
 
     @Override
-    public List<Blog> getAllBlogsByPlatform(Long platformId) {
+    public List<BlogDto> getAllBlogsByPlatform(Long platformId) {
         GamePlatform platform = gamePlatformService.getPlatformById(platformId);
         if (platform != null) {
-            return blogRepository.findAllBlogsByPlatform(platformId);
+            return blogMapper.toDtoList(blogRepository.findAllBlogsByPlatform(platformId));
         }
         return null;
     }
 
     @Override
-    public List<Blog> getAllBlogsByGenre(Long genreId) {
+    public List<BlogDto> getAllBlogsByGenre(Long genreId) {
         Genre checkGenre = genreService.getGenreById(genreId);
         if (checkGenre != null) {
-            return blogRepository.findAllBlogsByGenre(genreId);
+            return blogMapper.toDtoList(blogRepository.findAllBlogsByGenre(genreId));
         }
         return null;
     }
@@ -84,6 +97,8 @@ public class BlogServiceImpl implements BlogService {
             fileUploadService.uploadBlogImage(blogImageToken, blog);
             blog.setBlogCreateDate(LocalDate.now());
             blog.setUsers(userService.getCurrentUser());
+            BlogStatus blogStatus = blogStatusService.getStatusById(1L);
+            blog.setBlogStatus(blogStatus);
             return blogRepository.save(blog);
         }
         return null;
@@ -94,12 +109,16 @@ public class BlogServiceImpl implements BlogService {
         if (blog != null) {
             DateTimeFormatter pattern = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate createDate = LocalDate.parse(blogCreateDate, pattern);
-            LocalDate updateDate = LocalDate.parse(blogUpdateDate, pattern);
+            if (!blogUpdateDate.equals("")) {
+                LocalDate updateDate = LocalDate.parse(blogUpdateDate, pattern);
+                blog.setBlogUpdateDate(updateDate);
+            } else {
+                blog.setBlogUpdateDate(null);
+            }
             User author = userService.getUserById(authorId);
             if (author != null) {
                 fileUploadService.uploadBlogImage(blogImageToken, blog);
                 blog.setBlogCreateDate(createDate);
-                blog.setBlogUpdateDate(updateDate);
                 blog.setUsers(author);
                 return blogRepository.save(blog);
             }

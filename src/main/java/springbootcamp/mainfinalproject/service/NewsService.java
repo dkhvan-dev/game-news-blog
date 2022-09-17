@@ -1,21 +1,22 @@
 package springbootcamp.mainfinalproject.service;
 
 import springbootcamp.mainfinalproject.model.News;
+import springbootcamp.mainfinalproject.model.dto.NewsDto;
 
 import java.util.List;
 
 public interface NewsService {
-    List<News> getAllNews();
-    News getNewsById(Long newsId);
+    List<NewsDto> getAllNews();
+    NewsDto getNewsById(Long newsId);
     News addNews(News news);
     News editNews(News news, String newsCreateDate);
     void deleteNews(Long newsId);
-    News getLastNews();
-    News getLastNewsByPlatform(Long platformId);
-    News getLastNewsByGenre(Long genreId);
-    List<News> getAllNewsByGame(Long gameId);
-    List<News> getAllNewsByGenre(Long genreId);
-    List<News> getAllNewsByPlatform(Long platformId);
-    List<News> getLatest3News();
-    List<News> getLast3NewsByGame(Long gameId);
+    NewsDto getLastNews();
+    NewsDto getLastNewsByPlatform(Long platformId);
+    NewsDto getLastNewsByGenre(Long genreId);
+    List<NewsDto> getAllNewsByGame(Long gameId);
+    List<NewsDto> getAllNewsByGenre(Long genreId);
+    List<NewsDto> getAllNewsByPlatform(Long platformId);
+    List<NewsDto> getLatest3News();
+    List<NewsDto> getLast3NewsByGame(Long gameId);
 }

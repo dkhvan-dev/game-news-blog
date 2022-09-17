@@ -102,8 +102,10 @@
 	<script>
 		function getAllGamesByPlatform() {
 			const result = new XMLHttpRequest()
-			var url = document.location.href.charAt(document.location.href.length-1)
-			result.open("GET", "http://localhost:8000/games/byPlatform/" + url);
+			var url = document.location.href
+			let sections = url.split('/');
+			let lastSection = sections.pop();
+			result.open("GET", "http://localhost:8000/games/byPlatform/" + lastSection);
 			result.send()
 			result.onload = function () {
 				let allGamesByGenre = JSON.parse(this.responseText)
@@ -129,7 +131,9 @@
 			result.onload = function () {
 				let allPlatforms = JSON.parse(this.responseText)
 				let content = ""
-				var selectedPlatformId = document.location.href.charAt(document.location.href.length-1)
+				var url = document.location.href
+				let sections = url.split('/');
+				let selectedPlatformId = sections.pop();
 				for (i = 0; i < allPlatforms.length; i++) {
 					content += "<li>"
 					if (allPlatforms[i].platformId == selectedPlatformId) {

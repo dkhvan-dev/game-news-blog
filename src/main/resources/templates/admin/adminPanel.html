@@ -4,7 +4,7 @@
 <head th:insert="~{/toInsert/head.html}">
     <title>Admin Panel</title>
 </head>
-<body>
+<body onload="getAllGames(); getAllNews(); getAllPlatforms(); getAllGenres(); getGamesTable();getBlogsTable(); getApplicationsTable(); getFeedbackTable(); getCommentsTable()">
 
     <div th:insert="~{/toInsert/preloader.html}"></div>
 
@@ -63,8 +63,8 @@
                                         <label class="form-label mt-3">Description:
                                             <textarea class="form-control" name="newsDescription"></textarea>
                                         </label>
-                                        <select class="form-select mt-3" name="game">
-                                            <option th:each="game : ${allGames}" th:text="${game.gameName}" th:value="${game.gameId}"></option>
+                                        <select class="form-select mt-3 allGames" name="game">
+
                                         </select>
                                     </div>
                                     <div class="modal-footer">
@@ -88,20 +88,8 @@
                             <th scope="col">Delete</th>
                         </tr>
                         </thead>
-                        <tbody>
-                        <tr th:each="news : ${allNews}">
-                            <th scope="row" th:text="${news.newsId}"></th>
-                            <td th:text="${news.newsTitle}"></td>
-                            <td th:text="${news.newsCreateDate}"></td>
-                            <td th:text="${news.getGame().gameName}"></td>
-                            <td><a class="btn btn-primary" th:href="@{'/detailsNewsAdmin/' + ${news.newsId}}">Details</a></td>
-                            <td>
-                                <button type="button" class="btn btn-danger deleteNewsModal" data-bs-toggle="modal" data-bs-target="#deleteNewsAdmin"
-                                        th:data-id="${news.newsId}">
-                                    Delete
-                                </button>
-                            </td>
-                        </tr>
+                        <tbody class="allNews">
+
                         </tbody>
                     </table>
                     <!-- Delete News Modal -->
@@ -175,21 +163,13 @@
                                                 <textarea class="form-control" name="gameDescription"></textarea>
                                             </label>
                                         </div>
-                                        <div class="mt-3">
+                                        <div class="mt-3 allPlatforms">
                                             <span>Platform:</span>
-                                            <div class="form-check" th:each="platform : ${allPlatforms}">
-                                                <input class="form-check-input" type="checkbox" name="platform" th:value="${platform.platformId}" th:id="${platform.platformId}">
-                                                <label class="form-check-label" th:for="${platform.platformId}" th:text="${platform.platformName}">
-                                                </label>
-                                            </div>
+
                                         </div>
-                                        <div class="mt-3">
+                                        <div class="mt-3 allGenres">
                                             <span>Genre:</span>
-                                            <div class="form-check" th:each="genre : ${allGenres}">
-                                                <input class="form-check-input" type="checkbox" name="genres" th:value="${genre.genreId}" th:id="${genre.genreId}">
-                                                <label class="form-check-label" th:for="${genre.genreId}" th:text="${genre.genreName}">
-                                                </label>
-                                            </div>
+
                                         </div>
                                         <div class="mt-3">
                                             <span>Game requirements:</span>
@@ -257,21 +237,8 @@
                             <th scope="col">Delete</th>
                         </tr>
                         </thead>
-                        <tbody>
-                        <tr th:each="game : ${allGames}">
-                            <th scope="row" th:text="${game.gameId}"></th>
-                            <td th:text="${game.gameName}"></td>
-                            <td th:text="${game.gameAge}"></td>
-                            <td><span th:each="platform : ${game.getPlatform()}" th:text="${platform.getPlatformName()} + '/'"></span></td>
-                            <td><span th:each="genre : ${game.getGenres()}" th:text="${genre.getGenreName()} + '/'"></span>
-                            <td><a class="btn btn-primary" th:href="@{'/detailsGameAdmin/' + ${game.gameId}}">Details</a></td>
-                            <td>
-                                <button type="button" class="btn btn-danger deleteGameModal" data-bs-toggle="modal" data-bs-target="#deleteGameAdmin"
-                                        th:data-id="${game.gameId}">
-                                Delete
-                                </button>
-                            </td>
-                        </tr>
+                        <tbody class="gamesTable">
+
                         </tbody>
                     </table>
 
@@ -337,21 +304,8 @@
                             <th scope="col">Delete</th>
                         </tr>
                         </thead>
-                        <tbody>
-                        <tr th:each="blog : ${allBlogs}">
-                            <th scope="row" th:text="${blog.blogId}"></th>
-                            <td th:text="${blog.blogTitle}"></td>
-                            <td th:text="${blog.blogCreateDate}"></td>
-                            <td th:text="${blog.blogUpdateDate}"></td>
-                            <td th:text="${blog.getGames().gameName}"></td>
-                            <td><a class="btn btn-primary" th:href="@{'/detailsBlogAdmin/' + ${blog.blogId}}">Details</a></td>
-                            <td>
-                                <button type="button" class="btn btn-danger deleteBlogModal" data-bs-toggle="modal" data-bs-target="#deleteBlogAdmin"
-                                        th:data-id="${blog.blogId}">
-                                    Delete
-                                </button>
-                            </td>
-                        </tr>
+                        <tbody class="blogsTable">
+
                         </tbody>
                     </table>
 
@@ -400,15 +354,8 @@
                             <th scope="col">Details</th>
                         </tr>
                         </thead>
-                        <tbody>
-                        <tr th:each="app : ${allApplicationForBloggerRole}">
-                            <th scope="row" th:text="${app.applicationFormBloggerId}"></th>
-                            <td th:text="${app.applicationFormBloggerReceiptDate}"></td>
-                            <td th:text="${app.applicationFormBloggerUpdateDate}"></td>
-                            <td th:text="${app.getApplicationBloggerStatus().getApplicationBloggerStatus()}" th:style="'color: ' + ${app.getApplicationBloggerStatus().getApplicationBloggerStatusColor()}"></td>
-                            <td th:text="${app.getUsers().getUserFirstName() + ' ' + app.getUsers().getUserSurname()}"></td>
-                            <td><a class="btn btn-primary" th:href="@{'/detailsApplicationFormBloggerAdmin/' + ${app.applicationFormBloggerId}}">Details</a></td>
-                        </tr>
+                        <tbody class="applicationsForBloggerTable">
+
                         </tbody>
                     </table>
                 </div>
@@ -435,16 +382,8 @@
                                 <th scope="col">Details</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr th:each="feedback : ${allFeedback}">
-                                <th scope="row" th:text="${feedback.feedbackId}"></th>
-                                <td th:text="${feedback.feedbackName}"></td>
-                                <td th:text="${feedback.feedbackEmail}"></td>
-                                <td th:text="${feedback.feedbackSubject}"></td>
-                                <td th:text="${feedback.getFeedbackStatus().getFeedbackStatus()}"
-                                    th:style="'color: ' + ${feedback.getFeedbackStatus().feedbackStatusColor}"></td>
-                                <td><a class="btn btn-primary" th:href="@{'/detailsFeedbackAdmin/' + ${feedback.feedbackId}}">Details</a></td>
-                            </tr>
+                        <tbody class="feedbackTable">
+
                         </tbody>
                     </table>
                 </div>
@@ -470,21 +409,8 @@
                             <th scope="col">Delete</th>
                         </tr>
                         </thead>
-                        <tbody>
-                        <tr th:each="comment : ${allComments}">
-                            <th scope="row" th:text="${comment.commentId}"></th>
-                            <td th:text="${comment.commentText}"></td>
-                            <td th:text="${comment.getAuthor().getUserEmail()}"></td>
-                            <td th:text="${comment.commentCreateDate}"></td>
-                            <td>
-                                <button type="button" class="btn btn-danger deleteCommentModal"
-                                        th:data-id="${comment.commentId}"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#deleteCommentModal">
-                                    Delete
-                                </button>
-                            </td>
-                        </tr>
+                        <tbody class="commentsTable">
+
                         </tbody>
                     </table>
                     <div class="modal fade" id="deleteCommentModal" tabindex="-1" aria-hidden="true">
@@ -517,6 +443,37 @@
             </div>
         </div>
 
+        <!-- Users Collapse -->
+<!--        <div class="d-flex">-->
+<!--            <div class="admin-collapse">-->
+<!--                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#usersAdmin" aria-expanded="false">-->
+<!--                    Users-->
+<!--                </button>-->
+<!--            </div>-->
+<!--            <div class="collapse admin-collapse__show" id="usersAdmin">-->
+<!--                <div class="card card-body">-->
+<!--                    &lt;!&ndash; ALL Users TABLE &ndash;&gt;-->
+<!--                    <table class="table">-->
+<!--                        <thead>-->
+<!--                        <tr>-->
+<!--                            <th scope="col">ID</th>-->
+<!--                            <th scope="col">Email</th>-->
+<!--                            <th scope="col">Full name</th>-->
+<!--                            <th scope="col">Details</th>-->
+<!--                        </tr>-->
+<!--                        </thead>-->
+<!--                        <tbody class="usersTable">-->
+<!--                            <tr th:each="user : ${allUsers}">-->
+<!--                                <th scope="row" th:text="${user.userId}"></th>-->
+<!--                                <td th:text="${user.userEmail}"></td>-->
+<!--                                <td th:text="${user.userFirstName + ' ' + user.userSurname}"></td>-->
+<!--                                <td><a th:href="@{'/detailsUser/' + ${user.userId}}" class="btn btn-primary">Details</a></td>-->
+<!--                            </tr>-->
+<!--                        </tbody>-->
+<!--                    </table>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
     </main>
 
     <!-- Footer section -->
@@ -525,5 +482,197 @@
     <!-- Footer section end -->
 
     <div th:insert="~{/toInsert/scripts.html}"></div>
+
+    <script>
+        function getAllGames() {
+            const result = new XMLHttpRequest()
+            result.open("GET", "http://localhost:8000/games")
+            result.send()
+            result.onload = function () {
+                let allGames = JSON.parse(this.responseText)
+                let content = ""
+                for (i = 0; i < allGames.length; i++) {
+                    content += "<option value='" + allGames[i].gameId + "'>" + allGames[i].gameName + "</option>"
+                }
+                document.querySelector(".allGames").innerHTML = content
+            }
+        }
+
+        function getAllNews() {
+            const result = new XMLHttpRequest()
+            result.open("GET", "http://localhost:8000/news")
+            result.send()
+            result.onload = function () {
+                let allNews = JSON.parse(this.responseText)
+                let content = ""
+                for (i = 0; i < allNews.length; i++) {
+                    content += "<tr>"
+                    content += "<th scope='row'>" + allNews[i].newsId + "</th>"
+                    content += "<td>" + allNews[i].newsTitle + "</td>"
+                    content += "<td>" + allNews[i].newsCreateDate + "</td>"
+                    content += "<td>" + allNews[i].game.gameName + "</td>"
+                    content += "<td><a class='btn btn-primary' th:href='/detailsNewsAdmin/" + allNews[i].newsId + "'>Details</a></td>"
+                    content += "<td><button type='button' class='btn btn-danger deleteNewsModal' data-bs-toggle='modal' data-bs-target='#deleteNewsAdmin' th:data-id='" + allNews[i].newsId + "'>Delete</button></td>"
+                    content += "</tr>"
+                }
+                document.querySelector(".allNews").innerHTML = content
+            }
+        }
+
+        function getAllPlatforms() {
+            const result = new XMLHttpRequest()
+            result.open("GET", "http://localhost:8000/platforms")
+            result.send()
+            result.onload = function () {
+                let allPlatforms = JSON.parse(this.responseText)
+                let content = ""
+                for (i = 0; i < allPlatforms.length; i++) {
+                    content += "<div class='form-check'>"
+                    content += "<input class='form-check-input' type='checkbox' name='platform' value='" + allPlatforms[i].platformId + "' id='" + allPlatforms[i].platformId + "'>"
+                    content += "<label class='form-check-label' for='" + allPlatforms[i].platformId + "'>" + allPlatforms[i].platformName + "</label>"
+                    content += "</div>"
+                }
+                document.querySelector(".allPlatforms").innerHTML += content
+            }
+        }
+
+        function getAllGenres() {
+            const result = new XMLHttpRequest()
+            result.open("GET", "http://localhost:8000/genres")
+            result.send()
+            result.onload = function () {
+                let allGenres = JSON.parse(this.responseText)
+                let content = ""
+                for (i = 0; i < allGenres.length; i++) {
+                    content += "<div class='form-check'>"
+                    content += "<input class='form-check-input' type='checkbox' name='genres' value='" + allGenres[i].genreId + "' id='" + allGenres[i].genreId + "'>"
+                    content += "<label class='form-check-label' for='" + allGenres[i].genreId + "'>" + allGenres[i].genreName + "</label>"
+                    content += "</div>"
+                }
+                document.querySelector(".allGenres").innerHTML += content
+            }
+        }
+
+        function getGamesTable() {
+            const result = new XMLHttpRequest()
+            result.open("GET", "http://localhost:8000/games")
+            result.send()
+            result.onload = function () {
+                let allGames = JSON.parse(this.responseText)
+                let content = ""
+                let allGenres = ""
+                let allPlatforms = ""
+                for (i = 0; i < allGames.length; i++) {
+                    content += "<tr>"
+                    content += "<th scope='row'>" + allGames[i].gameId + "</th>"
+                    content += "<td>" + allGames[i].gameName + "</td>"
+                    content += "<td>" + allGames[i].gameAge + "+</td>"
+                    content += "<td>"
+                    allPlatforms = allGames[i].platform
+                for (j = 0; j < allPlatforms.length; j++) {
+                    content += "<span>" + allPlatforms[j].platformName + "/</span>"
+                }
+                    content += "</td>"
+                    content += "<td>"
+                    allGenres = allGames[i].genres
+                for (k = 0; k < allGenres.length; k++) {
+                    content += "<span>" + allGenres[k].genreName + "</span>"
+                }
+                    content += "</td>"
+                    content += "<td><a class='btn btn-primary' href='/detailsGameAdmin/" + allGames[i].gameId + "'>Details</a></td>"
+                    content += "<td><button type='button' class='btn btn-danger deleteGameModal' data-bs-toggle='modal' data-bs-target='#deleteGameAdmin' data-id='" + allGames[i].gameId + "'>Delete</button></td>"
+                    content += "</tr>"
+                    document.querySelector(".gamesTable").innerHTML = content
+                }
+            }
+        }
+
+        function getBlogsTable() {
+            const resBlog = new XMLHttpRequest()
+            resBlog.open("GET", "http://localhost:8000/blogs/byStatus/1")
+            resBlog.send()
+            resBlog.onload = function () {
+                let allBlogs = JSON.parse(this.responseText)
+                let content = ""
+                for (i = 0; i < allBlogs.length; i++) {
+                    content += "<tr>"
+                    content += "<th scope='row'>" + allBlogs[i].blogId + "</th>"
+                    content += "<td>" + allBlogs[i].blogTitle + "</td>"
+                    content += "<td>" + allBlogs[i].blogCreateDate + "</td>"
+                    content += "<td>" + allBlogs[i].blogUpdateDate + "</td>"
+                    content += "<td>" + allBlogs[i].games.gameName + "</td>"
+                    content += "<td><a class='btn btn-primary' href='/detailsBlogAdmin/" + allBlogs[i].blogId + "'>Details</a></td>"
+                    content += "<td><button type='button' class='btn btn-danger deleteBlogModal' data-bs-toggle='modal' data-bs-target='#deleteBlogAdmin' data-id='" + allBlogs[i].blogId + "'>Delete</button></td>"
+                    content += "</tr>"
+                }
+                document.querySelector(".blogsTable").innerHTML = content
+            }
+        }
+
+        function getApplicationsTable() {
+            const res = new XMLHttpRequest()
+            res.open("GET", "http://localhost:8000/applicationForms")
+            res.send()
+            res.onload = function () {
+                let allApplications = JSON.parse(this.responseText)
+                let content = ""
+                for (i = 0; i < allApplications.length; i++) {
+                    content += "<tr>"
+                    content += "<th scope='row'>" + allApplications[i].applicationFormBloggerId + "</th>"
+                    content += "<td>" + allApplications[i].applicationFormBloggerReceiptDate + "</td>"
+                    content += "<td>" + allApplications[i].applicationFormBloggerUpdateDate + "</td>"
+                    content += "<td style='color:" + allApplications[i].applicationBloggerStatus.applicationBloggerStatusColor + "'>" + allApplications[i].applicationBloggerStatus.applicationBloggerStatus + "</td>"
+                    content += "<td>" + allApplications[i].users.userFirstName + " " + allApplications[i].users.userSurname + "</td>"
+                    content += "<td><a class='btn btn-primary' href='/detailsApplicationFormBloggerAdmin/" + allApplications[i].applicationFormBloggerId + "'>Details</a>"
+                    content += "</td>"
+                    content += "</tr>"
+                }
+                document.querySelector(".applicationsForBloggerTable").innerHTML = content
+            }
+        }
+
+        function getFeedbackTable() {
+            const res = new XMLHttpRequest()
+            res.open("GET", "http://localhost:8000/feedback")
+            res.send()
+            res.onload = function () {
+                let allFeedback = JSON.parse(this.responseText)
+                let content = ""
+                for (i = 0; i < allFeedback.length; i++) {
+                    content += "<tr>"
+                    content += "<th scope='row'>" + allFeedback[i].feedbackId + "</th>"
+                    content += "<td>" + allFeedback[i].feedbackName + "</td>"
+                    content += "<td>" + allFeedback[i].feedbackEmail + "</td>"
+                    content += "<td>" + allFeedback[i].feedbackSubject + "</td>"
+                    content += "<td th:style='color: '" + allFeedback[i].feedbackStatus.feedbackStatusColor + ">" + allFeedback[i].feedbackStatus.feedbackStatus + "</td>"
+                    content += "<td><a class='btn btn-primary' href='/detailsFeedbackAdmin/" + allFeedback[i].feedbackId + "'>Details</a></td>"
+                    content += "</tr>"
+                }
+                document.querySelector(".feedbackTable").innerHTML = content
+            }
+        }
+
+        function getCommentsTable() {
+            const res = new XMLHttpRequest()
+            res.open("GET", "http://localhost:8000/comments")
+            res.send()
+            res.onload = function () {
+                let allComments = JSON.parse(this.responseText)
+                let content = ""
+                for (i = 0; i < allComments.length; i++) {
+                    content += "<tr>"
+                    content += "<th scope='row'>" + allComments[i].commentId + "</th>"
+                    content += "<td>" + allComments[i].commentText + "</td>"
+                    content += "<td>" + allComments[i].author.userFirstName + " " + allComments[i].author.userSurname + "</td>"
+                    content += "<td>" + allComments[i].commentCreateDate + "</td>"
+                    content += "<td>"
+                    content += "<button type='button' class='btn btn-danger deleteCommentModal' data-id='" + allComments[i].commentId + "' data-bs-toggle='modal' data-bs-target='#deleteCommentModal'>Delete</button>"
+                    content += "</td>"
+                    content += "</tr>"
+                }
+                document.querySelector(".commentsTable").innerHTML = content
+            }
+        }
+    </script>
 </body>
 </html>

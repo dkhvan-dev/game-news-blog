@@ -65,6 +65,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getUserByEmail(String userEmail) {
+        User user = userRepository.findAllByUserEmail(userEmail);
+        if (user != null) {
+            return user;
+        }
+        return null;
+    }
+
+    @Override
     public String swapAvatar(MultipartFile userImageToken, User user) {
         if (uploadUserImage(userImageToken, user)) {
             userRepository.save(user);
@@ -98,8 +107,8 @@ public class UserServiceImpl implements UserService {
         List<Role> roles = new ArrayList<>();
         roles.add(defaultRole);
         if (checkUser == null) {
-            DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-            Date birthdate = format.parse(userBirthdate);
+            DateTimeFormatter pattern = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate birthdate = LocalDate.parse(userBirthdate, pattern);
             user.setUserBirthdate(birthdate);
             user.setUserPassword(passwordEncoder.encode(user.getPassword()));
             user.setRoles(roles);
@@ -133,7 +142,7 @@ public class UserServiceImpl implements UserService {
             String userImage = userImageToken + ".jpg";
             if (multipartFile.getContentType().equals("image/jpeg") || multipartFile.getContentType().equals("image/png")) {
                 try {
-                    Path path = Paths.get(targetURL + "/" + userImage);
+                    Path path = Paths.get(targetURL + "/avatars/" + userImage);
                     byte[] bytes = multipartFile.getBytes();
                     Files.write(path, bytes);
                     user.setUserAvatar(userImageToken);

@@ -10,6 +10,7 @@ import java.util.List;
 public interface UserService extends UserDetailsService {
     List<User> getAllUsers();
     User getUserById(Long userId);
+    User getUserByEmail(String userEmail);
     String swapAvatar(MultipartFile userImageToken, User user);
     String editUser(User user, String oldPassword, String newPassword, String reNewPassword);
     User signUp(User user, String userBirthdate) throws ParseException;

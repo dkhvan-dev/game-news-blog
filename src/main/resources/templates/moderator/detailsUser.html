@@ -22,21 +22,16 @@
                 <div class="alert alert-primary" role="alert" th:if="${param.errorEditBlog}">
                     It was not possible to edit the news, check the correctness of the entered data!
                 </div>
-                <form class="form-control mb-5" th:action="@{'/editBlogAdmin'}" method="post" enctype="multipart/form-data">
-                    <input type="hidden" name="blogId" th:value="${blog.blogId}">
+                <form class="form-control mb-5" th:action="@{'/updateUser'}" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="userId" th:value="${user.userId}">
                     <div class="mt-3">
-                        <label>Title:
-                            <input type="text" class="form-control" name="blogTitle" th:value="${blog.blogTitle}" th:placeholder="${blog.blogTitle}" required>
+                        <label>Email:
+                            <input type="text" class="form-control" name="userEmail" th:value="${user.userEmail}" readonly>
                         </label>
                     </div>
                     <div class="mt-3">
-                        <label>Description:
-                            <textarea class="form-control" name="blogDescription" th:text="${blog.blogDescription}"></textarea>
-                        </label>
-                    </div>
-                    <div class="mt-3">
-                        <label>Create date:
-                            <input type="date" class="form-control" name="createDate" th:value="${blog.blogCreateDate}" readonly>
+                        <label>Full name:
+                            <input type="text" class="form-control" name="userFirstName" th:value="${user.userFirstName}" readonly>
                         </label>
                     </div>
                     <div class="mt-3">
@@ -52,7 +47,7 @@
                         </label>
                     </div>
                     <div class="mt-3">
-                        <select class="form-select mt-3" name="games">
+                        <select class="form-select mt-3" aria-label="Default select example" name="games">
                             <option th:each="game : ${allGames}" th:text="${game.gameName}" th:value="${game.gameId}" th:selected="${game.gameId == blog.getGames().getGameId()}"></option>
                         </select>
                     </div>
@@ -61,11 +56,6 @@
                             <span th:text="${blog.getUsers().getUserFirstName() + ' ' + blog.getUsers().getUserSurname()}"></span>
                             <input class="form-control" type="hidden" name="users" th:value="${blog.getUsers().getUserId()}">
                         </label>
-                    </div>
-                    <div class="mt-3">
-                        <select class="form-select mt-3" name="blogStatus">
-                            <option th:each="status : ${blogStatusList}" th:text="${status.blogStatusName}" th:value="${status.blogStatusId}" th:selected="${status.blogStatusId == blog.getBlogStatus().blogStatusId}"></option>
-                        </select>
                     </div>
                     <button class="btn btn-primary mt-3">Edit blog</button>
                 </form>

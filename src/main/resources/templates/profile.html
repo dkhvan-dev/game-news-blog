@@ -33,7 +33,7 @@
                     <label>Avatar: <br>
                         <input class="form-control" type="file" name="userImageToken">
                     </label>
-                    <button class="btn btn-primary mt-3">Swap avatar</button>
+                    <button class="btn btn-primary mx-lg-3">Swap avatar</button>
                 </div>
             </form>
             <form class="form-control col-6" th:action="@{'/editUser'}" method="post">
@@ -71,7 +71,7 @@
                 <a th:href="@{'/signOut'}" class="btn btn-danger mt-3">Logout</a>
             </form>
 
-            <div class="mt-3">
+            <div class="mt-3" sec:authorize="!hasRole('ROLE_BLOGGER')">
                 <button class="btn btn-primary" type="button" data-bs-toggle="collapse"
                         data-bs-target="#applicationFormBlogger" aria-expanded="false">
                     Application for blogger's role

@@ -10,8 +10,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import springbootcamp.mainfinalproject.service.FileUploadService;
-import springbootcamp.mainfinalproject.service.impl.FileUploadServiceImpl;
 import springbootcamp.mainfinalproject.service.impl.UserServiceImpl;
 
 @Configuration
@@ -49,6 +47,7 @@ public class SecurityConfig {
                 .logoutSuccessUrl("/signIn");
 
         http.csrf().disable();
+
         return http.build();
     }
 

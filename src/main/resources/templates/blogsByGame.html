@@ -87,8 +87,10 @@
 	<script>
 		function getAllBlogsByGame() {
 			const result = new XMLHttpRequest();
-			var url = document.location.href.charAt(document.location.href.length-1)
-			result.open("GET", "http://localhost:8000/blogs/byGame/" + url)
+			var url = document.location.href
+			let sections = url.split('/');
+			let lastSection = sections.pop();
+			result.open("GET", "http://localhost:8000/blogs/byGame/" + lastSection)
 			result.send()
 			result.onload = function () {
 				let allBlogsByGame = JSON.parse(this.responseText)
@@ -117,7 +119,9 @@
 			result.onload = function () {
 				let allGames = JSON.parse(this.responseText)
 				let content = ""
-				var selectedGameId = document.location.href.charAt(document.location.href.length-1)
+				var url = document.location.href
+				let sections = url.split('/');
+				let selectedGameId = sections.pop();
 				for (i = 0; i < allGames.length; i++) {
 					content += "<li>"
 					if (allGames[i].gameId == selectedGameId) {
