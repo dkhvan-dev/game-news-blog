@@ -13,10 +13,17 @@
     </header>
     <!-- Header section end -->
 
-    <main class="d-flex flex-column">
+    <main class="d-flex flex-column adminPanel">
         <!-- ADDNEWS ALERT -->
         <div class="alert alert-danger" role="alert" th:if="${param.errorAddNews}">
             Couldn't add a news item. Check the correctness of the entered data!
+        </div>
+        <!-- BLOG -->
+        <div class="alert alert-success" role="alert" th:if="${param.successRejectedBlog}">
+            Blog was rejected successfully!
+        </div>
+        <div class="alert alert-success" role="alert" th:if="${param.successDeleteBlog}">
+            Blog was deleted successfully!
         </div>
         <!-- ADDGAME ALERT -->
         <div class="alert alert-danger" role="alert" th:if="${param.errorAddGame}">
@@ -61,7 +68,7 @@
                                             <input type="text" class="form-control" name="newsTitle" required>
                                         </label>
                                         <label class="form-label mt-3">Description:
-                                            <textarea class="form-control" name="newsDescription"></textarea>
+                                            <textarea id="tinyMceTextarea" class="form-control" name="newsDescription"></textarea>
                                         </label>
                                         <select class="form-select mt-3 allGames" name="game">
 
@@ -135,93 +142,93 @@
 
                     <!-- AddGame Modal -->
                     <div class="modal fade" id="addGameModal" tabindex="-1" aria-hidden="true">
-                        <form class="form-control" th:action="@{'/addGame'}" method="post" enctype="multipart/form-data">
-                            <div class="modal-dialog">
+                        <div class="modal-dialog">
+                            <form class="form-control" th:action="@{'/addGame'}" method="post" enctype="multipart/form-data">
                                 <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">Add game</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Add game</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="mt-3">
+                                        <label>Name:
+                                            <input type="text" class="form-control" name="gameName" required>
+                                        </label>
                                     </div>
-                                    <div class="modal-body">
-                                        <div class="mt-3">
-                                            <label>Name:
-                                                <input type="text" class="form-control" name="gameName" required>
-                                            </label>
-                                        </div>
-                                        <div class="mt-3">
-                                            <label>Age:
-                                                <input type="number" class="form-control" name="gameAge" required>
-                                            </label>
-                                        </div>
-                                        <div class="mt-3">
-                                            <label class="form-label">Image:
-                                                <input class="form-control" type="file" name="gameImageToken">
-                                            </label>
-                                        </div>
-                                        <div class="mt-3">
-                                            <label>Description:
-                                                <textarea class="form-control" name="gameDescription"></textarea>
-                                            </label>
-                                        </div>
-                                        <div class="mt-3 allPlatforms">
-                                            <span>Platform:</span>
-
-                                        </div>
-                                        <div class="mt-3 allGenres">
-                                            <span>Genre:</span>
-
-                                        </div>
-                                        <div class="mt-3">
-                                            <span>Game requirements:</span>
-                                            <label class="form-label mt-3">
-                                                Operation system:
-                                                <input class="form-control" type="text" name="gameRequirementsOS">
-                                            </label>
-                                            <label class="form-label mt-3">
-                                                CPU:
-                                                <input class="form-control" type="text" name="gameRequirementsCPU">
-                                            </label>
-                                            <label class="form-label mt-3">
-                                                Memory:
-                                                <input class="form-control" type="text" name="gameRequirementsMemory">
-                                            </label>
-                                            <label class="form-label mt-3">
-                                                GPU:
-                                                <input class="form-control" type="text" name="gameRequirementsGPU">
-                                            </label>
-                                            <label class="form-label mt-3">
-                                                Storage:
-                                                <input class="form-control" type="text" name="gameRequirementsStorage">
-                                            </label>
-                                        </div>
-
-                                        <div class="mt-3">
-                                            <span>Game rating</span>
-                                            <label class="form-label mt-3">
-                                                Gameplay:
-                                                <input class="form-control" type="number" step="0.1" name="gameRatingGameplay">
-                                            </label>
-                                            <label class="form-label mt-3">
-                                                Graphics:
-                                                <input class="form-control" type="number" step="0.1" name="gameRatingGraphics">
-                                            </label>
-                                            <label class="form-label mt-3">
-                                                Difficulty:
-                                                <input class="form-control" type="number" step="0.1" name="gameRatingDifficulty">
-                                            </label>
-                                            <label class="form-label mt-3">
-                                                Average rating:
-                                                <input class="form-control" type="number" step="0.1" name="gameRatingAvg">
-                                            </label>
-                                        </div>
+                                    <div class="mt-3">
+                                        <label>Age:
+                                            <input type="number" class="form-control" name="gameAge" required>
+                                        </label>
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <button class="btn btn-primary">Add game</button>
+                                    <div class="mt-3">
+                                        <label class="form-label">Image:
+                                            <input class="form-control" type="file" name="gameImageToken">
+                                        </label>
+                                    </div>
+                                    <div class="mt-3">
+                                        <label>Description:
+                                            <textarea id="tinyMceTextarea" class="form-control" name="gameDescription"></textarea>
+                                        </label>
+                                    </div>
+                                    <div class="mt-3 allPlatforms">
+                                        <span>Platform:</span>
+
+                                    </div>
+                                    <div class="mt-3 allGenres">
+                                        <span>Genre:</span>
+
+                                    </div>
+                                    <div class="mt-3">
+                                        <span>Game requirements:</span>
+                                        <label class="form-label mt-3">
+                                            Operation system:
+                                            <input class="form-control" type="text" name="gameRequirementsOS">
+                                        </label>
+                                        <label class="form-label mt-3">
+                                            CPU:
+                                            <input class="form-control" type="text" name="gameRequirementsCPU">
+                                        </label>
+                                        <label class="form-label mt-3">
+                                            Memory:
+                                            <input class="form-control" type="text" name="gameRequirementsMemory">
+                                        </label>
+                                        <label class="form-label mt-3">
+                                            GPU:
+                                            <input class="form-control" type="text" name="gameRequirementsGPU">
+                                        </label>
+                                        <label class="form-label mt-3">
+                                            Storage:
+                                            <input class="form-control" type="text" name="gameRequirementsStorage">
+                                        </label>
+                                    </div>
+
+                                    <div class="mt-3">
+                                        <span>Game rating</span>
+                                        <label class="form-label mt-3">
+                                            Gameplay:
+                                            <input class="form-control" type="number" step="0.1" name="gameRatingGameplay">
+                                        </label>
+                                        <label class="form-label mt-3">
+                                            Graphics:
+                                            <input class="form-control" type="number" step="0.1" name="gameRatingGraphics">
+                                        </label>
+                                        <label class="form-label mt-3">
+                                            Difficulty:
+                                            <input class="form-control" type="number" step="0.1" name="gameRatingDifficulty">
+                                        </label>
+                                        <label class="form-label mt-3">
+                                            Average rating:
+                                            <input class="form-control" type="number" step="0.1" name="gameRatingAvg">
+                                        </label>
                                     </div>
                                 </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button class="btn btn-primary">Add game</button>
+                                </div>
                             </div>
-                        </form>
+                            </form>
+                        </div>
                     </div>
 
                     <!-- ALL GAMES TABLE -->
@@ -262,23 +269,6 @@
                             </div>
                         </div>
                     </form>
-
-                    <script>
-                        $(document).on("click", ".deleteGameModal", function () {
-                            var gameId = $(this).data("id");
-                            $(".modal-body #gameId").val( gameId );
-                        });
-
-                        $(document).on("click", ".deleteNewsModal", function () {
-                            var newsId = $(this).data("id");
-                            $(".modal-body #newsId").val( newsId );
-                        });
-
-                        $(document).on("click", ".deleteBlogModal", function () {
-                            var blogId = $(this).data("id");
-                            $(".modal-body #blogId").val( blogId );
-                        });
-                    </script>
                 </div>
             </div>
         </div>
@@ -300,6 +290,7 @@
                             <th scope="col">Create date</th>
                             <th scope="col">Update date</th>
                             <th scope="col">Game</th>
+                            <th scope="col">Status</th>
                             <th scope="col">Details</th>
                             <th scope="col">Delete</th>
                         </tr>
@@ -310,9 +301,9 @@
                     </table>
 
                     <!-- Delete Blog Modal -->
-                    <form th:action="@{'/deleteBlogAdmin'}" method="post">
-                        <div class="modal fade" id="deleteBlogAdmin" tabindex="-1" aria-hidden="true">
-                            <div class="modal-dialog">
+                    <div class="modal fade" id="deleteBlogAdmin" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <form th:action="@{'/deleteBlogAdmin'}" method="post">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title">Delete Blog</h5>
@@ -327,9 +318,9 @@
                                         <button class="btn btn-danger">Delete Blog</button>
                                     </div>
                                 </div>
-                            </div>
+                            </form>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -433,47 +424,43 @@
                             </form>
                         </div>
                     </div>
-                    <script>
-                        $(document).on("click", ".deleteCommentModal", function () {
-                            var commentId = $(this).data("id");
-                            $(".modal-body #commentId").val(commentId);
-                        });
-                    </script>
                 </div>
             </div>
         </div>
 
         <!-- Users Collapse -->
-<!--        <div class="d-flex">-->
-<!--            <div class="admin-collapse">-->
-<!--                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#usersAdmin" aria-expanded="false">-->
-<!--                    Users-->
-<!--                </button>-->
-<!--            </div>-->
-<!--            <div class="collapse admin-collapse__show" id="usersAdmin">-->
-<!--                <div class="card card-body">-->
-<!--                    &lt;!&ndash; ALL Users TABLE &ndash;&gt;-->
-<!--                    <table class="table">-->
-<!--                        <thead>-->
-<!--                        <tr>-->
-<!--                            <th scope="col">ID</th>-->
-<!--                            <th scope="col">Email</th>-->
-<!--                            <th scope="col">Full name</th>-->
-<!--                            <th scope="col">Details</th>-->
-<!--                        </tr>-->
-<!--                        </thead>-->
-<!--                        <tbody class="usersTable">-->
-<!--                            <tr th:each="user : ${allUsers}">-->
-<!--                                <th scope="row" th:text="${user.userId}"></th>-->
-<!--                                <td th:text="${user.userEmail}"></td>-->
-<!--                                <td th:text="${user.userFirstName + ' ' + user.userSurname}"></td>-->
-<!--                                <td><a th:href="@{'/detailsUser/' + ${user.userId}}" class="btn btn-primary">Details</a></td>-->
-<!--                            </tr>-->
-<!--                        </tbody>-->
-<!--                    </table>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
+        <div class="d-flex" sec:authorize="hasRole('ROLE_ADMIN')">
+            <div class="admin-collapse">
+                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#usersAdmin" aria-expanded="false">
+                    Users
+                </button>
+            </div>
+            <div class="collapse admin-collapse__show" id="usersAdmin">
+                <div class="card card-body">
+                    <!-- ALL Users TABLE -->
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Full name</th>
+                            <th scope="col">Roles</th>
+                            <th scope="col">Details</th>
+                        </tr>
+                        </thead>
+                        <tbody class="usersTable">
+                            <tr th:each="user : ${allUsers}">
+                                <th scope="row" th:text="${user.userId}"></th>
+                                <td th:text="${user.userEmail}"></td>
+                                <td th:text="${user.userFirstName + ' ' + user.userSurname}"></td>
+                                <td><span th:each="role : ${user.getRoles()}" th:text="${role.roleName}"></span></td>
+                                <td><a th:href="@{'/detailsUserAdmin/' + ${user.userId}}" class="btn btn-primary">Details</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </main>
 
     <!-- Footer section -->
@@ -499,6 +486,10 @@
         }
 
         function getAllNews() {
+            $(document).on("click", ".deleteNewsModal", function () {
+                var newsId = $(this).data("id");
+                $(".modal-body #newsId").val(newsId);
+            });
             const result = new XMLHttpRequest()
             result.open("GET", "http://localhost:8000/news")
             result.send()
@@ -512,7 +503,7 @@
                     content += "<td>" + allNews[i].newsCreateDate + "</td>"
                     content += "<td>" + allNews[i].game.gameName + "</td>"
                     content += "<td><a class='btn btn-primary' th:href='/detailsNewsAdmin/" + allNews[i].newsId + "'>Details</a></td>"
-                    content += "<td><button type='button' class='btn btn-danger deleteNewsModal' data-bs-toggle='modal' data-bs-target='#deleteNewsAdmin' th:data-id='" + allNews[i].newsId + "'>Delete</button></td>"
+                    content += "<td><button type='button' class='btn btn-danger deleteNewsModal' data-bs-toggle='modal' data-bs-target='#deleteNewsAdmin' data-id='" + allNews[i].newsId + "'>Delete</button></td>"
                     content += "</tr>"
                 }
                 document.querySelector(".allNews").innerHTML = content
@@ -554,6 +545,10 @@
         }
 
         function getGamesTable() {
+            $(document).on("click", ".deleteGameModal", function () {
+                var gameId = $(this).data("id");
+                $(".modal-body #gameId").val( gameId );
+            });
             const result = new XMLHttpRequest()
             result.open("GET", "http://localhost:8000/games")
             result.send()
@@ -588,6 +583,10 @@
         }
 
         function getBlogsTable() {
+            $(document).on("click", ".deleteBlogModal", function () {
+                var blogId = $(this).data("id");
+                $(".modal-body #blogId").val( blogId );
+            });
             const resBlog = new XMLHttpRequest()
             resBlog.open("GET", "http://localhost:8000/blogs/byStatus/1")
             resBlog.send()
@@ -601,6 +600,7 @@
                     content += "<td>" + allBlogs[i].blogCreateDate + "</td>"
                     content += "<td>" + allBlogs[i].blogUpdateDate + "</td>"
                     content += "<td>" + allBlogs[i].games.gameName + "</td>"
+                    content += "<td>" + allBlogs[i].blogStatus.blogStatusName + "</td>"
                     content += "<td><a class='btn btn-primary' href='/detailsBlogAdmin/" + allBlogs[i].blogId + "'>Details</a></td>"
                     content += "<td><button type='button' class='btn btn-danger deleteBlogModal' data-bs-toggle='modal' data-bs-target='#deleteBlogAdmin' data-id='" + allBlogs[i].blogId + "'>Delete</button></td>"
                     content += "</tr>"
@@ -644,7 +644,7 @@
                     content += "<td>" + allFeedback[i].feedbackName + "</td>"
                     content += "<td>" + allFeedback[i].feedbackEmail + "</td>"
                     content += "<td>" + allFeedback[i].feedbackSubject + "</td>"
-                    content += "<td th:style='color: '" + allFeedback[i].feedbackStatus.feedbackStatusColor + ">" + allFeedback[i].feedbackStatus.feedbackStatus + "</td>"
+                    content += "<td style='color: " + allFeedback[i].feedbackStatus.feedbackStatusColor + "'>" + allFeedback[i].feedbackStatus.feedbackStatus + "</td>"
                     content += "<td><a class='btn btn-primary' href='/detailsFeedbackAdmin/" + allFeedback[i].feedbackId + "'>Details</a></td>"
                     content += "</tr>"
                 }
@@ -653,6 +653,10 @@
         }
 
         function getCommentsTable() {
+            $(document).on("click", ".deleteCommentModal", function () {
+                var commentId = $(this).data("id");
+                $(".modal-body #commentId").val(commentId);
+            });
             const res = new XMLHttpRequest()
             res.open("GET", "http://localhost:8000/comments")
             res.send()

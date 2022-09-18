@@ -2,10 +2,20 @@
 /* Template default CSS
 /*----------------------------------------*/
 
+@font-face {
+	font-family: 'Modern Serif';
+	src: url("../fonts/Modern-Serif.ttf") format(".ttf");
+}
+
+@font-face {
+	font-family: 'Modern Serif Italic';
+	src: url("../fonts/Modern-Serif-Italic.ttf") format(".ttf");
+}
+
 html,
 body {
 	height: 100%;
-	font-family: 'Roboto', sans-serif;
+	font-family: 'Modern Serif';
 	-webkit-font-smoothing: antialiased;
 	font-smoothing: antialiased;
 }
@@ -46,7 +56,7 @@ h6 {
 }
 
 p {
-	font-size: 15px;
+	font-size: 18px;
 	color: #585858;
 	line-height: 1.6;
 	font-weight: 500;
@@ -267,7 +277,7 @@ main {
 	background: #081624;
 	width: 100%;
 	z-index: 99;
-	padding: 15px 15px 0;
+	padding: 15px 15px 15px 0;
 }
 
 .header-warp {
@@ -324,13 +334,14 @@ main {
 
 .user-panel {
 	float: right;
-	font-size: 16px;
+	font-size: 20px;
 	font-weight: 500;
 	color: #fff;
 	padding-top: 3px;
 }
 
 .user-panel a {
+	padding: 10px 40px 10px 40px;
 	color: #fff;
 }
 
@@ -339,6 +350,9 @@ main {
 }
 
 .user-panel a:hover {
+	border: 1px solid #b01ba5;
+	border-radius: 10px;
+	transition: .6s ease;
 	color: #b01ba5;
 }
 
@@ -355,13 +369,11 @@ main {
 
 .main-menu li a {
 	display: block;
-	font-size: 16px;
+	font-size: 20px;
 	font-weight: 500;
 	color: #fff;
-	margin-right: 40px;
-	padding-bottom: 28px;
 	position: relative;
-	padding-right: 20px;
+	padding: 10px 40px 10px 40px;
 }
 
 .main-menu li a.main-menu_dropdown:after {
@@ -382,6 +394,9 @@ main {
 }
 
 .main-menu li a:hover {
+	border: 1px solid #b01ba5;
+	border-radius: 10px;
+	transition: .6s ease;
 	color: #b01ba5;
 }
 
@@ -1172,7 +1187,7 @@ main {
 }
 
 .game-item .read-more, .big-blog-item .read-more {
-	font-size: 15px;
+	font-size: 18px;
 	text-transform: uppercase;
 	font-weight: 700;
 	font-style: italic;
@@ -1271,7 +1286,7 @@ main {
 }
 
 .game-single-content .gs-title {
-	font-size: 60px;
+	font-size: 36px;
 	color: #b01ba5;
 	margin-bottom: 40px;
 }

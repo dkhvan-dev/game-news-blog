@@ -97,4 +97,19 @@ public class GameServiceImpl implements GameService {
             blogRepository.deleteAll(blogs);
         }
     }
+
+    @Override
+    public List<Game> getAllGamesByKeyword(String keyword) {
+        return gameRepository.searchAllByGameNameContainingIgnoreCase(keyword);
+    }
+
+    @Override
+    public List<Game> getAllGamesByGenreByKeyword(Long genreId, String keyword) {
+        return gameRepository.searchAllByGenresGenreIdAndGameNameContainingIgnoreCase(genreId, keyword);
+    }
+
+    @Override
+    public List<Game> getAllGamesByPlatformByKeyword(Long platformId, String keyword) {
+        return gameRepository.searchAllByPlatformPlatformIdAndGameNameContainingIgnoreCase(platformId, keyword);
+    }
 }

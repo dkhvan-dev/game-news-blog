@@ -29,7 +29,6 @@
 	</section>
 	<!-- Page top end-->
 
-	<!-- Games section -->
 	<section class="games-section">
 		<div class="container">
 			<a th:href="@{'/addBlog'}" class="btn btn-primary w-25" sec:authorize="hasRole('ROLE_BLOGGER')">Add blog</a>
@@ -70,20 +69,6 @@
 			</div>
 		</div>
 	</section>
-	<!-- Games end-->
-
-	<!-- Newsletter section -->
-	<section class="newsletter-section">
-		<div class="container">
-			<h2>Subscribe to our newsletter</h2>
-			<form class="newsletter-form">
-				<input type="text" placeholder="ENTER YOUR E-MAIL">
-				<button class="site-btn">subscribe  <img src="img/icons/double-arrow.png" alt="#"/></button>
-			</form>
-		</div>
-	</section>
-	<!-- Newsletter section end -->
-
 
 	<!-- Footer section -->
 	<footer class="footer-section" th:insert="~{/toInsert/footer.html}">

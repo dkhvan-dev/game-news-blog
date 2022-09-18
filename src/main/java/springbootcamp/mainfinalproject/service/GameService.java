@@ -14,4 +14,7 @@ public interface GameService {
     Game addNewGame(MultipartFile gameImage, Game game, GameRequirements gameRequirements, GameRating gameRating);
     Game editGame(MultipartFile gameImageToken, Game game, GameRequirements gameRequirements, GameRating gameRating);
     void deleteGame(Long gameId);
+    List<Game> getAllGamesByKeyword(String keyword);
+    List<Game> getAllGamesByGenreByKeyword(Long genreId, String keyword);
+    List<Game> getAllGamesByPlatformByKeyword(Long platformId, String keyword);
 }

@@ -25,7 +25,6 @@ public class NewsController {
     public ResponseEntity<NewsDto> getNewsById(@PathVariable(name = "newsId") Long newsId) {
         return new ResponseEntity<>(newsService.getNewsById(newsId), HttpStatus.OK);
     }
-
     @GetMapping("/byGame/{gameId}")
     public ResponseEntity<List<NewsDto>> getAllNewsByGame(@PathVariable(name = "gameId") Long gameId) {
         return new ResponseEntity<>(newsService.getAllNewsByGame(gameId), HttpStatus.OK);

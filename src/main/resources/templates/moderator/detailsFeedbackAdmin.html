@@ -13,7 +13,7 @@
     </header>
     <!-- Header section end -->
 
-    <main class="d-flex flex-column">
+    <main class="d-flex flex-column profileSection">
         <div class="container mt-3">
             <div>
                 <div class="alert alert-success" role="alert" th:if="${param.success}">
@@ -22,7 +22,7 @@
                 <div class="alert alert-primary" role="alert" th:if="${param.errorEditFeedback}">
                     It wasn't possible to edit the feedback!
                 </div>
-                <form class="form-control mb-5" th:action="@{'/editFeedback'}" method="post">
+                <form class="mb-5" th:action="@{'/editFeedback'}" method="post">
                     <input type="hidden" name="feedbackId" th:value="${feedback.feedbackId}">
                     <div class="mt-3">
                         <label>Name:
@@ -45,7 +45,7 @@
                         </label>
                     </div>
                     <div class="mt-3">
-                        <input type="text" th:value="${feedback.getFeedbackStatus().feedbackStatus}" th:if="${!canUpdateFeedback}"
+                        <input type="text" class="form-control" th:value="${feedback.getFeedbackStatus().feedbackStatus}" th:if="${!canUpdateFeedback}"
                                th:style="'color: ' + ${feedback.getFeedbackStatus().getFeedbackStatusColor()}"
                                readonly>
                         <select class="form-select mt-3" name="feedbackStatus" th:if="${canUpdateFeedback}">

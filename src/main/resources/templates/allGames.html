@@ -32,7 +32,15 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-xl-7 col-lg-8 col-md-7">
-					<div class="row allGames">
+					<div class="col-12 allGamesByKeyword">
+						<form action="" method="get">
+							<input type='search' name="keyword" id="keyword" placeholder="Game name">
+							<button type="submit" class="btn btn-info">Search</button>
+						</form>
+					</div>
+				</div>
+				<div class="col-xl-7 col-lg-8 col-md-7">
+					<div class="row allGames mt-3">
 
 					</div>
 				</div>
@@ -62,7 +70,6 @@
 	<!-- Games end-->
 
 
-	<!-- Featured section -->
 	<section class="featured-section">
 		<div class="featured-bg set-bg" data-setbg="img/featured-bg.jpg"></div>
 		<div class="featured-box">
@@ -71,21 +78,6 @@
 			</div>
 		</div>
 	</section>
-	<!-- Featured section end-->
-
-
-	<!-- Newsletter section -->
-	<section class="newsletter-section">
-		<div class="container">
-			<h2>Subscribe to our newsletter</h2>
-			<form class="newsletter-form">
-				<input type="text" placeholder="ENTER YOUR E-MAIL">
-				<button class="site-btn">subscribe  <img src="img/icons/double-arrow.png" alt="#"/></button>
-			</form>
-		</div>
-	</section>
-	<!-- Newsletter section end -->
-
 
 	<!-- Footer section -->
 	<footer class="footer-section" th:insert="~{/toInsert/footer.html}">
@@ -99,18 +91,19 @@
 	<script>
 		function getAllGames() {
 			const result = new XMLHttpRequest();
-			result.open("GET", "http://localhost:8000/games");
+			let keyword = document.location.href.split("/").pop()
+			result.open("GET", "http://localhost:8000/games/keyword=" + keyword.substring(keyword.indexOf("=")+1))
 			result.send();
 			result.onload = function() {
-				let allGames = JSON.parse(this.responseText);
-				let content = "";
+				let allGames = JSON.parse(this.responseText)
+				let content = ""
 				for (i = 0; i < allGames.length; i++) {
 					content += "<div class='col-lg-4 col-md-6'>"
 					content += "<div class='game-item'>"
 					content += "<img src='/getGameImage/" + allGames[i].gameImage + "' alt='#'>"
 					content += "<h5>" + allGames[i].gameName + "</h5>"
 					content += "<p>Age restriction: <span class='age-limit'>" + allGames[i].gameAge + "+</span></p>"
-					content += "<a href='/detailsGame/" + allGames[i].gameId + "' class='read-more'>Read More <img src='img/icons/double-arrow.png' alt='#'/></a>"
+					content += "<a href='/detailsGame/" + allGames[i].gameId + "' class='read-more'>Read More <img src='/img/icons/double-arrow.png' alt='#'/></a>"
 					content += "</div>"
 					content += "</div>"
 				}
@@ -126,7 +119,7 @@
 				let lastNews = JSON.parse(this.responseText);
 				let content = "<div class='top-meta'>";
 				content += "<span>" + lastNews.newsCreateDate + "&nbsp;&nbsp;in&nbsp;&nbsp;</span>"
-				content += "<a href='/allGames'>Games</a>"
+				content += "<a href='/allGames/keyword?keyword='>Games</a>"
 				content += "</div>"
 				content += "<h3>" + lastNews.newsTitle + "</h3>"
 				content += "<p>" + lastNews.newsDescription + "</p>"
@@ -144,7 +137,7 @@
 				let content = ""
 				for (i = 0; i < allPlatforms.length; i++) {
 					content += "<li>"
-					content += "<a href='/gamesByPlatform/" + allPlatforms[i].platformId + "'>" + allPlatforms[i].platformName + "</a>"
+					content += "<a href='/gamesByPlatform/" + allPlatforms[i].platformId + "/keyword?keyword='>" + allPlatforms[i].platformName + "</a>"
 					content += "</li>"
 				}
 				document.querySelector(".allPlatforms").innerHTML = content;
@@ -160,7 +153,7 @@
 				let content = ""
 				for (i = 0; i < allGenres.length; i++) {
 					content += "<li>"
-					content += "<a href='/gamesByGenre/" + allGenres[i].genreId + "'>" + allGenres[i].genreName + "</a>"
+					content += "<a href='/gamesByGenre/" + allGenres[i].genreId + "/keyword?keyword='>" + allGenres[i].genreName + "</a>"
 					content += "</li>"
 				}
 				document.querySelector(".allGenres").innerHTML = content;

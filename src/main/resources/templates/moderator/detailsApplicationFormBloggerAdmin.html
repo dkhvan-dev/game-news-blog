@@ -13,7 +13,7 @@
     </header>
     <!-- Header section end -->
 
-    <main class="d-flex flex-column">
+    <main class="d-flex flex-column profileSection">
         <div class="container mt-3">
             <div class="alert alert-success" role="alert" th:if="${param.success}">
                 Updated was successfully!
@@ -22,7 +22,7 @@
                 Failed to update the application!
             </div>
             <div>
-                <form class="form-control mb-5" th:action="@{'/updateFormBlogger'}" method="post">
+                <form class="mb-5" th:action="@{'/updateFormBlogger'}" method="post">
                     <input type="hidden" name="applicationFormBloggerId" th:value="${applicationForm.applicationFormBloggerId}">
                     <div class="mt-3">
                         <label>Description: <br>

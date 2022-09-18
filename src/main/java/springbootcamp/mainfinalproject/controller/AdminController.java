@@ -36,6 +36,7 @@ public class AdminController {
     private final CommentsService commentsService;
     private final UserService userService;
     private final BlogStatusService blogStatusService;
+    private final RoleService roleService;
     private final FileUploadService fileUploadService;
     private final AppFormBloggerMapper appFormBloggerMapper;
 
@@ -77,7 +78,7 @@ public class AdminController {
         if (game != null && gameImage != null && game.getGameId() == null) {
             Game newGame = gameService.addNewGame(gameImage, game, gameRequirements, gameRating);
             if (newGame != null) {
-                return "redirect:/detailsGameAdmin/" + game.getGameId();
+                return "redirect:/detailsGameAdmin/" + game.getGameId() + "?success";
             }
         }
         return "redirect:/adminPanel?errorAddGame";
@@ -110,7 +111,7 @@ public class AdminController {
                            GameRequirements gameRequirements,
                            GameRating gameRating) {
         Game editedGame = gameService.editGame(gameImageToken, game, gameRequirements, gameRating);
-        return "redirect:/detailsGameAdmin/" + game.getGameId();
+        return "redirect:/detailsGameAdmin/" + game.getGameId() + "?success";
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -121,7 +122,7 @@ public class AdminController {
     }
 
     // NEWS
-    @PreAuthorize("hasRole('ROLE_MODERATOR')")
+    @PreAuthorize("hasAnyRole('ROLE_MODERATOR', 'ROLE_ADMIN')")
     @PostMapping("/addNews")
     public String addNews(News news) {
         News newNews = newsService.addNews(news);
@@ -131,14 +132,14 @@ public class AdminController {
         return "redirect:/adminPanel?errorAddNews";
     }
 
-    @PreAuthorize("hasRole('ROLE_MODERATOR')")
+    @PreAuthorize("hasAnyRole('ROLE_MODERATOR', 'ROLE_ADMIN')")
     @PostMapping("/deleteNewsAdmin")
     public String deleteNews(@RequestParam(name = "newsId") Long newsId) {
         newsService.deleteNews(newsId);
         return "redirect:/adminPanel";
     }
 
-    @PreAuthorize("hasRole('ROLE_MODERATOR')")
+    @PreAuthorize("hasAnyRole('ROLE_MODERATOR', 'ROLE_ADMIN')")
     @GetMapping("/detailsNewsAdmin/{newsId}")
     public String detailsNewsAdminPage(@PathVariable(name = "newsId") Long newsId,
                                        Model model) {
@@ -154,7 +155,7 @@ public class AdminController {
         return "redirect:/adminPanel";
     }
 
-    @PreAuthorize("hasRole('ROLE_MODERATOR')")
+    @PreAuthorize("hasAnyRole('ROLE_MODERATOR', 'ROLE_ADMIN')")
     @PostMapping("/editNews")
     public String editNews(News news, @RequestParam(name = "createNews") String newsCreateDate, @RequestParam(name = "author") Long authorId) {
         News editedNews = newsService.editNews(news, newsCreateDate);
@@ -166,7 +167,7 @@ public class AdminController {
 
     // BLOGS
 
-    @PreAuthorize("hasRole('ROLE_MODERATOR')")
+    @PreAuthorize("hasAnyRole('ROLE_MODERATOR', 'ROLE_ADMIN')")
     @GetMapping("/detailsBlogAdmin/{blogId}")
     public String detailsBlogAdminPage(@PathVariable(name = "blogId") Long blogId,
                                        Model model) {
@@ -182,25 +183,30 @@ public class AdminController {
         return "redirect:/adminPanel";
     }
 
-    @PreAuthorize("hasRole('ROLE_MODERATOR')")
+    @PreAuthorize("hasAnyRole('ROLE_MODERATOR', 'ROLE_ADMIN')")
     @PostMapping("/editBlogAdmin")
     public String editBlogAdmin(Blog blog,
                                 @RequestParam(name = "blogImageToken") MultipartFile blogImageToken,
                                 @RequestParam(name = "createDate") String blogCreateDate,
                                 @RequestParam(name = "updateDate") String blogUpdateDate,
                                 @RequestParam(name = "users") Long authorId) {
-        Blog editedBlog = blogService.editBlogAdmin(blog, blogImageToken, blogCreateDate, blogUpdateDate, authorId);
-        if (editedBlog != null) {
-            return "redirect:/detailsBlogAdmin/" + blog.getBlogId() + "?success";
+        if (blog.getBlogStatus().getBlogStatusName().equals("REJECTED")) {
+            blogService.deleteBlogAdmin(blog.getBlogId());
+            return "redirect:/adminPanel?successRejectedBlog";
+        } else {
+            Blog editedBlog = blogService.editBlogAdmin(blog, blogImageToken, blogCreateDate, blogUpdateDate, authorId);
+            if (editedBlog != null) {
+                return "redirect:/detailsBlogAdmin/" + blog.getBlogId() + "?success";
+            }
         }
         return "redirect:/detailsBlogAdmin/" + blog.getBlogId() + "?errorEditBlog";
     }
 
-    @PreAuthorize("hasRole('ROLE_MODERATOR')")
+    @PreAuthorize("hasAnyRole('ROLE_MODERATOR', 'ROLE_ADMIN')")
     @PostMapping("/deleteBlogAdmin")
     public String deleteBlogAdmin(@RequestParam(name = "blogId") Long blogId) {
         blogService.deleteBlogAdmin(blogId);
-        return "redirect:/adminPanel";
+        return "redirect:/adminPanel?successDeleteBlog";
     }
 
     //APPLICATION FOR ROLE BLOGGER
@@ -211,7 +217,7 @@ public class AdminController {
         return "redirect:/profile";
     }
 
-    @PreAuthorize("hasRole('ROLE_MODERATOR')")
+    @PreAuthorize("hasAnyRole('ROLE_MODERATOR', 'ROLE_ADMIN')")
     @GetMapping("/detailsApplicationFormBloggerAdmin/{applicationFormId}")
     public String updateFormBloggerPage(@PathVariable(name = "applicationFormId") Long applicationFormId,
                                     Model model) {
@@ -226,12 +232,12 @@ public class AdminController {
                 canUpdateApplication = false;
             }
             model.addAttribute("canUpdateApplication", canUpdateApplication);
-            return "admin/detailsApplicationFormBloggerAdmin";
+            return "moderator/detailsApplicationFormBloggerAdmin";
         }
         return "redirect:/adminPanel?errorNotFoundApplication";
     }
 
-    @PreAuthorize("hasRole('ROLE_MODERATOR')")
+    @PreAuthorize("hasAnyRole('ROLE_MODERATOR', 'ROLE_ADMIN')")
     @PostMapping("/updateFormBlogger")
     public String updateFormBlogger(ApplicationFormBlogger applicationFormBlogger,
                                     @RequestParam(name = "receiptDate") String receiptDate,
@@ -245,7 +251,7 @@ public class AdminController {
     }
 
     // Feedback
-    @PreAuthorize("hasRole('ROLE_MODERATOR')")
+    @PreAuthorize("hasAnyRole('ROLE_MODERATOR', 'ROLE_ADMIN')")
     @GetMapping("/detailsFeedbackAdmin/{feedbackId}")
     public String detailsFeedbackPage(@PathVariable(name = "feedbackId") Long feedbackId,
                                       Model model) {
@@ -264,7 +270,7 @@ public class AdminController {
         return "redirect:/adminPanel?errorFeedbackNotFound";
     }
 
-    @PreAuthorize("hasRole('ROLE_MODERATOR')")
+    @PreAuthorize("hasAnyRole('ROLE_MODERATOR', 'ROLE_ADMIN')")
     @PostMapping("/editFeedback")
     public String editFeedback(Feedback feedback) {
         Feedback editedFeedback = feedbackService.editFeedback(feedback);
@@ -275,7 +281,7 @@ public class AdminController {
     }
 
     // COMMENTS
-    @PreAuthorize("hasRole('ROLE_MODERATOR')")
+    @PreAuthorize("hasAnyRole('ROLE_MODERATOR', 'ROLE_ADMIN')")
     @PostMapping("/deleteCommentAdmin")
     public String deleteCommentAdmin(@RequestParam(name = "commentId") Long commentId) {
         Comments comment = commentsService.getCommentById(commentId);
@@ -287,15 +293,30 @@ public class AdminController {
     }
 
     // USERS
-    @PreAuthorize("hasRole('ROLE_MODERATOR')")
-    @GetMapping("/detailsUser/{userId}")
+    @PreAuthorize("hasAnyRole('ROLE_MODERATOR', 'ROLE_ADMIN')")
+    @GetMapping("/detailsUserAdmin/{userId}")
     public String detailsUser(@PathVariable(name = "userId") Long userId,
                               Model model) {
         User user = userService.getUserById(userId);
         if (user != null) {
             model.addAttribute("user", user);
+            List<Role> allRoles = roleService.getAllRoles();
+            model.addAttribute("allRoles", allRoles);
         }
-        return "moderator/detailsUser";
+        return "moderator/detailsUserAdmin";
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping("/updateUserAdmin")
+    public String updateUserAdmin(@RequestParam(name = "userId") Long userId,
+                                  @RequestParam(name = "roles") List<Role> roles) {
+        User user = userService.getUserById(userId);
+        if (user != null) {
+            if (userService.updateUserAdmin(user, roles)) {
+                return "redirect:/detailsUserAdmin/" + userId + "?successUpdateUser";
+            }
+        }
+        return "redirect:/detailsUserAdmin/" + userId + "?errorUpdateUser";
     }
 
     // Load Image

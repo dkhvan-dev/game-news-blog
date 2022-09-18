@@ -23,20 +23,20 @@
               <ul class="dropdown-menu">
                 <li><a class="dropdown-item" th:href="@{'/profile'}">Profile</a></li>
                 <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" th:href="@{'/adminPanel'}" sec:authorize="hasRole('ADMIN')">Admin Panel</a></li>
-                <li><a class="dropdown-item" th:href="@{'/applicationsBloggers'}" sec:authorize="hasRole('ADMIN')">Application bloggers requests</a></li>
+                <li><a class="dropdown-item" th:href="@{'/adminPanel'}" sec:authorize="hasRole('ROLE_MODERATOR')">Admin Panel</a></li>
+                <li><a class="dropdown-item" th:href="@{'/applicationsBloggers'}" sec:authorize="hasRole('ROLE_MODERATOR')">Application bloggers requests</a></li>
                 <li><a th:href="@{'/signOut'}" class="dropdown-item text-danger">Logout</a></li>
               </ul>
             </li>
           </ul>
           <div sec:authorize="isAnonymous()">
-            <a th:href="@{'/signIn'}">Login</a> / <a th:href="@{'/signUp'}">Register</a>
+            <a th:href="@{'/signIn'}">Authentication</a>
           </div>
         </div>
         <!-- Menu -->
         <ul class="main-menu primary-menu">
           <li><a th:href="@{'/'}">Home</a></li>
-          <li><a th:href="@{'/allGames'}">Games</a></li>
+          <li><a th:href="@{'/allGames/keyword?keyword='}">Games</a></li>
           <li><a th:href="@{'/allBlogs'}">Blogs</a></li>
           <li><a th:href="@{'/allNews'}">News</a></li>
         </ul>

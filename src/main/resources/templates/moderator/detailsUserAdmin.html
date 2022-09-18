@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:insert="~{/toInsert/head.html}">
+    <title>Admin Panel</title>
+</head>
+<body>
+
+    <div th:insert="~{/toInsert/preloader.html}"></div>
+
+    <!-- Header section -->
+    <header th:insert="~{/toInsert/header.html}">
+    </header>
+    <!-- Header section end -->
+
+    <main class="d-flex flex-column profileSection">
+        <div class="container mt-3">
+            <div>
+                <div class="alert alert-success" role="alert" th:if="${param.successUpdateUser}">
+                    The user's roles were hastily changed!
+                </div>
+                <div class="alert alert-danger" role="alert" th:if="${param.errorUpdateUser}">
+                    User roles could not be changed. Maybe you don't have enough rights!
+                </div>
+                <form class="mb-5" th:action="@{'/updateUserAdmin'}" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="userId" th:value="${user.userId}">
+                    <div class="mt-3">
+                        <img class="user-avatar-img" th:src="@{'/getUserImage/' + ${user.getUserAvatar()}}">
+                    </div>
+                    <div class="mt-3">
+                        <label>Email:
+                            <input type="text" class="form-control" name="userEmail" th:value="${user.userEmail}" readonly>
+                        </label>
+                    </div>
+                    <div class="mt-3">
+                        <label>Full name:
+                            <input type="text" class="form-control" name="userFirstName" th:value="${user.userFirstName}" readonly>
+                        </label>
+                    </div>
+                    <div class="mt-3">
+                        <label>Birthdate:
+                            <input type="date" class="form-control" name="birthDate" th:value="${user.userBirthdate}" readonly>
+                        </label>
+                    </div>
+                    <div class="mt-3">
+                        <div class="form-check" th:each="role : ${allRoles}">
+                            <input class="form-check-input" type="checkbox" name="roles" th:value="${role.roleId}" th:id="${role.roleId}" th:checked="${user.getRoles().contains(role)}">
+                            <label class="form-check-label" th:for="${role.roleId}" th:text="${role.roleName}">
+                            </label>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary mt-3">Update user</button>
+                </form>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer section -->
+    <footer class="footer-section" th:insert="~{/toInsert/footer.html}">
+    </footer>
+    <!-- Footer section end -->
+
+    <div th:insert="~{/toInsert/scripts.html}"></div>
+</body>
+</html>

@@ -20,6 +20,7 @@ import springbootcamp.mainfinalproject.repository.RoleRepository;
 import springbootcamp.mainfinalproject.repository.UserRepository;
 import springbootcamp.mainfinalproject.service.FileUploadService;
 import springbootcamp.mainfinalproject.service.NewsService;
+import springbootcamp.mainfinalproject.service.RoleService;
 import springbootcamp.mainfinalproject.service.UserService;
 
 import java.nio.file.Files;
@@ -42,7 +43,7 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Autowired
-    private RoleRepository roleRepository;
+    private RoleService roleService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -83,10 +84,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String editUser(User user, String oldPassword, String newPassword, String reNewPassword) {
+    public String editUser(User user, String birthdate, String oldPassword, String newPassword, String reNewPassword) {
         if (newPassword.equals(reNewPassword)) {
             if (getCurrentUser().getUserId().equals(user.getUserId())) {
                 if (passwordEncoder.matches(oldPassword, getCurrentUser().getUserPassword())) {
+                    DateTimeFormatter pattern = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                    LocalDate userBirthDate = LocalDate.parse(birthdate, pattern);
+                    user.setUserBirthdate(userBirthDate);
                     user.setUserPassword(passwordEncoder.encode(newPassword));
                     userRepository.save(user);
                     return "success";
@@ -103,7 +107,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User signUp(User user, String userBirthdate) throws ParseException {
         User checkUser = userRepository.findAllByUserEmail(user.getUserEmail());
-        Role defaultRole = roleRepository.findAllByRoleName("ROLE_USER");
+        Role defaultRole = roleService.getRoleByName("ROLE_USER");
         List<Role> roles = new ArrayList<>();
         roles.add(defaultRole);
         if (checkUser == null) {
@@ -162,5 +166,44 @@ public class UserServiceImpl implements UserService {
             user.setUserSurname(surname);
             user.setUserPassword(password);
         }
+    }
+
+    @Override
+    public boolean updateUserAdmin(User user, List<Role> roles) {
+        Role moderator = roleService.getRoleByName("ROLE_MODERATOR");
+        Role admin = roleService.getRoleByName("ROLE_ADMIN");
+        boolean currentAdmin = false;
+        boolean currentModer = false;
+        User currentUser = getCurrentUser();
+        for (int i = 0; i < currentUser.getRoles().size(); i++) {
+            if (currentUser.getRoles().get(i).getRoleName().equals("ROLE_ADMIN")) {
+                currentAdmin = true;
+                break;
+            }
+        }
+        for (int i = 0; i < currentUser.getRoles().size(); i++) {
+            if (currentUser.getRoles().get(i).getRoleName().equals("ROLE_MODERATOR")) {
+                currentModer = true;
+                break;
+            }
+        }
+        if (user.getRoles().contains(admin) && !roles.contains(admin)) {
+            return false;
+        }
+        if (user.getRoles().contains(admin) && currentAdmin) {
+            return false;
+        }
+        if (user.getRoles().contains(admin) && currentModer) {
+            return false;
+        }
+        if (!user.getRoles().contains(admin) && roles.contains(admin)) {
+            return false;
+        }
+        if (!user.getRoles().contains(admin) && currentAdmin) {
+            user.setRoles(roles);
+            userRepository.save(user);
+            return true;
+        }
+        return false;
     }
 }

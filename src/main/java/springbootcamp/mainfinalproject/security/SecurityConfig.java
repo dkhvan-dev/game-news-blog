@@ -39,7 +39,7 @@ public class SecurityConfig {
                 .usernameParameter("user_email")
                 .passwordParameter("user_password")
                 .defaultSuccessUrl("/profile")
-                .failureUrl("/signIn?error")
+                .failureUrl("/signIn?errorAuth")
                 .loginPage("/signIn").permitAll();
 
         http.logout()
@@ -47,6 +47,11 @@ public class SecurityConfig {
                 .logoutSuccessUrl("/signIn");
 
         http.csrf().disable();
+//        http
+//                .csrf().disable()
+//                .authorizeRequests().anyRequest().authenticated()
+//                .and().httpBasic()
+//                .and().sessionManagement().disable();
 
         return http.build();
     }

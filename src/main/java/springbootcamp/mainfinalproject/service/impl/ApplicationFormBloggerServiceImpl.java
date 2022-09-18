@@ -55,7 +55,10 @@ public class ApplicationFormBloggerServiceImpl implements ApplicationFormBlogger
         if (applicationFormBlogger != null) {
             DateTimeFormatter pattern = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate receiptDate = LocalDate.parse(applicationFormBloggerReceiptDate, pattern);
-            LocalDate updateDate = LocalDate.parse(applicationFormBloggerUpdateDate, pattern);
+            LocalDate updateDate = LocalDate.now();
+            if (!applicationFormBloggerUpdateDate.equals("")) {
+                updateDate = LocalDate.parse(applicationFormBloggerUpdateDate, pattern);
+            }
             User author = userService.getUserById(authorId);
             applicationFormBlogger.setApplicationFormBloggerReceiptDate(receiptDate);
             applicationFormBlogger.setApplicationFormBloggerUpdateDate(updateDate);

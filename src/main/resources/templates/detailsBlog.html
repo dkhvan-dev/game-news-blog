@@ -41,11 +41,11 @@
 					</div>
 					<div class="geme-social-share pt-5 d-flex">
 						<p>Share:</p>
-						<a href="#"><i class="fa fa-pinterest"></i></a>
-						<a href="#"><i class="fa fa-facebook"></i></a>
-						<a href="#"><i class="fa fa-twitter"></i></a>
-						<a href="#"><i class="fa fa-dribbble"></i></a>
-						<a href="#"><i class="fa fa-behance"></i></a>
+						<a href="https://ru.pinterest.com/"><i class="fa fa-pinterest"></i></a>
+						<a href="https://www.facebook.com/"><i class="fa fa-facebook"></i></a>
+						<a href="https://twitter.com/"><i class="fa fa-twitter"></i></a>
+						<a href="https://www.twitch.tv/"><i class="fa fa-twitch"></i></a>
+						<a href="https://github.com/"><i class="fa fa-github"></i></a>
 					</div>
 				</div>
 			</div>
@@ -56,12 +56,12 @@
 				<form class="add-comment-form" th:action="@{'/addComment'}" method="post" sec:authorize="isAuthenticated()">
 					<input type="hidden" name="blogId" th:value="${blog.blogId}">
 					<div class="d-flex justify-content-between">
-						<label class="form-label mt-3 text-white" for="commentText">
+						<label class="form-label mt-3 text-white" for="tinyMceTextarea">
 							Comment:
 						</label> <br>
 						<button class="btn btn-primary">Send</button>
 					</div>
-					<textarea class="comment-text" name="commentText" id="commentText" required></textarea>
+					<textarea class="comment-text" name="commentText" id="tinyMceTextarea" required></textarea>
 				</form>
 				<div class="pt-3 added-comment" th:each="comment : ${allComments}">
 					<div class="d-flex justify-content-between col-12">
@@ -101,10 +101,7 @@
 					</div>
 				</div>
 				<script>
-					$(document).on("click", ".deleteCommentModal", function () {
-						var commentId = $(this).data("id");
-						$(".modal-body #commentId").val(commentId);
-					});
+
 				</script>
 			</div>
 		</section>
@@ -121,6 +118,10 @@
 
 	<script>
 		function getBlogInfo() {
+			$(document).on("click", ".deleteCommentModal", function () {
+				var commentId = $(this).data("id");
+				$(".modal-body #commentId").val(commentId);
+			});
 			const result = new XMLHttpRequest()
 			var url = document.location.href
 			let sections = url.split('/');

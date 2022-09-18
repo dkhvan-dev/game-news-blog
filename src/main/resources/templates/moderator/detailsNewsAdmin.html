@@ -13,7 +13,7 @@
     </header>
     <!-- Header section end -->
 
-    <main class="d-flex flex-column">
+    <main class="d-flex flex-column profileSection">
         <div class="container mt-3">
             <div>
                 <div class="alert alert-success" role="alert" th:if="${param.success}">
@@ -22,7 +22,7 @@
                 <div class="alert alert-primary" role="alert" th:if="${param.errorEditNews}">
                     It was not possible to edit the news, check the correctness of the entered data!
                 </div>
-                <form class="form-control mb-5" th:action="@{'/editNews'}" method="post" enctype="multipart/form-data">
+                <form class="mb-5" th:action="@{'/editNews'}" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="newsId" th:value="${news.newsId}">
                     <div class="mt-3">
                         <label>Title:
@@ -31,7 +31,7 @@
                     </div>
                     <div class="mt-3">
                         <label>Description:
-                            <textarea class="form-control" name="newsDescription" th:text="${news.newsDescription}"></textarea>
+                            <textarea id="tinyMceTextarea" class="form-control" name="newsDescription" th:text="${news.newsDescription}"></textarea>
                         </label>
                     </div>
                     <div class="mt-3">

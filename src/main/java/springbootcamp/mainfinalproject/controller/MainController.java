@@ -4,10 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import springbootcamp.mainfinalproject.model.*;
 import springbootcamp.mainfinalproject.model.dto.BlogDto;
@@ -53,14 +50,10 @@ public class MainController {
         return "toInsert/footer";
     }
 
+    @PreAuthorize("!hasRole('ROLE_BAN')")
     @GetMapping("/signIn")
     public String signInPage() {
         return "auth/auth";
-    }
-
-    @GetMapping("/signUp")
-    public String signUpPage() {
-        return "auth/register";
     }
 
     @PostMapping("/signUp")
@@ -78,13 +71,14 @@ public class MainController {
         return "redirect:/signUp?passwordsNotSame";
     }
 
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() && !hasRole('ROLE_BAN')")
     @GetMapping("/profile")
     public String profilePage(Model model) {
         model.addAttribute("currentUser", userService.getCurrentUser());
         return "profile";
     }
 
+    @PreAuthorize("isAuthenticated() && !hasRole('ROLE_BAN')")
     @PostMapping("/swapUserAvatar")
     public String swapUserAvatar(@RequestParam(name = "userImageToken") MultipartFile userImageToken) {
 
@@ -92,29 +86,22 @@ public class MainController {
         return "redirect:/profile?" + param;
     }
 
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() && !hasRole('ROLE_BAN')")
     @PostMapping("/editUser")
     public String editUser(User user,
+                           @RequestParam(name = "birthDate") String birthdate,
                            @RequestParam(name = "oldPassword") String oldPassword,
                            @RequestParam(name = "userPassword") String newPassword,
                            @RequestParam(name = "reNewPassword") String reNewPassword) {
-        String param = userService.editUser(user, oldPassword, newPassword, reNewPassword);
+        String param = userService.editUser(user, birthdate, oldPassword, newPassword, reNewPassword);
         if (param.equals("success")) {
             userService.updateUserData(user.getUserFirstName(), user.getUserSurname(), user.getUserPassword());
         }
         return "redirect:/profile?" + param;
     }
 
-    @GetMapping("/allGames")
-    public String allGamesPage(Model model) {
-        List<Game> allGames = gameService.getAllGames();
-        model.addAttribute("allGames", allGames);
-        List<GamePlatform> allPlatforms = gamePlatformService.getAllPlatforms();
-        model.addAttribute("allPlatforms", allPlatforms);
-        List<Genre> allGenres = genreService.getAllGenres();
-        model.addAttribute("allGenres", allGenres);
-        NewsDto lastNews = newsService.getLastNews();
-        model.addAttribute("lastNews", lastNews);
+    @GetMapping("/allGames/keyword")
+    public String allGamesByKeyword() {
         return "allGames";
     }
 
@@ -124,46 +111,27 @@ public class MainController {
         Game game = gameService.getGameById(gameId);
         if (gameId != null) {
             model.addAttribute("game", game);
-            BlogDto lastBlogByGame = blogService.getLastBlogByGame(gameId);
-            model.addAttribute("lastBlogByGame", lastBlogByGame);
-            List<NewsDto> last3NewsByGame = newsService.getLast3NewsByGame(gameId);
-            model.addAttribute("last3NewsByGame", last3NewsByGame);
             return "detailsGame";
         }
         return "redirect:/allGames";
     }
 
-    @GetMapping("/gamesByPlatform/{platformId}")
+    @GetMapping("/gamesByPlatform/{platformId}/keyword")
     public String gamesByPlatformPage(@PathVariable(name = "platformId") Long platformId,
                                       Model model) {
         List<Game> allGamesByPlatform = gameService.getGamesByPlatform(platformId);
         if (allGamesByPlatform != null) {
-            model.addAttribute("selectedPlatformId", platformId);
-            model.addAttribute("allGamesByPlatform", allGamesByPlatform);
-            List<GamePlatform> allPlatforms = gamePlatformService.getAllPlatforms();
-            model.addAttribute("allPlatforms", allPlatforms);
-            List<Genre> allGenres = genreService.getAllGenres();
-            model.addAttribute("allGenres", allGenres);
-            NewsDto lastNewsByPlatform = newsService.getLastNewsByPlatform(platformId);
-            model.addAttribute("lastNewsByPlatform", lastNewsByPlatform);
             return "gamesByPlatform";
         }
         return "redirect:/allGames";
     }
 
-    @GetMapping("/gamesByGenre/{genreId}")
+    @GetMapping("/gamesByGenre/{genreId}/keyword")
     public String gamesByGenrePage(@PathVariable(name = "genreId") Long genreId,
+                                   @RequestParam(name = "keyword") String keyword,
                                    Model model) {
-        List<Game> allGamesByGenre = gameService.getGamesByGenre(genreId);
+        List<Game> allGamesByGenre = gameService.getAllGamesByGenreByKeyword(genreId, keyword);
         if (allGamesByGenre != null) {
-            model.addAttribute("selectedGenreId", genreId);
-            model.addAttribute("allGamesByGenre", allGamesByGenre);
-            List<GamePlatform> allPlatforms = gamePlatformService.getAllPlatforms();
-            model.addAttribute("allPlatforms", allPlatforms);
-            List<Genre> allGenres = genreService.getAllGenres();
-            model.addAttribute("allGenres", allGenres);
-            NewsDto lastNewsByGenre = newsService.getLastNewsByGenre(genreId);
-            model.addAttribute("lastNewsByGenre", lastNewsByGenre);
             return "gamesByGenre";
         }
         return "redirect:/allGames";
@@ -177,14 +145,6 @@ public class MainController {
 
     @GetMapping("/allNews")
     public String allNewsPage(Model model) {
-        List<NewsDto> allNews = newsService.getAllNews();
-        model.addAttribute("allNews", allNews);
-        List<Game> allGames = gameService.getAllGames();
-        model.addAttribute("allGames", allGames);
-        List<GamePlatform> allPlatforms = gamePlatformService.getAllPlatforms();
-        model.addAttribute("allPlatforms", allPlatforms);
-        List<Genre> allGenres = genreService.getAllGenres();
-        model.addAttribute("allGenres", allGenres);
         return "allNews";
     }
 
