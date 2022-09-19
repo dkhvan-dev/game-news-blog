@@ -4,7 +4,7 @@
 <head th:insert="~{/toInsert/head.html}">
 	<title>Blog Page</title>
 </head>
-<body onload="getBlogInfo()">
+<body onload="getBlogInfo(); getALlComments()">
 	<!-- Page Preloder -->
 	<div th:insert="~{/toInsert/preloader.html}">
 	</div>
@@ -53,51 +53,36 @@
 		<!-- COMMENTS -->
 		<section class="container-fluid pb-lg-5">
 			<div class="container">
-				<form class="add-comment-form" th:action="@{'/addComment'}" method="post" sec:authorize="isAuthenticated()">
+				<div sec:authorize="isAuthenticated() && !hasRole('ROLE_BAN')">
 					<input type="hidden" name="blogId" th:value="${blog.blogId}">
 					<div class="d-flex justify-content-between">
 						<label class="form-label mt-3 text-white" for="tinyMceTextarea">
 							Comment:
 						</label> <br>
-						<button class="btn btn-primary">Send</button>
+						<a type="submit" class="btn btn-primary" th:onclick="'addComment(' + ${blog.blogId} + ')'">Send</a>
 					</div>
-					<textarea class="comment-text" name="commentText" id="tinyMceTextarea" required></textarea>
-				</form>
-				<div class="pt-3 added-comment" th:each="comment : ${allComments}">
-					<div class="d-flex justify-content-between col-12">
-						<p class="text-white" th:text="${comment.commentText}"></p>
-						<button type="button" class="btn btn-danger deleteCommentModal"
-								th:data-id="${comment.commentId}"
-								data-bs-toggle="modal"
-								data-bs-target="#deleteCommentModal" th:if="${comment.getAuthor().getUserEmail().equals(#authentication.getName())}">
-							x
-						</button>
-					</div>
-					<p>
-						<span class="text-white">Author:</span>
-						<span class="comment-author-name" th:text="${comment.getAuthor().userFirstName + ' ' + comment.getAuthor().userSurname}">
-					</span> |
-						<span class="text-white" th:text="${comment.commentCreateDate}"></span>
-					</p>
+					<textarea class="comment-text tinyMceTextarea" name="tinyMceTextarea" id="tinyMceTextarea"></textarea>
+				</div>
+				<input type="hidden" id="userEmail" th:value="${userEmail}">
+				<div class="allComments">
+
 				</div>
 				<div class="modal fade" id="deleteCommentModal" tabindex="-1" aria-hidden="true">
 					<div class="modal-dialog">
-						<form th:action="@{'/deleteComment'}" method="post">
-							<div class="modal-content">
-								<div class="modal-header">
-									<h5 class="modal-title">Delete comment</h5>
-									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-								</div>
-								<div class="modal-body">
-									<input type="hidden" name="commentId" value="" id="commentId">
-									Do you really want to delete this comment?
-								</div>
-								<div class="modal-footer">
-									<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-									<button class="btn btn-danger">Delete</button>
-								</div>
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title">Delete comment</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 							</div>
-						</form>
+							<div class="modal-body">
+								<input type="hidden" name="commentId" value="" id="commentId">
+								Do you really want to delete this comment?
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+								<button class="btn btn-danger" data-bs-dismiss="modal" th:onclick="'deleteComment()'">Delete</button>
+							</div>
+						</div>
 					</div>
 				</div>
 				<script>
@@ -116,6 +101,7 @@
 	<!--====== Javascripts & Jquery ======-->
 	<div th:insert="~{/toInsert/scripts.html}"></div>
 
+	<input type="hidden" name="blogId" id="blogId" th:value="${blog.blogId}">
 	<script>
 		function getBlogInfo() {
 			$(document).on("click", ".deleteCommentModal", function () {
@@ -137,10 +123,60 @@
 				content += "<p>Date of publication: <span>" + blog.blogCreateDate + "</span></p>"
 				content += "<p>Author: <span>" + blog.users.userFirstName + " " + blog.users.userSurname + "</span></p>"
 
-
 				document.querySelector(".game-single-preview").innerHTML = blogImage
 				document.querySelector(".game-single-content").innerHTML = content
 			}
+		}
+
+		function getALlComments() {
+			const res = new XMLHttpRequest()
+			let blogId = document.querySelector("#blogId").value
+			res.open("GET", "http://localhost:8000/comments/byBlog/" + blogId)
+			res.send()
+			res.onload = function () {
+				let allComments = JSON.parse(this.responseText)
+				let content = ""
+				let userEmail = document.querySelector("#userEmail").value
+				for (i = 0; i < allComments.length; i++) {
+					content += "<div class='pt-3 added-comment'>"
+					content += "<div class='d-flex justify-content-between col-12'>"
+					content += "<p class='text-white'>" + allComments[i].commentText + "</p>"
+					if (allComments[i].author.userEmail == userEmail) {
+						content += "<button type='button' class='btn btn-danger deleteCommentModal' data-id='" + allComments[i].commentId + "' data-bs-toggle='modal' data-bs-target='#deleteCommentModal'>x"
+						content += "</button>"
+					}
+					content += "</div>"
+					content += "<p>"
+					content += "<span class='text-white'>Author:</span>"
+					content += "<span class='comment-author-name'>" + allComments[i].author.userFirstName + ' ' + allComments[i].author.userSurname + "</span> |"
+					content += "<span class='text-white'>" + allComments[i].commentCreateDate + "</span>"
+					content += "</p>"
+					content += "</div>"
+				}
+				document.querySelector(".allComments").innerHTML = content
+			}
+		}
+
+		function addComment(blogId) {
+			let tinyMceTextarea = document.querySelector(".tinyMceTextarea")
+			let xhttp = new XMLHttpRequest()
+			xhttp.onload = function () {
+				getALlComments()
+			}
+			xhttp.open("POST", "http://localhost:8000/comments/addComment")
+			xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
+			xhttp.send("tinyMceTextarea=" + tinyMceTextarea.value + "&blogId=" + blogId)
+		}
+
+		function deleteComment() {
+			let commentId = document.querySelector("#commentId").value
+			let xhttp = new XMLHttpRequest()
+			xhttp.onload = function () {
+				getALlComments()
+			}
+			xhttp.open("POST", "http://localhost:8000/comments/deleteComment")
+			xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
+			xhttp.send("commentId=" + commentId)
 		}
 	</script>
 

@@ -1,5 +1,6 @@
 package springbootcamp.mainfinalproject.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -10,6 +11,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import springbootcamp.mainfinalproject.model.Role;
+import springbootcamp.mainfinalproject.repository.UserRepository;
+import springbootcamp.mainfinalproject.service.RoleService;
+import springbootcamp.mainfinalproject.service.UserService;
 import springbootcamp.mainfinalproject.service.impl.UserServiceImpl;
 
 @Configuration
@@ -40,7 +45,7 @@ public class SecurityConfig {
                 .passwordParameter("user_password")
                 .defaultSuccessUrl("/profile")
                 .failureUrl("/signIn?errorAuth")
-                .loginPage("/signIn").permitAll();
+                    .loginPage("/signIn").permitAll();
 
         http.logout()
                 .logoutUrl("/signOut")

@@ -31,14 +31,8 @@ public class MainController {
 
     @GetMapping("/")
     public String homePage(Model model) {
-        List<Game> allGames = gameService.getAllGames();
-        model.addAttribute("allGames", allGames);
         List<NewsDto> last3News = newsService.getLatest3News();
         model.addAttribute("last3News", last3News);
-        List<BlogDto> last3Blogs = blogService.getTop3Blogs();
-        model.addAttribute("last3Blogs", last3Blogs);
-        List<Game> top5Games = gameService.getTop5Games();
-        model.addAttribute("top5Games", top5Games);
         return "index";
     }
 
@@ -50,7 +44,6 @@ public class MainController {
         return "toInsert/footer";
     }
 
-    @PreAuthorize("!hasRole('ROLE_BAN')")
     @GetMapping("/signIn")
     public String signInPage() {
         return "auth/auth";
@@ -71,14 +64,16 @@ public class MainController {
         return "redirect:/signUp?passwordsNotSame";
     }
 
-    @PreAuthorize("isAuthenticated() && !hasRole('ROLE_BAN')")
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/profile")
     public String profilePage(Model model) {
+        Role banRole = roleService.getRoleByName("ROLE_BAN");
+        model.addAttribute("banRole", banRole);
         model.addAttribute("currentUser", userService.getCurrentUser());
         return "profile";
     }
 
-    @PreAuthorize("isAuthenticated() && !hasRole('ROLE_BAN')")
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/swapUserAvatar")
     public String swapUserAvatar(@RequestParam(name = "userImageToken") MultipartFile userImageToken) {
 
@@ -86,7 +81,7 @@ public class MainController {
         return "redirect:/profile?" + param;
     }
 
-    @PreAuthorize("isAuthenticated() && !hasRole('ROLE_BAN')")
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/editUser")
     public String editUser(User user,
                            @RequestParam(name = "birthDate") String birthdate,
@@ -154,15 +149,6 @@ public class MainController {
         Game game = gameService.getGameById(gameId);
         if (game != null) {
             model.addAttribute("game", game);
-            List<Game> allGames = gameService.getAllGames();
-            model.addAttribute("allGames", allGames);
-            List<GamePlatform> allPlatforms = gamePlatformService.getAllPlatforms();
-            model.addAttribute("allPlatforms", allPlatforms);
-            List<Genre> allGenres = genreService.getAllGenres();
-            model.addAttribute("allGenres", allGenres);
-            model.addAttribute("selectedGameId", gameId);
-            List<NewsDto> allNewsByGame = newsService.getAllNewsByGame(gameId);
-            model.addAttribute("allNewsByGame", allNewsByGame);
             return "newsByGame";
         }
         return "redirect:/allNews?errorGameNotFound";
@@ -174,15 +160,6 @@ public class MainController {
         GamePlatform platform = gamePlatformService.getPlatformById(platformId);
         if (platform != null) {
             model.addAttribute("platform", platform);
-            List<Game> allGames = gameService.getAllGames();
-            model.addAttribute("allGames", allGames);
-            List<GamePlatform> allPlatforms = gamePlatformService.getAllPlatforms();
-            model.addAttribute("allPlatforms", allPlatforms);
-            List<Genre> allGenres = genreService.getAllGenres();
-            model.addAttribute("allGenres", allGenres);
-            model.addAttribute("selectedPlatformId", platformId);
-            List<NewsDto> allNewsByPlatform = newsService.getAllNewsByPlatform(platformId);
-            model.addAttribute("allNewsByPlatform", allNewsByPlatform);
             return "newsByPlatform";
         }
         return "redirect:/allNews?errorPlatformNotFound";
@@ -194,15 +171,6 @@ public class MainController {
         Genre genre = genreService.getGenreById(genreId);
         if (genre != null) {
             model.addAttribute("genre", genre);
-            List<Game> allGames = gameService.getAllGames();
-            model.addAttribute("allGames", allGames);
-            List<GamePlatform> allPlatforms = gamePlatformService.getAllPlatforms();
-            model.addAttribute("allPlatforms", allPlatforms);
-            List<Genre> allGenres = genreService.getAllGenres();
-            model.addAttribute("allGenres", allGenres);
-            model.addAttribute("selectedGenreId", genreId);
-            List<NewsDto> allNewsByGenre = newsService.getAllNewsByGenre(genreId);
-            model.addAttribute("allNewsByGenre", allNewsByGenre);
             return "newsByGenre";
         }
         return "redirect:/allNews?errorGenreNotFound";
@@ -221,14 +189,6 @@ public class MainController {
 
     @GetMapping("/allBlogs")
     public String allBlogsPage(Model model) {
-        List<BlogDto> allBlogs = blogService.getAllBlogs();
-        model.addAttribute("allBlogs", allBlogs);
-        List<Game> allGames = gameService.getAllGames();
-        model.addAttribute("allGames", allGames);
-        List<GamePlatform> allPlatforms = gamePlatformService.getAllPlatforms();
-        model.addAttribute("allPlatforms", allPlatforms);
-        List<Genre> allGenres = genreService.getAllGenres();
-        model.addAttribute("allGenres", allGenres);
         return "allBlogs";
     }
 
@@ -238,15 +198,6 @@ public class MainController {
         Game game = gameService.getGameById(gameId);
         if (game != null) {
             model.addAttribute("game", game);
-            List<Game> allGames = gameService.getAllGames();
-            model.addAttribute("allGames", allGames);
-            List<GamePlatform> allPlatforms = gamePlatformService.getAllPlatforms();
-            model.addAttribute("allPlatforms", allPlatforms);
-            List<Genre> allGenres = genreService.getAllGenres();
-            model.addAttribute("allGenres", allGenres);
-            model.addAttribute("selectedGameId", gameId);
-            List<BlogDto> allBlogsByGame = blogService.getAllBlogsByGame(gameId);
-            model.addAttribute("allBlogsByGame", allBlogsByGame);
             return "blogsByGame";
         }
         return "redirect:/allNews?errorGameNotFound";
@@ -258,15 +209,6 @@ public class MainController {
         GamePlatform platform = gamePlatformService.getPlatformById(platformId);
         if (platform != null) {
             model.addAttribute("platform", platform);
-            List<Game> allGames = gameService.getAllGames();
-            model.addAttribute("allGames", allGames);
-            List<GamePlatform> allPlatforms = gamePlatformService.getAllPlatforms();
-            model.addAttribute("allPlatforms", allPlatforms);
-            List<Genre> allGenres = genreService.getAllGenres();
-            model.addAttribute("allGenres", allGenres);
-            model.addAttribute("selectedPlatformId", platformId);
-            List<BlogDto> allBlogsByPlatform = blogService.getAllBlogsByPlatform(platformId);
-            model.addAttribute("allBlogsByPlatform", allBlogsByPlatform);
             return "blogsByPlatform";
         }
         return "redirect:/allNews?errorPlatformNotFound";
@@ -278,15 +220,6 @@ public class MainController {
         Genre genre = genreService.getGenreById(genreId);
         if (genre != null) {
             model.addAttribute("genre", genre);
-            List<Game> allGames = gameService.getAllGames();
-            model.addAttribute("allGames", allGames);
-            List<GamePlatform> allPlatforms = gamePlatformService.getAllPlatforms();
-            model.addAttribute("allPlatforms", allPlatforms);
-            List<Genre> allGenres = genreService.getAllGenres();
-            model.addAttribute("allGenres", allGenres);
-            model.addAttribute("selectedGenreId", genreId);
-            List<BlogDto> allBlogsByGenre = blogService.getAllBlogsByGenre(genreId);
-            model.addAttribute("allBlogsByGenre", allBlogsByGenre);
             return "blogsByGenre";
         }
         return "redirect:/allNews?errorGenreNotFound";
@@ -298,14 +231,17 @@ public class MainController {
         BlogDto blog = blogService.getBlogById(blogId);
         if (blog != null) {
             model.addAttribute("blog", blog);
-            List<Comments> allComments = commentsService.getAllComments();
+            if (userService.getCurrentUser() != null) {
+                model.addAttribute("userEmail", userService.getCurrentUser().getUserEmail());
+            }
+            List<Comments> allComments = commentsService.getAllCommentsByBlog(blogId);
             model.addAttribute("allComments", allComments);
             return "detailsBlog";
         }
         return "redirect:/allBlogs?errorBlogNotFound";
     }
 
-    @PreAuthorize("hasRole('ROLE_BLOGGER')")
+    @PreAuthorize("hasRole('ROLE_BLOGGER') && !hasRole('ROLE_BAN')")
     @GetMapping("/addBlog")
     public String addBlogPage(Model model) {
         List<Game> allGames = gameService.getAllGames();
@@ -313,7 +249,7 @@ public class MainController {
         return "addBlog";
     }
 
-    @PreAuthorize("hasRole('ROLE_BLOGGER')")
+    @PreAuthorize("hasRole('ROLE_BLOGGER') && !hasRole('ROLE_BAN')")
     @PostMapping("/addBlog")
     public String addBlog(Blog blog,
                           @RequestParam(name = "blogImageToken") MultipartFile blogImageToken) {
@@ -324,20 +260,4 @@ public class MainController {
         return "redirect:/addBlog?errorAddBlog";
     }
 
-    @PreAuthorize("isAuthenticated()")
-    @PostMapping("/addComment")
-    public String addComment(Comments comment, @RequestParam(name = "blogId") Long blogId) {
-        commentsService.addComment(comment, blogId);
-        return "redirect:/detailsBlog/" + comment.getBlog().getBlogId();
-    }
-
-    @PostMapping("/deleteComment")
-    public String deleteComment(@RequestParam(name = "commentId") Long commentId) {
-        Comments comment = commentsService.getCommentById(commentId);
-        if (comment != null) {
-            commentsService.deleteComment(commentId);
-            return "redirect:/detailsBlog/" + comment.getBlog().getBlogId();
-        }
-        return "redirect:/detailsBlog/" + comment.getBlog().getBlogId() + "?errorCommentNotFound";
-    }
 }

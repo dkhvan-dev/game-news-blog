@@ -43,7 +43,7 @@ public class AdminController {
     @Value("${loadURL}")
     private String loadURL;
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_MODERATOR', 'ROLE_ADMIN')")
     @GetMapping("/adminPanel")
     public String adminPanelPage(Model model) {
         List<Game> allGames = gameService.getAllGames();
@@ -69,7 +69,7 @@ public class AdminController {
 
     // GAME
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_MODERATOR', 'ROLE_ADMIN')")
     @PostMapping("/addGame")
     public String addGame(@RequestParam(name = "gameImageToken") MultipartFile gameImage,
                           Game game,
@@ -84,7 +84,7 @@ public class AdminController {
         return "redirect:/adminPanel?errorAddGame";
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_MODERATOR', 'ROLE_ADMIN')")
     @GetMapping("/detailsGameAdmin/{gameId}")
     public String detailsGameAdminPage(@PathVariable(name = "gameId") Long gameId,
                                        Model model) {
@@ -104,7 +104,7 @@ public class AdminController {
         return "redirect:/adminPanel";
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_MODERATOR', 'ROLE_ADMIN')")
     @PostMapping("/editGame")
     public String editGame(@RequestParam(name = "gameImageToken") MultipartFile gameImageToken,
                            Game game,
@@ -114,7 +114,7 @@ public class AdminController {
         return "redirect:/detailsGameAdmin/" + game.getGameId() + "?success";
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_MODERATOR', 'ROLE_ADMIN')")
     @PostMapping("/deleteGameAdmin")
     public String deleteGameAdmin(@RequestParam(name = "gameId") Long gameId) {
         gameService.deleteGame(gameId);
@@ -300,10 +300,12 @@ public class AdminController {
         User user = userService.getUserById(userId);
         if (user != null) {
             model.addAttribute("user", user);
+            Role adminRole = roleService.getRoleByName("ROLE_ADMIN");
+            model.addAttribute("adminRole", adminRole);
             List<Role> allRoles = roleService.getAllRoles();
             model.addAttribute("allRoles", allRoles);
         }
-        return "moderator/detailsUserAdmin";
+        return "admin/detailsUserAdmin";
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")

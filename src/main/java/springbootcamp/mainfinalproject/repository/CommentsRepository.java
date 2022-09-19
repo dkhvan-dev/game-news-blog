@@ -11,4 +11,5 @@ import java.util.List;
 @Transactional
 public interface CommentsRepository extends JpaRepository<Comments, Long> {
     List<Comments> findAllByOrderByCommentCreateDateDesc();
+    List<Comments> findAllByBlogBlogIdOrderByCommentCreateDateDesc(Long blogId);
 }

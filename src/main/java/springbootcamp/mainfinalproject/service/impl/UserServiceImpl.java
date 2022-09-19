@@ -172,6 +172,7 @@ public class UserServiceImpl implements UserService {
     public boolean updateUserAdmin(User user, List<Role> roles) {
         Role moderator = roleService.getRoleByName("ROLE_MODERATOR");
         Role admin = roleService.getRoleByName("ROLE_ADMIN");
+        Role banRole = roleService.getRoleByName("ROLE_BAN");
         boolean currentAdmin = false;
         boolean currentModer = false;
         User currentUser = getCurrentUser();
@@ -197,6 +198,9 @@ public class UserServiceImpl implements UserService {
             return false;
         }
         if (!user.getRoles().contains(admin) && roles.contains(admin)) {
+            return false;
+        }
+        if (user.getRoles().contains(admin) && roles.contains(banRole)) {
             return false;
         }
         if (!user.getRoles().contains(admin) && currentAdmin) {

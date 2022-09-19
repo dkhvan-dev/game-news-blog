@@ -32,6 +32,15 @@ public class CommentsServiceImpl implements CommentsService {
     }
 
     @Override
+    public List<Comments> getAllCommentsByBlog(Long blogId) {
+        BlogDto blog = blogService.getBlogById(blogId);
+        if (blog != null) {
+            return commentsRepository.findAllByBlogBlogIdOrderByCommentCreateDateDesc(blogId);
+        }
+        return null;
+    }
+
+    @Override
     public Comments getCommentById(Long commentId) {
         Comments comment = commentsRepository.findById(commentId).orElse(null);
         if (comment != null) {
@@ -41,11 +50,13 @@ public class CommentsServiceImpl implements CommentsService {
     }
 
     @Override
-    public Comments addComment(Comments comment, Long blogId) {
-        if (comment != null) {
+    public Comments addComment(String commentText, Long blogId) {
+        BlogDto blog = blogService.getBlogById(blogId);
+        if (blog != null) {
+            Comments comment = new Comments();
+            comment.setCommentText(commentText);
             comment.setCommentCreateDate(LocalDate.now());
             comment.setAuthor(userService.getCurrentUser());
-            BlogDto blog = blogService.getBlogById(blogId);
             comment.setBlog(blogMapper.toEntity(blog));
             return commentsRepository.save(comment);
         }

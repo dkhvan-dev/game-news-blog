@@ -30,9 +30,9 @@
 	<!-- Page top end-->
 
 	<!-- Blogs section -->
-	<section class="games-section" th:if="${allBlogsByGame != null}">
+	<section class="games-section">
 		<div class="container">
-			<a th:href="@{'/addBlog'}" class="btn btn-primary w-25" sec:authorize="hasRole('ROLE_BLOGGER')">Add blog</a>
+			<a th:href="@{'/addBlog'}" class="btn btn-primary w-25" sec:authorize="hasRole('ROLE_BLOGGER') && !hasRole('ROLE_BAN')">Add blog</a>
 			<div class="row">
 				<div class="col-xl-7 col-lg-8 col-md-7">
 					<div class="row allBlogsByGame">

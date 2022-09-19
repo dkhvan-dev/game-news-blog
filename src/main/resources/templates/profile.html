@@ -16,6 +16,9 @@
                 <div class="alert alert-success" role="alert" th:if="${param.successSwapAvatar}">
                     Avatar successfully replaced!
                 </div>
+                <div class="alert alert-danger" role="alert" th:if="${#authentication.getAuthorities().contains(banRole)}">
+                    Your account is banned! You can request account unblocking in Home -> Feedback (in the bottom side)
+                </div>
                 <div class="alert alert-danger" role="alert" th:if="${param.errorSwapAvatar}">
                     Failed to update avatar. Try to choose a different image!
                 </div>

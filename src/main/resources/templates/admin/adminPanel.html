@@ -429,7 +429,7 @@
         </div>
 
         <!-- Users Collapse -->
-        <div class="d-flex" sec:authorize="hasRole('ROLE_ADMIN')">
+        <div class="d-flex" sec:authorize="hasAnyRole('ROLE_MODERATOR', 'ROLE_ADMIN')">
             <div class="admin-collapse">
                 <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#usersAdmin" aria-expanded="false">
                     Users

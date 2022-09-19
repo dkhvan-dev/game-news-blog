@@ -43,7 +43,12 @@
                         </label>
                     </div>
                     <div class="mt-3">
-                        <div class="form-check" th:each="role : ${allRoles}">
+                        <div class="form-check" th:each="role : ${allRoles}" sec:authorize="!hasRole('ROLE_ADMIN')">
+                            <input class="form-check-input" type="checkbox" name="roles" disabled th:value="${role.roleId}" th:id="${role.roleId}" th:checked="${user.getRoles().contains(role)}">
+                            <label class="form-check-label" th:for="${role.roleId}" th:text="${role.roleName}">
+                            </label>
+                        </div>
+                        <div class="form-check" th:each="role : ${allRoles}" sec:authorize="hasRole('ROLE_ADMIN')">
                             <input class="form-check-input" type="checkbox" name="roles" th:value="${role.roleId}" th:id="${role.roleId}" th:checked="${user.getRoles().contains(role)}">
                             <label class="form-check-label" th:for="${role.roleId}" th:text="${role.roleName}">
                             </label>
