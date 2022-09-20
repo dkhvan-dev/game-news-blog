@@ -35,4 +35,14 @@ public class ApplicationFormBlogger {
 
     @ManyToOne(fetch = FetchType.EAGER)
     private User users;
+
+    @PrePersist
+    public void preReceiptDate() {
+        this.setApplicationFormBloggerReceiptDate(LocalDate.now());
+    }
+
+    @PreUpdate
+    public void preUpdateDate() {
+        this.setApplicationFormBloggerUpdateDate(LocalDate.now());
+    }
 }

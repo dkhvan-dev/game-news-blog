@@ -12,20 +12,18 @@
 
   <main class="main">
     <div class="section authSection">
-      <div class="alert alert-danger" role="alert" th:if="${param.errorAuth}">
-        Email or password is invalid!
+      <div class="alert alert-danger" role="alert" th:if="${param.errorAuth}" th:text="#{emailPasswordInvalid}">
+
       </div>
-      <div class="alert alert-danger" role="alert" th:if="${param.userExist}">
-        The user with this email is already registered!
+      <div class="alert alert-danger" role="alert" th:if="${param.userExist}" th:text="#{userExist}">
       </div>
-      <div class="alert alert-danger" role="alert" th:if="${param.passwordsNotSame}">
-        Passwords are not same!
+      <div class="alert alert-danger" role="alert" th:if="${param.passwordsNotSame}" th:text="#{passwordsNotSame}">
       </div>
       <div class="container">
         <div class="row full-height justify-content-center">
           <div class="col-12 text-center align-self-center py-5">
             <div class="section pb-5 pt-5 pt-sm-2 text-center">
-              <h6 class="mb-0 pb-3"><span>Log In </span><span>Sign Up</span></h6>
+              <h6 class="mb-0 pb-3"><span th:text="#{login}"> </span><span th:text="#{signUp}"></span></h6>
               <input class="checkbox" type="checkbox" id="reg-log" name="reg-log"/>
               <label for="reg-log"></label>
               <div class="card-3d-wrap mx-auto">
@@ -33,7 +31,7 @@
                   <div class="card-front">
                     <div class="center-wrap">
                       <form class="section text-center" th:action="@{'/signIn'}" method="post">
-                        <h4 class="mb-4 pb-3">Log In</h4>
+                        <h4 class="mb-4 pb-3" th:text="#{login}"></h4>
                         <div class="form-group">
                           <input type="email" name="user_email" class="form-style" placeholder="example@gmail.com" id="logemail" autocomplete="off">
                           <i class="input-icon uil uil-at"></i>
@@ -42,14 +40,14 @@
                           <input type="password" name="user_password" class="form-style" placeholder="********" id="logpass" autocomplete="off">
                           <i class="input-icon uil uil-lock-alt"></i>
                         </div>
-                        <button class="btn mt-4">login</button>
+                        <button class="btn mt-4" th:text="#{login}"></button>
                       </form>
                     </div>
                   </div>
                   <div class="card-back">
                     <div class="center-wrap">
                       <form class="section text-center" th:action="@{'/signUp'}" method="post">
-                        <h4 class="mb-4 pb-3">Sign Up</h4>
+                        <h4 class="mb-4 pb-3" th:text="#{signUp}"></h4>
                         <div class="form-group">
                           <input type="email" name="userEmail" class="form-style" placeholder="example@gmail.com" id="registerEmail" autocomplete="off" required>
                           <i class="input-icon uil uil-at"></i>
@@ -74,7 +72,7 @@
                           <input type="password" name="rePassword" class="form-style" placeholder="*******" id="registerRePass" autocomplete="off" required>
                           <i class="input-icon uil uil-lock-alt"></i>
                         </div>
-                        <button class="btn mt-4">sign up</button>
+                        <button class="btn mt-4" th:text="#{signUp}"></button>
                       </form>
                     </div>
                   </div>

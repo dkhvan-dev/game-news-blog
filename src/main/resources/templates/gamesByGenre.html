@@ -18,10 +18,10 @@
 	<!-- Page top section -->
 	<section class="page-top-section set-bg" data-setbg="/img/page-top-bg/1.jpg">
 		<div class="page-info">
-			<h2>Games</h2>
+			<h2 th:text="#{games}"></h2>
 			<div class="site-breadcrumb">
-				<a th:href="@{'/'}">Home</a>  /
-				<span>Games</span>
+				<a th:href="@{'/'}" th:text="#{home}"></a>  /
+				<span th:text="#{games}"></span>
 			</div>
 		</div>
 	</section>
@@ -35,7 +35,7 @@
 					<div class="col-12 allGamesByKeyword">
 						<form action="" method="get">
 							<input type="text" name="keyword" id="keyword" placeholder="Game name">
-							<button type="submit" class="btn btn-info">Search</button>
+							<button type="submit" class="btn btn-info" th:text="#{search}"></button>
 						</form>
 					</div>
 				</div>
@@ -48,7 +48,7 @@
 					<div id="stickySidebar">
 						<div class="widget-item">
 							<div class="categories-widget">
-								<h4 class="widget-title">platform</h4>
+								<h4 class="widget-title" th:text="#{platform}"></h4>
 								<ul class="allPlatforms">
 
 								</ul>
@@ -56,7 +56,7 @@
 						</div>
 						<div class="widget-item">
 							<div class="categories-widget">
-								<h4 class="widget-title">Genre</h4>
+								<h4 class="widget-title" th:text="#{genre}"></h4>
 								<ul class="allGenres">
 
 								</ul>
@@ -92,7 +92,7 @@
 		function getAllGamesByGenre() {
 			const result = new XMLHttpRequest()
 			let keyword = document.location.href.split("/").pop()
-			result.open("GET", "http://localhost:8000/games/byGenre/" + document.location.href.split("/")[4] + "/keyword=" + keyword.substring(keyword.indexOf("=")+1))
+			result.open("GET", "http://localhost:8000/games/byGenre/" + document.location.href.split("/")[4] + "/keyword=" + keyword.substring(keyword.indexOf("=")+1, keyword.indexOf("?")))
 			result.send()
 			result.onload = function () {
 				let allGamesByGenre = JSON.parse(this.responseText)
@@ -102,8 +102,8 @@
 					content += "<div class='game-item'>"
 					content += "<img src='/getGameImage/" + allGamesByGenre[i].gameImage + "' alt='#'>"
 					content += "<h5>" + allGamesByGenre[i].gameName + "</h5>"
-					content += "<p>Age restriction: <span class='age-limit'>" + allGamesByGenre[i].gameAge + "+</span></p>"
-					content += "<a href='/detailsGame/" + allGamesByGenre[i].gameId + "' class='read-more'>Read More <img src='/img/icons/double-arrow.png' th:alt='#'/></a>"
+					content += "<p>[[#{gameAge}]]: <span class='age-limit'>" + allGamesByGenre[i].gameAge + "+</span></p>"
+					content += "<a href='/detailsGame/" + allGamesByGenre[i].gameId + "' class='read-more'>[[#{readMoreBtn}]] <img src='/img/icons/double-arrow.png' th:alt='#'/></a>"
 					content += "</div>"
 					content += "</div>"
 				}
@@ -159,11 +159,11 @@
 				if (lastNews != null) {
 					content += "<div class='top-meta'>"
 					content += "<span>" + lastNews.newsCreateDate + "&nbsp;&nbsp;in&nbsp;&nbsp;</span>"
-					content += "<a href='/allGames/keyword?keyword='>Games</a>"
+					content += "<a href='/allGames/keyword?keyword='>[[#{games}]]</a>"
 					content += "</div>"
 					content += "<h3>" + lastNews.newsTitle + "</h3>"
 					content += "<p>" + lastNews.newsDescription + "</p>"
-					content += "<a href='/detailsNews/" + lastNews.newsId + "' class='read-more'>Read More <img src='../../img/icons/double-arrow.png' alt='#'/></a>"
+					content += "<a href='/detailsNews/" + lastNews.newsId + "' class='read-more'>[[#{readMoreBtn}]] <img src='../../img/icons/double-arrow.png' alt='#'/></a>"
 				} else {
 					content = "NO ONE NEWS"
 				}

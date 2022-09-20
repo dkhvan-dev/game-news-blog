@@ -17,10 +17,10 @@
 	<!-- Page top section -->
 	<section class="page-top-section set-bg" data-setbg="/img/page-top-bg/1.jpg">
 		<div class="page-info">
-			<h2>BLogs</h2>
+			<h2 th:text="#{blogs}"></h2>
 			<div class="site-breadcrumb">
-				<a th:href="@{'/'}">Home</a>  /
-				<a th:href="@{'/allBlogs'}">Blogs</a>	 /
+				<a th:href="@{'/'}" th:text="#{home}"></a>  /
+				<a th:href="@{'/allBlogs'}" th:text="#{blogs}"></a>	 /
 				<span th:text="${blog.blogTitle}"></span>
 			</div>
 		</div>
@@ -40,7 +40,7 @@
 
 					</div>
 					<div class="geme-social-share pt-5 d-flex">
-						<p>Share:</p>
+						<p th:text="#{share} + ':'"></p>
 						<a href="https://ru.pinterest.com/"><i class="fa fa-pinterest"></i></a>
 						<a href="https://www.facebook.com/"><i class="fa fa-facebook"></i></a>
 						<a href="https://twitter.com/"><i class="fa fa-twitter"></i></a>
@@ -56,10 +56,10 @@
 				<div sec:authorize="isAuthenticated() && !hasRole('ROLE_BAN')">
 					<input type="hidden" name="blogId" th:value="${blog.blogId}">
 					<div class="d-flex justify-content-between">
-						<label class="form-label mt-3 text-white" for="tinyMceTextarea">
-							Comment:
+						<label class="form-label mt-3 text-white" for="tinyMceTextarea" th:text="#{comment} + ':'">
+
 						</label> <br>
-						<a type="submit" class="btn btn-primary" th:onclick="'addComment(' + ${blog.blogId} + ')'">Send</a>
+						<a type="submit" class="btn btn-primary" th:onclick="'addComment(' + ${blog.blogId} + ')'" th:text="#{sendBtn}"></a>
 					</div>
 					<textarea class="comment-text tinyMceTextarea" name="tinyMceTextarea" id="tinyMceTextarea"></textarea>
 				</div>
@@ -71,16 +71,16 @@
 					<div class="modal-dialog">
 						<div class="modal-content">
 							<div class="modal-header">
-								<h5 class="modal-title">Delete comment</h5>
+								<h5 class="modal-title" th:text="#{deleteComment}"></h5>
 								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 							</div>
 							<div class="modal-body">
 								<input type="hidden" name="commentId" value="" id="commentId">
-								Do you really want to delete this comment?
+								<span th:text="#{deleteCommentBody}"></span>
 							</div>
 							<div class="modal-footer">
-								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-								<button class="btn btn-danger" data-bs-dismiss="modal" th:onclick="'deleteComment()'">Delete</button>
+								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{closeBtn}"></button>
+								<button class="btn btn-danger" data-bs-dismiss="modal" th:onclick="'deleteComment()'" th:text="#{deleteBtn}"></button>
 							</div>
 						</div>
 					</div>
@@ -120,7 +120,7 @@
 				let content = ""
 				content += "<h2 class='gs-title'>" + blog.blogTitle + "</h2>"
 				content += "<p class='text-white'>" + blog.blogDescription + "</p>"
-				content += "<p>Date of publication: <span>" + blog.blogCreateDate + "</span></p>"
+				content += "<p>[[#{publicationDate}]]: <span>" + blog.blogCreateDate + "</span></p>"
 				content += "<p>Author: <span>" + blog.users.userFirstName + " " + blog.users.userSurname + "</span></p>"
 
 				document.querySelector(".game-single-preview").innerHTML = blogImage
@@ -147,7 +147,7 @@
 					}
 					content += "</div>"
 					content += "<p>"
-					content += "<span class='text-white'>Author:</span>"
+					content += "<span class='text-white'>[[#{author}]]:</span>"
 					content += "<span class='comment-author-name'>" + allComments[i].author.userFirstName + ' ' + allComments[i].author.userSurname + "</span> |"
 					content += "<span class='text-white'>" + allComments[i].commentCreateDate + "</span>"
 					content += "</p>"

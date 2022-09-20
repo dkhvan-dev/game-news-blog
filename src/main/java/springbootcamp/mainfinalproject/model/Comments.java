@@ -31,4 +31,9 @@ public class Comments {
 
     @ManyToOne(fetch = FetchType.EAGER)
     private User author;
+
+    @PrePersist
+    public void preCreateDate() {
+        this.setCommentCreateDate(LocalDate.now());
+    }
 }

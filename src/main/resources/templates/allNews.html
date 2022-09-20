@@ -18,10 +18,10 @@
 	<!-- Page top section -->
 	<section class="page-top-section set-bg" data-setbg="/img/page-top-bg/1.jpg">
 		<div class="page-info">
-			<h2>News</h2>
+			<h2 th:text="#{news}"></h2>
 			<div class="site-breadcrumb">
-				<a th:href="@{'/'}">Home</a>  /
-				<span>News</span>
+				<a th:href="@{'/'}" th:text="#{home}"></a>  /
+				<span th:text="#{news}"></span>
 			</div>
 		</div>
 	</section>
@@ -39,7 +39,7 @@
 					<div id="stickySidebar">
 						<div class="widget-item">
 							<div class="categories-widget">
-								<h4 class="widget-title">game</h4>
+								<h4 class="widget-title" th:text="#{game}"></h4>
 								<ul class="allGames">
 
 								</ul>
@@ -47,7 +47,7 @@
 						</div>
 						<div class="widget-item">
 							<div class="categories-widget">
-								<h4 class="widget-title">platform</h4>
+								<h4 class="widget-title" th:text="#{platform}"></h4>
 								<ul class="allPlatforms">
 
 								</ul>
@@ -55,7 +55,7 @@
 						</div>
 						<div class="widget-item">
 							<div class="categories-widget">
-								<h4 class="widget-title">genre</h4>
+								<h4 class="widget-title" th:text="#{genre}"></h4>
 								<ul class="allGenres">
 
 								</ul>
@@ -90,8 +90,8 @@
 					content += "<h5>" + allNews[i].newsCreateDate + ' | ' + allNews[i].newsTitle + "</h5>"
 					content += "<img class='news-image' src='/getGameImage/" + allNews[i].game.gameImage + "'>"
 					content += "<p class='mt-lg-3 blog-description'>" + allNews[i].newsDescription + "</p>"
-					content += "<p class='blog-game'>Game: <span>" + allNews[i].game.gameName + "</span></p>"
-					content += "<a href='/detailsNews/" + allNews[i].newsId + "' class='read-more'>Read More <img src='/img/icons/double-arrow.png'/></a>"
+					content += "<p class='blog-game'>[[#{game}]]: <span>" + allNews[i].game.gameName + "</span></p>"
+					content += "<a href='/detailsNews/" + allNews[i].newsId + "' class='read-more'>[[#{readMoreBtn}]] <img src='/img/icons/double-arrow.png'/></a>"
 					content += "</div>"
 					content += "</div>"
 				}

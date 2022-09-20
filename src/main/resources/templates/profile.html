@@ -13,23 +13,23 @@
     <main class="main">
         <section class="profileSection pb-xxl-5">
             <div class="container mt-3">
-                <div class="alert alert-success" role="alert" th:if="${param.successSwapAvatar}">
-                    Avatar successfully replaced!
+                <div class="alert alert-success" role="alert" th:if="${param.successSwapAvatar}" th:text="#{avatarReplaced}">
+
                 </div>
-                <div class="alert alert-danger" role="alert" th:if="${#authentication.getAuthorities().contains(banRole)}">
-                    Your account is banned! You can request account unblocking in Home -> Feedback (in the bottom side)
+                <div class="alert alert-danger" role="alert" th:if="${#authentication.getAuthorities().contains(banRole)}" th:text="#{accBanned}">
+
                 </div>
-                <div class="alert alert-danger" role="alert" th:if="${param.errorSwapAvatar}">
-                    Failed to update avatar. Try to choose a different image!
+                <div class="alert alert-danger" role="alert" th:if="${param.errorSwapAvatar}" th:text="#{failedUpdateAvatar}">
+
                 </div>
-                <div class="alert alert-success" role="alert" th:if="${param.success}">
-                    Profile was edited successfully!
+                <div class="alert alert-success" role="alert" th:if="${param.success}" th:text="#{successEditedProfile}">
+
                 </div>
-                <div class="alert alert-danger" role="alert" th:if="${param.newPasswordsNotSame}">
-                    Passwords are not same!
+                <div class="alert alert-danger" role="alert" th:if="${param.newPasswordsNotSame}" th:text="#{passwordsNotSame}">
+
                 </div>
-                <div class="alert alert-danger" role="alert" th:if="${param.oldPasswordNotSameCurrentPassword}">
-                    The old password does not match the current password!
+                <div class="alert alert-danger" role="alert" th:if="${param.oldPasswordNotSameCurrentPassword}" th:text="#{oldPasswordInvalid}">
+
                 </div>
                 <div class="mx-auto">
                     <div class="typewriter">
@@ -41,7 +41,7 @@
                         <label>Avatar: <br>
                             <input class="form-control" type="file" name="userImageToken">
                         </label>
-                        <button class="btn btn-primary mx-lg-3">Swap avatar</button>
+                        <button class="btn btn-primary mx-lg-3" th:text="#{swapAvaBtn}"></button>
                     </div>
                 </form>
                 <form class="col-6" th:action="@{'/editUser'}" method="post">
@@ -51,53 +51,58 @@
                         <img class="user-avatar-img" th:src="@{'/getUserImage/' + ${currentUser.getUserAvatar()}}">
                     </div>
                     <div class="mt-3">
-                        <label>Name:
+                        <label>
+                            <span th:text="#{nameProfile} + ':'"></span>
                             <input type="text" class="form-control" name="userFirstName" th:placeholder="${currentUser.userFirstName}" required>
                         </label>
                     </div>
                     <div class="mt-3">
-                        <label>Surname:
+                        <label>
+                            <span th:text="#{surnameProfile} + ':'"></span>
                             <input type="text" class="form-control" name="userSurname" th:placeholder="${currentUser.userSurname}">
                         </label>
                     </div>
                     <div class="mt-3">
-                        <label>Birthdate:
+                        <label>
+                            <span th:text="#{birthdateProfile} + ':'"></span>
                             <input type="date" class="form-control" name="birthDate" th:value="${currentUser.userBirthdate}">
                         </label>
                     </div>
                     <div class="mt-3">
-                        <label>Old Password:
+                        <label>
+                            <span th:text="#{oldPasswordProfile} + ':'"></span>
                             <input type="password" name="oldPassword" class="form-control">
                         </label>
                     </div>
                     <div class="mt-3">
-                        <label>New Password:
+                        <label>
+                            <span th:text="#{newPasswordProfile} + ':'"></span>
                             <input type="password" name="userPassword" class="form-control">
                         </label>
                     </div>
                     <div class="mt-3">
-                        <label>Repeat new password:
+                        <label>
+                            <span th:text="#{reNewPasswordProfile} + ':'"></span>
                             <input type="password" name="reNewPassword" class="form-control">
                         </label>
                     </div>
-                    <button class="btn btn-primary mt-3">Edit user</button>
-                    <a th:href="@{'/signOut'}" class="btn btn-danger mt-3">Logout</a>
+                    <button class="btn btn-primary mt-3" th:text="#{editUserBtn}"></button>
+                    <a th:href="@{'/signOut'}" class="btn btn-danger mt-3" th:text="#{logout}"></a>
                 </form>
 
                 <div class="mt-3" sec:authorize="!hasRole('ROLE_BLOGGER')">
                     <button class="btn btn-primary" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#applicationFormBlogger" aria-expanded="false">
-                        Application for blogger's role
+                            data-bs-target="#applicationFormBlogger" aria-expanded="false" th:text="#{appForRoleBloggerBtn}">
                     </button>
                 </div>
                 <div class="collapse mb-lg-5" id="applicationFormBlogger">
                     <div class="card card-body">
                         <form class="form-control" th:action="@{'/applicationFormBlogger'}" method="post">
                             <label class="mt-3">
-                                Description: <br>
+                                <span th:text="#{descriptionFeedback} + ':'"></span> <br>
                                 <textarea name="applicationFormBloggerDescription" id="tinyMceTextarea"></textarea>
                             </label>
-                            <button class="btn btn-primary mt-3">Submit</button>
+                            <button class="btn btn-primary mt-3" th:text="#{submitBtn}"></button>
                         </form>
                     </div>
                 </div>

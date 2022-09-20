@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import springbootcamp.mainfinalproject.mapper.AppFormBloggerMapper;
 import springbootcamp.mainfinalproject.model.*;
 import springbootcamp.mainfinalproject.model.dto.BlogDto;
 import springbootcamp.mainfinalproject.model.dto.NewsDto;
@@ -37,8 +36,6 @@ public class AdminController {
     private final UserService userService;
     private final BlogStatusService blogStatusService;
     private final RoleService roleService;
-    private final FileUploadService fileUploadService;
-    private final AppFormBloggerMapper appFormBloggerMapper;
 
     @Value("${loadURL}")
     private String loadURL;
@@ -46,22 +43,6 @@ public class AdminController {
     @PreAuthorize("hasAnyRole('ROLE_MODERATOR', 'ROLE_ADMIN')")
     @GetMapping("/adminPanel")
     public String adminPanelPage(Model model) {
-        List<Game> allGames = gameService.getAllGames();
-        model.addAttribute("allGames", allGames);
-        List<NewsDto> allNews = newsService.getAllNews();
-        model.addAttribute("allNews", allNews);
-        List<BlogDto> allBlogs = blogService.getAllBlogs();
-        model.addAttribute("allBlogs", allBlogs);
-        List<ApplicationFormBlogger> allApplicationForBloggerRole = applicationFormBloggerService.getAllApplications();
-        model.addAttribute("allApplicationForBloggerRole", allApplicationForBloggerRole);
-        List<Feedback> allFeedback = feedbackService.getAllFeedback();
-        model.addAttribute("allFeedback", allFeedback);
-        List<GamePlatform> allPlatforms = gamePlatformService.getAllPlatforms();
-        model.addAttribute("allPlatforms", allPlatforms);
-        List<Genre> allGenres = genreService.getAllGenres();
-        model.addAttribute("allGenres", allGenres);
-        List<Comments> allComments = commentsService.getAllComments();
-        model.addAttribute("allComments", allComments);
         List<User> allUsers = userService.getAllUsers();
         model.addAttribute("allUsers", allUsers);
         return "admin/adminPanel";
@@ -157,7 +138,9 @@ public class AdminController {
 
     @PreAuthorize("hasAnyRole('ROLE_MODERATOR', 'ROLE_ADMIN')")
     @PostMapping("/editNews")
-    public String editNews(News news, @RequestParam(name = "createNews") String newsCreateDate, @RequestParam(name = "author") Long authorId) {
+    public String editNews(News news,
+                           @RequestParam(name = "createNews") String newsCreateDate,
+                           @RequestParam(name = "author") Long authorId) {
         News editedNews = newsService.editNews(news, newsCreateDate);
         if (editedNews != null) {
             return "redirect:/detailsNewsAdmin/" + news.getNewsId() + "?success";
@@ -188,13 +171,12 @@ public class AdminController {
     public String editBlogAdmin(Blog blog,
                                 @RequestParam(name = "blogImageToken") MultipartFile blogImageToken,
                                 @RequestParam(name = "createDate") String blogCreateDate,
-                                @RequestParam(name = "updateDate") String blogUpdateDate,
                                 @RequestParam(name = "users") Long authorId) {
         if (blog.getBlogStatus().getBlogStatusName().equals("REJECTED")) {
             blogService.deleteBlogAdmin(blog.getBlogId());
             return "redirect:/adminPanel?successRejectedBlog";
         } else {
-            Blog editedBlog = blogService.editBlogAdmin(blog, blogImageToken, blogCreateDate, blogUpdateDate, authorId);
+            Blog editedBlog = blogService.editBlogAdmin(blog, blogImageToken, blogCreateDate, authorId);
             if (editedBlog != null) {
                 return "redirect:/detailsBlogAdmin/" + blog.getBlogId() + "?success";
             }
@@ -241,9 +223,8 @@ public class AdminController {
     @PostMapping("/updateFormBlogger")
     public String updateFormBlogger(ApplicationFormBlogger applicationFormBlogger,
                                     @RequestParam(name = "receiptDate") String receiptDate,
-                                    @RequestParam(name = "updateDate") String updateDate,
                                     @RequestParam(name = "authorId") Long authorId) {
-        ApplicationFormBlogger updatedApplicationForm = applicationFormBloggerService.updateApplicationForm(applicationFormBlogger, receiptDate, updateDate, authorId);
+        ApplicationFormBlogger updatedApplicationForm = applicationFormBloggerService.updateApplicationForm(applicationFormBlogger, receiptDate, authorId);
         if (updatedApplicationForm != null) {
             return "redirect:/detailsApplicationFormBloggerAdmin/" + applicationFormBlogger.getApplicationFormBloggerId() + "?success";
         }

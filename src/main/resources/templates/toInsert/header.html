@@ -1,7 +1,7 @@
 <header class="header-section">
   <div class="header-warp">
     <div class="header-social d-flex justify-content-end">
-      <p>Follow us:</p>
+      <p th:text="#{followUs} + ':'"></p>
       <a href="https://ru.pinterest.com/"><i class="fa fa-pinterest"></i></a>
       <a href="https://www.facebook.com/"><i class="fa fa-facebook"></i></a>
       <a href="https://twitter.com/"><i class="fa fa-twitter"></i></a>
@@ -15,30 +15,42 @@
       </a>
       <nav class="top-nav-area w-100">
         <div class="user-panel">
+
           <ul class="navbar-nav" sec:authorize="isAuthenticated()">
             <li class="nav-item dropdown">
-              <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Profile
+              <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="#{profileHeader}">
+
               </a>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" th:href="@{'/profile'}">Profile</a></li>
+                <li><a class="dropdown-item" th:href="@{'/profile'}" th:text="#{profileHeader}"></a></li>
                 <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" th:href="@{'/adminPanel'}" sec:authorize="hasRole('ROLE_MODERATOR')">Admin Panel</a></li>
-                <li><a class="dropdown-item" th:href="@{'/applicationsBloggers'}" sec:authorize="hasRole('ROLE_MODERATOR')">Application bloggers requests</a></li>
-                <li><a th:href="@{'/signOut'}" class="dropdown-item text-danger">Logout</a></li>
+                <li><a class="dropdown-item" th:href="@{'/adminPanel'}" sec:authorize="hasRole('ROLE_MODERATOR')" th:text="#{adminPanelHeader}"></a></li>
+                <li><a th:href="@{'/signOut'}" class="dropdown-item text-danger" th:text="#{logout}"></a></li>
               </ul>
             </li>
           </ul>
           <div sec:authorize="isAnonymous()">
-            <a th:href="@{'/signIn'}">Authentication</a>
+            <a th:href="@{'/signIn'}" th:text="#{authentication}"></a>
           </div>
         </div>
         <!-- Menu -->
         <ul class="main-menu primary-menu">
-          <li><a th:href="@{'/'}">Home</a></li>
-          <li><a th:href="@{'/allGames/keyword?keyword='}">Games</a></li>
-          <li><a th:href="@{'/allBlogs'}">Blogs</a></li>
-          <li><a th:href="@{'/allNews'}">News</a></li>
+          <li><a th:href="@{'/'}" th:text="#{home}"></a></li>
+          <li><a th:href="@{'/allGames/keyword?keyword='}" th:text="#{games}"></a></li>
+          <li><a th:href="@{'/allBlogs'}" th:text="#{blogs}"></a></li>
+          <li><a th:href="@{'/allNews'}" th:text="#{news}"></a></li>
+        </ul>
+        <ul class="navbar-nav d-flex">
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{'?language=en'}">
+              <img class="localization-img" th:src="@{'/img/localization/en_local.jpg'}">
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{'?language=ru'}">
+              <img class="localization-img" th:src="@{'/img/localization/ru_local.jpg'}">
+            </a>
+          </li>
         </ul>
       </nav>
     </div>

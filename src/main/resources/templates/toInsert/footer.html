@@ -9,11 +9,11 @@
     <img th:src="@{'/../img/logo.png'}" alt="">
   </a>
   <ul class="main-menu footer-menu">
-    <li><a th:href="@{'/'}">Home</a></li>
-    <li><a th:href="@{'/allGames/keyword?keyword='}">Games</a></li>
-    <li><a th:href="@{'/allBlogs'}">Blogs</a></li>
-    <li><a th:href="@{'/allNews'}">News</a></li>
-    <li><a href="" data-bs-toggle="modal" data-bs-target="#feedbackModal">Feedback</a></li>
+    <li><a th:href="@{'/'}" th:text="#{home}"></a></li>
+    <li><a th:href="@{'/allGames/keyword?keyword='}" th:text="#{games}"></a></li>
+    <li><a th:href="@{'/allBlogs'}" th:text="#{blogs}"></a></li>
+    <li><a th:href="@{'/allNews'}" th:text="#{news}"></a></li>
+    <li><a href="" data-bs-toggle="modal" data-bs-target="#feedbackModal" th:text="#{feedback}"></a></li>
   </ul>
 
   <div class="modal fade" id="feedbackModal" tabindex="-1" aria-hidden="true">
@@ -21,30 +21,30 @@
       <div class="modal-content">
         <form class="form-control" th:action="@{'/sendFeedback'}" method="post">
           <div class="modal-header">
-            <h5 class="modal-title">Send feedback</h5>
+            <h5 class="modal-title" th:text="#{sendFeedback}"></h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
               <label class="form-label mt-3">
-                Your name:
+                <span th:text="#{yourNameFeedback} + ':'"></span>
                 <input type="text" name="feedbackName" required>
               </label>
               <label class="form-label mt-3">
-                Your email address:
+                <span th:text="#{yourEmailFeedback} + ':'"></span>
                 <input type="email" name="feedbackEmail" required>
               </label>
               <label class="form-label mt-3">
-                Subject:
+                <span th:text="#{subjectFeedback} + ':'"></span>
                 <input type="text" name="feedbackSubject" required>
               </label>
               <label class="form-label mt-3">
-                Description:
+                <span th:text="#{descriptionFeedback} + ':'"></span>
                 <textarea name="feedbackDescription"></textarea>
               </label>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button class="btn btn-primary">Send</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{closeBtn}"></button>
+            <button class="btn btn-primary" th:text="#{sendBtn}"></button>
           </div>
         </form>
       </div>

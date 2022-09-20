@@ -20,7 +20,7 @@
 				<div class="container">
 					<h2 th:text="${news.newsTitle}"></h2>
 					<p th:text="${news.newsDescription}"></p>
-					<a th:href="@{'/detailsNews/' + ${news.newsId}}" class="site-btn">Read More  <img th:src="@{'/img/icons/double-arrow.png'}" th:alt="${news.newsTitle}" /></a>
+					<a th:href="@{'/detailsNews/' + ${news.newsId}}" class="site-btn" th:text="#{readMoreBtn}"> <img th:src="@{'/img/icons/double-arrow.png'}" th:alt="${news.newsTitle}" /></a>
 				</div>
 			</div>
 		</div>
@@ -33,7 +33,7 @@
 			<div class="row">
 				<div class="col-lg-8 col-md-7">
 					<div class="section-title text-white">
-						<h2>Latest Blogs</h2>
+						<h2 th:text="#{latestBlogs}"></h2>
 					</div>
 					<ul class="blog-filter">
 					</ul>
@@ -45,7 +45,7 @@
 				<div class="col-xl-3 col-lg-4 col-md-5 sidebar">
 					<div id="stickySidebar">
 						<div class="widget-item">
-							<h4 class="widget-title">Trending</h4>
+							<h4 class="widget-title" th:text="#{trending}"></h4>
 							<div class="trending-widget">
 
 							</div>
@@ -124,7 +124,7 @@
 					content += "<a href='/detailsGame/" + top5Games[i].gameId + "'>" + top5Games[i].gameName + "</a>";
 					content += "</div>";
 					content += "<div class='d-flex'>";
-					content += "<span>Рейтинг игры:&nbsp;&nbsp;</span>";
+					content += "<span th:text='#{gameRatingIndexPage} + " + ':&nbsp;&nbsp;' + "'></span>";
 					content += "<span class='tw-text__rating'>" + top5Games[i].gameRatings.gameRatingAvg + "</span>";
 					content += "<span>&nbsp;&nbsp;/&nbsp;&nbsp;5</span>";
 					content += "</div>";

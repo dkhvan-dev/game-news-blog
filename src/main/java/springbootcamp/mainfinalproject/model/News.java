@@ -35,4 +35,9 @@ public class News {
 
     @ManyToOne(fetch = FetchType.EAGER)
     private User author;
+
+    @PrePersist
+    public void preCreateDate() {
+        this.setNewsCreateDate(LocalDate.now());
+    }
 }

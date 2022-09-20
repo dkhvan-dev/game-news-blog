@@ -12,25 +12,28 @@
 
   <main class="main">
     <div class="container mt-3">
-      <div class="alert alert-success" role="alert" th:if="${param.success}">
-        The blog has been successfully added. Expect to be checked by a moderator!
+      <div class="alert alert-success" role="alert" th:if="${param.success}" th:text="#{successAddBLog}">
+
       </div>
-      <div class="alert alert-danger" role="alert" th:if="${param.errorAddBlog}">
-        Failed to add a blog. Check the correctness of the field data!
+      <div class="alert alert-danger" role="alert" th:if="${param.errorAddBlog}" th:text="#{failedUpdateAvatar}">
+
       </div>
       <form class="form-control" th:action="@{'/addBlog'}" method="post" enctype="multipart/form-data">
         <div class="mt-3">
           <div class="mt-3">
-            <label class="form-label">Image:
+            <label class="form-label">
+              <span th:text="#{image} + ':'"></span>
               <input class="form-control" type="file" name="blogImageToken">
             </label>
           </div>
-          <label>Title:
+          <label>
+            <span th:text="#{title} + ':'"></span>
             <input class="form-control" type="text" name="blogTitle" required>
           </label>
         </div>
         <div class="mt-3">
-          <label>Description:
+          <label>
+            <span th:text="#{descriptionFeedback} + ':'"></span>
             <textarea id="tinyMceTextarea" class="form-control" name="blogDescription"></textarea>
           </label>
         </div>
@@ -39,7 +42,7 @@
             <option th:each="game : ${allGames}" th:text="${game.gameName}" th:value="${game.gameId}"></option>
           </select>
         </div>
-        <button class="btn btn-primary mt-3">Add blog</button>
+        <button class="btn btn-primary mt-3" th:text="#{addBlog}"></button>
       </form>
     </div>
   </main>

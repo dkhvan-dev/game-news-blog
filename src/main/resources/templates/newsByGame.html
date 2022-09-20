@@ -18,11 +18,11 @@
 	<!-- Page top section -->
 	<section class="page-top-section set-bg" data-setbg="/img/page-top-bg/1.jpg">
 		<div class="page-info">
-			<h2>News</h2>
+			<h2 th:text="#{news}"></h2>
 			<div class="site-breadcrumb">
-				<a th:href="@{'/'}">Home</a>  /
-				<a th:href="@{'/allNews'}">News</a>  /
-				<span class="site-breadcrumb-disabled-span">Game</span>  /
+				<a th:href="@{'/'}" th:text="#{home}"></a>  /
+				<a th:href="@{'/allNews'}" th:text="#{news}"></a>  /
+				<span class="site-breadcrumb-disabled-span" th:text="#{game}"></span>  /
 				<span th:text="${game.gameName}"></span>
 			</div>
 		</div>
@@ -41,7 +41,7 @@
 					<div id="stickySidebar">
 						<div class="widget-item">
 							<div class="categories-widget">
-								<h4 class="widget-title">game</h4>
+								<h4 class="widget-title" th:text="#{game}"></h4>
 								<ul class="allGames">
 
 								</ul>
@@ -49,7 +49,7 @@
 						</div>
 						<div class="widget-item">
 							<div class="categories-widget">
-								<h4 class="widget-title">platform</h4>
+								<h4 class="widget-title" th:text="#{platform}"></h4>
 								<ul class="allPlatforms">
 
 								</ul>
@@ -57,7 +57,7 @@
 						</div>
 						<div class="widget-item">
 							<div class="categories-widget">
-								<h4 class="widget-title">Genre</h4>
+								<h4 class="widget-title" th:text="#{genre}"></h4>
 								<ul class="allGenres">
 
 								</ul>
@@ -95,8 +95,8 @@
 					content += "<h5>" + allNewsByGame[i].newsCreateDate + ' | ' + allNewsByGame[i].newsTitle + "</h5>"
 					content += "<img class='news-image' src='/getGameImage/" + allNewsByGame[i].game.gameImage + "'>"
 					content += "<p class='mt-lg-3 blog-description'>" + allNewsByGame[i].newsDescription + "</p>"
-					content += "<p class='blog-game'>Game: <span>" + allNewsByGame[i].game.gameName + "</span></p>"
-					content += "<a href='/detailsNews/" + allNewsByGame[i].newsId + "' class='read-more'>Read More <img src='/img/icons/double-arrow.png'/></a>"
+					content += "<p class='blog-game'>[[#{game}]]: <span>" + allNewsByGame[i].game.gameName + "</span></p>"
+					content += "<a href='/detailsNews/" + allNewsByGame[i].newsId + "' class='read-more'>[[#{readMoreBtn}]] <img src='/img/icons/double-arrow.png'/></a>"
 					content += "</div>"
 					content += "</div>"
 				}

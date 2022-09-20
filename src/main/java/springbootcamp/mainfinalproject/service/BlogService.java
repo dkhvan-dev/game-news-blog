@@ -16,6 +16,6 @@ public interface BlogService {
     List<BlogDto> getAllBlogsByPlatform(Long platformId);
     List<BlogDto> getAllBlogsByGenre(Long genreId);
     Blog addBlog(Blog blog, MultipartFile blogImageToken);
-    Blog editBlogAdmin(Blog blog, MultipartFile blogImageToken, String blogCreateDate, String blogUpdateDate, Long authorId);
+    Blog editBlogAdmin(Blog blog, MultipartFile blogImageToken, String blogCreateDate, Long authorId);
     void deleteBlogAdmin(Long blogId);
 }

@@ -95,7 +95,6 @@ public class BlogServiceImpl implements BlogService {
     public Blog addBlog(Blog blog, MultipartFile blogImageToken) {
         if (blog.getBlogId() == null) {
             fileUploadService.uploadBlogImage(blogImageToken, blog);
-            blog.setBlogCreateDate(LocalDate.now());
             blog.setUsers(userService.getCurrentUser());
             BlogStatus blogStatus = blogStatusService.getStatusById(1L);
             blog.setBlogStatus(blogStatus);
@@ -105,16 +104,10 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public Blog editBlogAdmin(Blog blog, MultipartFile blogImageToken, String blogCreateDate, String blogUpdateDate, Long authorId) {
+    public Blog editBlogAdmin(Blog blog, MultipartFile blogImageToken, String blogCreateDate, Long authorId) {
         if (blog != null) {
             DateTimeFormatter pattern = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate createDate = LocalDate.parse(blogCreateDate, pattern);
-            if (!blogUpdateDate.equals("")) {
-                LocalDate updateDate = LocalDate.parse(blogUpdateDate, pattern);
-                blog.setBlogUpdateDate(updateDate);
-            } else {
-                blog.setBlogUpdateDate(null);
-            }
             User author = userService.getUserById(authorId);
             if (author != null) {
                 fileUploadService.uploadBlogImage(blogImageToken, blog);

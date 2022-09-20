@@ -55,7 +55,6 @@ public class CommentsServiceImpl implements CommentsService {
         if (blog != null) {
             Comments comment = new Comments();
             comment.setCommentText(commentText);
-            comment.setCommentCreateDate(LocalDate.now());
             comment.setAuthor(userService.getCurrentUser());
             comment.setBlog(blogMapper.toEntity(blog));
             return commentsRepository.save(comment);

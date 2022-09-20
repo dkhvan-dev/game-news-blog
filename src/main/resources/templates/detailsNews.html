@@ -17,10 +17,10 @@
 	<!-- Page top section -->
 	<section class="page-top-section set-bg" data-setbg="/img/page-top-bg/1.jpg">
 		<div class="page-info">
-			<h2>News</h2>
+			<h2 th:text="#{news}"></h2>
 			<div class="site-breadcrumb">
-				<a th:href="@{'/'}">Home</a>  /
-				<a th:href="@{'/allNews'}">News</a>	 /
+				<a th:href="@{'/'}" th:text="#{home}"></a>  /
+				<a th:href="@{'/allNews'}" th:text="#{home}"></a>	 /
 				<span th:text="${news.newsTitle}"></span>
 			</div>
 		</div>
@@ -38,7 +38,7 @@
 
 					</div>
 					<div class="geme-social-share pt-5 d-flex">
-						<p>Share:</p>
+						<p th:text="#{share} + ':'"></p>
 						<a href="https://ru.pinterest.com/"><i class="fa fa-pinterest"></i></a>
 						<a href="https://www.facebook.com/"><i class="fa fa-facebook"></i></a>
 						<a href="https://twitter.com/"><i class="fa fa-twitter"></i></a>
@@ -72,7 +72,7 @@
 				let content = ""
 				content += "<h2 class='gs-title'>" + news.newsTitle + "</h2>"
 				content += "<p class='text-white'>" + news.newsDescription + "</p>"
-				content += "<p>Date of publication: <span>" + news.newsCreateDate + "</span></p>"
+				content += "<p>[[#{publicationDate}]]: <span>" + news.newsCreateDate + "</span></p>"
 
 				document.querySelector(".game-single-preview").innerHTML = gameImage
 				document.querySelector(".game-single-content").innerHTML = content

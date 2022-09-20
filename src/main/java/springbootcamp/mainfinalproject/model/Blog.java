@@ -44,4 +44,14 @@ public class Blog {
 
     @Column(name = "image")
     private String blogImage;
+
+    @PrePersist
+    public void preCreateDate() {
+        this.setBlogCreateDate(LocalDate.now());
+    }
+
+    @PreUpdate
+    public void preUpdateDate() {
+        this.setBlogUpdateDate(LocalDate.now());
+    }
 }

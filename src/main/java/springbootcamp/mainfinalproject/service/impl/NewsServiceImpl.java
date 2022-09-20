@@ -45,7 +45,6 @@ public class NewsServiceImpl implements NewsService {
     public News addNews(News news) {
         if (news.getNewsId() == null) {
             news.setAuthor(userService.getCurrentUser());
-            news.setNewsCreateDate(LocalDate.now());
             return newsRepository.save(news);
         }
         return null;

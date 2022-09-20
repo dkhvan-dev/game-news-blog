@@ -18,11 +18,11 @@
 	<!-- Page top section -->
 	<section class="page-top-section set-bg" data-setbg="/img/page-top-bg/1.jpg">
 		<div class="page-info">
-			<h2>Blogs</h2>
+			<h2 th:text="#{blogs}"></h2>
 			<div class="site-breadcrumb">
-				<a th:href="@{'/'}">Home</a>  /
-				<a th:href="@{'/allBlogs'}">Blogs</a>  /
-				<span class="site-breadcrumb-disabled-span">Game</span>  /
+				<a th:href="@{'/'}" th:text="#{home}"></a>  /
+				<a th:href="@{'/allBlogs'}" th:text="#{blogs}"></a>  /
+				<span class="site-breadcrumb-disabled-span" th:text="#{game}"></span>  /
 				<span th:text="${game.gameName}"></span>
 			</div>
 		</div>
@@ -32,7 +32,7 @@
 	<!-- Blogs section -->
 	<section class="games-section">
 		<div class="container">
-			<a th:href="@{'/addBlog'}" class="btn btn-primary w-25" sec:authorize="hasRole('ROLE_BLOGGER') && !hasRole('ROLE_BAN')">Add blog</a>
+			<a th:href="@{'/addBlog'}" class="btn btn-primary w-25" sec:authorize="hasRole('ROLE_BLOGGER') && !hasRole('ROLE_BAN')" th:text="#{addBlog}"></a>
 			<div class="row">
 				<div class="col-xl-7 col-lg-8 col-md-7">
 					<div class="row allBlogsByGame">
@@ -43,7 +43,7 @@
 					<div id="stickySidebar">
 						<div class="widget-item">
 							<div class="categories-widget">
-								<h4 class="widget-title">game</h4>
+								<h4 class="widget-title" th:text="#{game}"></h4>
 								<ul class="allGames">
 
 								</ul>
@@ -51,7 +51,7 @@
 						</div>
 						<div class="widget-item">
 							<div class="categories-widget">
-								<h4 class="widget-title">platform</h4>
+								<h4 class="widget-title" th:text="#{platform}"></h4>
 								<ul class="allPlatforms">
 
 								</ul>
@@ -59,7 +59,7 @@
 						</div>
 						<div class="widget-item">
 							<div class="categories-widget">
-								<h4 class="widget-title">Genre</h4>
+								<h4 class="widget-title" th:text="#{genre}"></h4>
 								<ul class="allGenres">
 
 								</ul>
@@ -99,8 +99,8 @@
 						content += "<h5>" + allBlogsByGame[i].blogCreateDate + " | " + allBlogsByGame[i].blogTitle + "</h5>"
 						content += "<img class='news-image' src='/getBlogImage/" + allBlogsByGame[i].blogImage + "'>"
 						content += "<p class='mt-lg-3 blog-description'>" + allBlogsByGame[i].blogDescription + "</p>"
-						content += "<p class='blog-game'>Game: <span>" + allBlogsByGame[i].games.gameName + "</span></p>"
-						content += "<a href='/detailsBlog/" + allBlogsByGame[i].blogId + "' class='read-more'>Read More <img src='/img/icons/double-arrow.png'/></a>"
+						content += "<p class='blog-game'>[[#{game}]]: <span>" + allBlogsByGame[i].games.gameName + "</span></p>"
+						content += "<a href='/detailsBlog/" + allBlogsByGame[i].blogId + "' class='read-more'>[[#{readMoreBtn}]] <img src='/img/icons/double-arrow.png'/></a>"
 						content += "</div>"
 						content += "</div>"
 					}

@@ -46,22 +46,16 @@ public class ApplicationFormBloggerServiceImpl implements ApplicationFormBlogger
         ApplicationBloggerStatus defaultBloggerStatus = applicationBloggerStatusService.getApplicationBloggerStatusById(1L);
         applicationFormBlogger.setApplicationBloggerStatus(defaultBloggerStatus);
         applicationFormBlogger.setUsers(userService.getCurrentUser());
-        applicationFormBlogger.setApplicationFormBloggerReceiptDate(LocalDate.now());
         return applicationFormBloggerRepository.save(applicationFormBlogger);
     }
 
     @Override
-    public ApplicationFormBlogger updateApplicationForm(ApplicationFormBlogger applicationFormBlogger, String applicationFormBloggerReceiptDate, String applicationFormBloggerUpdateDate, Long authorId) {
+    public ApplicationFormBlogger updateApplicationForm(ApplicationFormBlogger applicationFormBlogger, String applicationFormBloggerReceiptDate, Long authorId) {
         if (applicationFormBlogger != null) {
             DateTimeFormatter pattern = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate receiptDate = LocalDate.parse(applicationFormBloggerReceiptDate, pattern);
-            LocalDate updateDate = LocalDate.now();
-            if (!applicationFormBloggerUpdateDate.equals("")) {
-                updateDate = LocalDate.parse(applicationFormBloggerUpdateDate, pattern);
-            }
             User author = userService.getUserById(authorId);
             applicationFormBlogger.setApplicationFormBloggerReceiptDate(receiptDate);
-            applicationFormBlogger.setApplicationFormBloggerUpdateDate(updateDate);
             applicationFormBlogger.setUsers(author);
             if (applicationFormBlogger.getApplicationBloggerStatus().getApplicationBloggerStatusId() == 2) {
                 Role role = roleService.getRoleById(2L);

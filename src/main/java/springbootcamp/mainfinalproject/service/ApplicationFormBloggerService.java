@@ -8,5 +8,5 @@ public interface ApplicationFormBloggerService {
     List<ApplicationFormBlogger> getAllApplications();
     ApplicationFormBlogger getApplicationFormById(Long applicationFormId);
     ApplicationFormBlogger addApplicationFormBlogger(ApplicationFormBlogger applicationFormBlogger);
-    ApplicationFormBlogger updateApplicationForm(ApplicationFormBlogger applicationFormBlogger, String applicationFormBloggerReceiptDate, String applicationFormBloggerUpdateDate, Long authorId);
+    ApplicationFormBlogger updateApplicationForm(ApplicationFormBlogger applicationFormBlogger, String applicationFormBloggerReceiptDate, Long authorId);
 }
