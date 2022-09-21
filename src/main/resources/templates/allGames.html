@@ -92,7 +92,7 @@
 		function getAllGames() {
 			const result = new XMLHttpRequest();
 			let keyword = document.location.href.split("/").pop()
-			result.open("GET", "http://localhost:8000/games/keyword=" + keyword.substring(keyword.indexOf("=")+1, keyword.indexOf("?")))
+			result.open("GET", "http://localhost:8000/games/keyword=" + keyword.substring(keyword.indexOf("=")+1))
 			result.send();
 			result.onload = function() {
 				let allGames = JSON.parse(this.responseText)
@@ -103,7 +103,7 @@
 					content += "<img src='/getGameImage/" + allGames[i].gameImage + "' alt='#'>"
 					content += "<h5>" + allGames[i].gameName + "</h5>"
 					content += "<p>[[#{gameAge}]]: <span class='age-limit'>" + allGames[i].gameAge + "+</span></p>"
-					content += "<a href='/detailsGame/" + allGames[i].gameId + "' class='read-more'>[[#{readMoreBtn}]] <img src='/img/icons/double-arrow.png' alt='#'/></a>"
+					content += "<a href='/detailsGame/" + allGames[i].gameId + "' class='read-more'>[[#{readMoreBtn}]] &#5125;</a>"
 					content += "</div>"
 					content += "</div>"
 				}
@@ -123,7 +123,7 @@
 				content += "</div>"
 				content += "<h3>" + lastNews.newsTitle + "</h3>"
 				content += "<p>" + lastNews.newsDescription + "</p>"
-				content += "<a href='/detailsNews/" + lastNews.newsId + "' class='read-more'>[[#{readMoreBtn}]] <img src='../img/icons/double-arrow.png' alt='#'/></a>"
+				content += "<a href='/detailsNews/" + lastNews.newsId + "' class='read-more'>[[#{readMoreBtn}]] &#5125;</a>"
 				document.querySelector(".text-box").innerHTML = content;
 			}
 		}

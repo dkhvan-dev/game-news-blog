@@ -39,19 +39,18 @@
           <li><a th:href="@{'/allGames/keyword?keyword='}" th:text="#{games}"></a></li>
           <li><a th:href="@{'/allBlogs'}" th:text="#{blogs}"></a></li>
           <li><a th:href="@{'/allNews'}" th:text="#{news}"></a></li>
-        </ul>
-        <ul class="navbar-nav d-flex">
-          <li class="nav-item">
-            <a class="nav-link" th:href="@{'?language=en'}">
+          <li>
+            <a th:href="@{'?language=en'}">
               <img class="localization-img" th:src="@{'/img/localization/en_local.jpg'}">
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" th:href="@{'?language=ru'}">
+          <li>
+            <a th:href="@{'?language=ru'}">
               <img class="localization-img" th:src="@{'/img/localization/ru_local.jpg'}">
             </a>
           </li>
         </ul>
+
       </nav>
     </div>
   </div>

@@ -37,6 +37,8 @@ public class SecurityConfig {
         AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
         authenticationManagerBuilder.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
 
+        http.exceptionHandling().accessDeniedPage("/profile?notEnoughRights");
+
         http.authorizeRequests().antMatchers("/css/**", "/js/**").permitAll();
 
         http.formLogin()

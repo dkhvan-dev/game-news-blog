@@ -22,7 +22,7 @@
                 <form class="mb-5" th:action="@{'/editGame'}" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="gameId" th:value="${game.gameId}">
                     <div class="mt-3">
-                        <label>
+                        <label class="inputDetailsLabel">
                             <span th:text="#{nameProfile} + ':'"></span>
                             <input type="text" class="form-control" name="gameName" th:value="${game.gameName}" th:placeholder="${game.gameName}" required>
                         </label>
@@ -42,9 +42,9 @@
                         </label>
                     </div>
                     <div class="mt-3">
-                        <label>
+                        <label class="textAreaLabel">
                             <span th:text="#{descriptionFeedback} + ':'"></span>
-                            <textarea id="tinyMceTextarea" class="form-control" name="gameDescription" th:text="${game.gameDescription}"></textarea>
+                            <textarea cols="10" id="tinyMceTextarea" class="form-control " name="gameDescription" th:text="${game.gameDescription}"></textarea>
                         </label>
                     </div>
                     <div class="mt-3">
@@ -61,26 +61,26 @@
                             </label>
                         </div>
                     </div>
-                    <div class="mt-3">
+                    <div class="mt-3 d-flex flex-column">
                         <input type="hidden" name="gameRequirementsId" th:value="${gameRequirements.getGameRequirementsId()}">
                         <span th:text="#{gameRequirements} + ':'"></span><br>
-                        <label class="form-label mt-3">
+                        <label class="form-label inputDetailsLabel">
                             <span th:text="#{operationSystem} + ':'"></span>
                             <input class="form-control" type="text" name="gameRequirementsOS" th:value="${gameRequirements.getGameRequirementsOS()}">
                         </label>
-                        <label class="form-label mt-3">
+                        <label class="form-label mt-3 inputDetailsLabel">
                             <span th:text="#{cpu} + ':'"></span>
                             <input class="form-control" type="text" name="gameRequirementsCPU" th:value="${gameRequirements.getGameRequirementsCPU()}">
                         </label>
-                        <label class="form-label mt-3">
+                        <label class="form-label mt-3 inputDetailsLabel">
                             <span th:text="#{memory} + ':'"></span>
                             <input class="form-control" type="text" name="gameRequirementsMemory" th:value="${gameRequirements.getGameRequirementsMemory()}">
                         </label>
-                        <label class="form-label mt-3">
+                        <label class="form-label mt-3 inputDetailsLabel">
                             <span th:text="#{gpu} + ':'"></span>
                             <input class="form-control" type="text" name="gameRequirementsGPU" th:value="${gameRequirements.getGameRequirementsGPU()}">
                         </label>
-                        <label class="form-label mt-3">
+                        <label class="form-label mt-3 inputDetailsLabel">
                             <span th:text="#{storage} + ':'"></span>
                             <input class="form-control" type="text" name="gameRequirementsStorage" th:value="${gameRequirements.getGameRequirementsStorage()}">
                         </label>

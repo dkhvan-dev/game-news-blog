@@ -25,15 +25,15 @@
                 <form class="mb-5" th:action="@{'/editNews'}" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="newsId" th:value="${news.newsId}">
                     <div class="mt-3">
-                        <label>
+                        <label class="inputDetailsLabel">
                             <span th:text="#{title} + ':'"></span>
                             <input type="text" class="form-control" name="newsTitle" th:value="${news.newsTitle}" th:placeholder="${news.newsTitle}" required>
                         </label>
                     </div>
                     <div class="mt-3">
-                        <label>
+                        <label class="textAreaLabel">
                             <span th:text="#{descriptionFeedback} + ':'"></span>
-                            <textarea id="tinyMceTextarea" class="form-control" name="newsDescription" th:text="${news.newsDescription}"></textarea>
+                            <textarea cols="10" id="tinyMceTextarea" class="form-control" name="newsDescription" th:text="${news.newsDescription}"></textarea>
                         </label>
                     </div>
                     <div class="mt-3">

@@ -100,7 +100,7 @@
 						content += "<img class='news-image' src='/getBlogImage/" + allBlogsByPlatform[i].blogImage + "'>"
 						content += "<p class='mt-lg-3 blog-description'>" + allBlogsByPlatform[i].blogDescription + "</p>"
 						content += "<p class='blog-game'>[[#{game}]]: <span>" + allBlogsByPlatform[i].games.gameName + "</span></p>"
-						content += "<a href='/detailsBlog/" + allBlogsByPlatform[i].blogId + "' class='read-more'>[[#{readMoreBtn}]] <img src='/img/icons/double-arrow.png'/></a>"
+						content += "<a href='/detailsBlog/" + allBlogsByPlatform[i].blogId + "' class='read-more'>[[#{readMoreBtn}]] &#5125;</a>"
 						content += "</div>"
 						content += "</div>"
 					}
@@ -138,7 +138,7 @@
 				for (i = 0; i < allPlatforms.length; i++) {
 					content += "<li>"
 					if (allPlatforms[i].platformId == selectedPlatformId) {
-						content += "<a class='disabled' href='/blogsByPlatform/" + allPlatforms[i].platformId + "'>" + allPlatforms[i].platformName + "</a>"
+						content += "<a class='disabled' href='/blogsByPlatform/" + allPlatforms[i].platformId + "'>" + allPlatforms[i].platformName + " &#5125;</a>"
 					} else {
 						content += "<a href='/blogsByPlatform/" + allPlatforms[i].platformId + "'>" + allPlatforms[i].platformName + "</a>"
 					}

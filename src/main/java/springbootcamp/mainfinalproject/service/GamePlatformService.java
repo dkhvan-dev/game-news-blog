@@ -7,4 +7,6 @@ import java.util.List;
 public interface GamePlatformService {
     List<GamePlatform> getAllPlatforms();
     GamePlatform getPlatformById(Long platformId);
+    GamePlatform addPlatform(GamePlatform gamePlatform);
+    void deletePlatform(Long platformId);
 }

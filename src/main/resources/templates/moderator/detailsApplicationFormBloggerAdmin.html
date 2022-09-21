@@ -25,7 +25,7 @@
                 <form class="mb-5" th:action="@{'/updateFormBlogger'}" method="post">
                     <input type="hidden" name="applicationFormBloggerId" th:value="${applicationForm.applicationFormBloggerId}">
                     <div class="mt-3">
-                        <label>
+                        <label class="textAreaLabel">
                             <span th:text="#{descriptionFeedback} + ':'"></span> <br>
                             <textarea class="form-control" name="applicationFormBloggerDescription" th:text="${applicationForm.applicationFormBloggerDescription}" th:readonly="${!canUpdateApplication}"></textarea>
                         </label>

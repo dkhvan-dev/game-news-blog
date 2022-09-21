@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800,900');
 
-.admin-collapse {
-    margin: 20px 10px 0 10px;
+.admin-collapse, .admin-collapse button {
+    width: 100%;
 }
 
 .admin-collapse__show {
@@ -32,7 +32,7 @@
 }
 
 .blog-title {
-    color: #c313b7;
+    color: #56ff00;
 }
 
 .blog-game {
@@ -40,7 +40,7 @@
 }
 
 .blog-game span {
-    color: #c313b7;
+    color: #56ff00;
 }
 
 .blog-description {
@@ -52,7 +52,6 @@
 }
 
 /*SIGN IN*/
-
 
 .authSection, .profileSection, .adminPanel{
     font-family: 'Poppins', sans-serif;
@@ -83,13 +82,13 @@
 }
 .authSection h4 {
     font-weight: 600;
-    color: #c313b7;
+    color: #56ff00;
 }
 .authSection h6 span{
     padding: 0 20px;
     text-transform: uppercase;
     font-weight: 700;
-    color: #c313b7;
+    color: #56ff00;
 }
 .authSection .section{
     position: relative;
@@ -136,10 +135,10 @@
     font-size: 24px;
     transition: all 0.5s ease;
 }
+
 .authSection .checkbox:checked + label:before {
     transform: translateX(44px) rotate(-270deg);
 }
-
 
 .authSection .card-3d-wrap {
     position: relative;
@@ -318,8 +317,8 @@
     -ms-flex-pack: center;
     text-align: center;
     border: none;
-    background-color: #ffeba7;
-    color: #c313b7;
+    background-color: #0654a5;
+    color: #56ff00;
     box-shadow: 0 8px 24px 0 rgba(255,235,167,.2);
 }
 .authSection .btn:active,
@@ -340,13 +339,14 @@
 }
 
 .typewriter h1 {
+    font-size: 35px;
     color: #fff;
     font-family: monospace;
-    overflow: hidden; /* Ensures the content is not revealed until the animation */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     border-right: .15em solid orange; /* The typwriter cursor */
-    white-space: nowrap; /* Keeps the content on a single line */
     margin: 0 auto; /* Gives that scrolling effect as the typing happens */
-    letter-spacing: .15em; /* Adjust as needed */
     animation:
             typing 3.5s steps(30, end),
             blink-caret .5s step-end infinite;
@@ -370,4 +370,34 @@
 
 .localization-img {
     width: 30px;
+}
+
+#tinyMceTextarea {
+    /*height: 600px;*/
+}
+
+.textAreaLabel, .inputDetailsLabel {
+    width: 90%;
+}
+
+.latestNewsTitle {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.blog-description {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-height: 70px;
+}
+
+#formAppDescription {
+    width: 100%;
+    height: 300px;
+}
+
+.appFormLabel {
+    width: 100%;
 }

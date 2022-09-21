@@ -96,7 +96,7 @@
 					content += "<img class='news-image' src='/getGameImage/" + allNewsByGame[i].game.gameImage + "'>"
 					content += "<p class='mt-lg-3 blog-description'>" + allNewsByGame[i].newsDescription + "</p>"
 					content += "<p class='blog-game'>[[#{game}]]: <span>" + allNewsByGame[i].game.gameName + "</span></p>"
-					content += "<a href='/detailsNews/" + allNewsByGame[i].newsId + "' class='read-more'>[[#{readMoreBtn}]] <img src='/img/icons/double-arrow.png'/></a>"
+					content += "<a href='/detailsNews/" + allNewsByGame[i].newsId + "' class='read-more'>[[#{readMoreBtn}]] &#5125;</a>"
 					content += "</div>"
 					content += "</div>"
 				}
@@ -117,7 +117,7 @@
 				for (i = 0; i < allGames.length; i++) {
 					content += "<li>"
 					if (allGames[i].gameId == selectedGameId) {
-						content += "<a class='disabled' href='/newsByGame/" + allGames[i].gameId + "'>" + allGames[i].gameName + "</a>"
+						content += "<a class='disabled' href='/newsByGame/" + allGames[i].gameId + "'>" + allGames[i].gameName + " &#5125;</a>"
 					} else {
 						content += "<a href='/newsByGame/" + allGames[i].gameId + "'>" + allGames[i].gameName + "</a>"
 					}

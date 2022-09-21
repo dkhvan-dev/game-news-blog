@@ -3,6 +3,7 @@ package springbootcamp.mainfinalproject.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import springbootcamp.mainfinalproject.model.Role;
+import springbootcamp.mainfinalproject.model.RoleColor;
 import springbootcamp.mainfinalproject.repository.RoleRepository;
 import springbootcamp.mainfinalproject.service.RoleService;
 
@@ -34,5 +35,22 @@ public class RoleServiceImpl implements RoleService {
             return role;
         }
         return null;
+    }
+
+    @Override
+    public Role addRole(Role role, RoleColor roleColor) {
+        if (role.getRoleId() == null) {
+            role.setRoleColor(roleColor);
+            roleRepository.save(role);
+        }
+        return null;
+    }
+
+    @Override
+    public void deleteRole(String roleName) {
+        Role role = roleRepository.findAllByRoleName(roleName);
+        if (role != null) {
+            roleRepository.delete(role);
+        }
     }
 }

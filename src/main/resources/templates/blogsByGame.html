@@ -100,7 +100,7 @@
 						content += "<img class='news-image' src='/getBlogImage/" + allBlogsByGame[i].blogImage + "'>"
 						content += "<p class='mt-lg-3 blog-description'>" + allBlogsByGame[i].blogDescription + "</p>"
 						content += "<p class='blog-game'>[[#{game}]]: <span>" + allBlogsByGame[i].games.gameName + "</span></p>"
-						content += "<a href='/detailsBlog/" + allBlogsByGame[i].blogId + "' class='read-more'>[[#{readMoreBtn}]] <img src='/img/icons/double-arrow.png'/></a>"
+						content += "<a href='/detailsBlog/" + allBlogsByGame[i].blogId + "' class='read-more'>[[#{readMoreBtn}]] &#5125;</a>"
 						content += "</div>"
 						content += "</div>"
 					}
@@ -122,7 +122,7 @@
 				for (i = 0; i < allGames.length; i++) {
 					content += "<li>"
 					if (allGames[i].gameId == selectedGameId) {
-						content += "<a class='disabled' href='/blogsByGame/" + allGames[i].gameId + "'>" + allGames[i].gameName + "</a>"
+						content += "<a class='disabled' href='/blogsByGame/" + allGames[i].gameId + "'>" + allGames[i].gameName + " &#5125;</a>"
 					} else {
 						content += "<a href='/blogsByGame/" + allGames[i].gameId + "'>" + allGames[i].gameName + "</a>"
 					}

@@ -15,6 +15,7 @@ public interface UserService extends UserDetailsService {
     String swapAvatar(MultipartFile userImageToken, User user);
     String editUser(User user, String birthdate, String oldPassword, String newPassword, String reNewPassword);
     User signUp(User user, String userBirthdate) throws ParseException;
+    void deleteUser(String email);
     User getCurrentUser();
     boolean uploadUserImage(MultipartFile multipartFile, User user);
     void updateUserData(String firstName, String surname, String password);

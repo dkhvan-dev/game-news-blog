@@ -92,7 +92,7 @@
 		function getAllGamesByGenre() {
 			const result = new XMLHttpRequest()
 			let keyword = document.location.href.split("/").pop()
-			result.open("GET", "http://localhost:8000/games/byGenre/" + document.location.href.split("/")[4] + "/keyword=" + keyword.substring(keyword.indexOf("=")+1, keyword.indexOf("?")))
+			result.open("GET", "http://localhost:8000/games/byGenre/" + document.location.href.split("/")[4] + "/keyword=" + keyword.substring(keyword.indexOf("=")+1))
 			result.send()
 			result.onload = function () {
 				let allGamesByGenre = JSON.parse(this.responseText)

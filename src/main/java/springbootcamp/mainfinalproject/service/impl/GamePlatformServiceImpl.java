@@ -27,4 +27,20 @@ public class GamePlatformServiceImpl implements GamePlatformService {
         }
         return null;
     }
+
+    @Override
+    public GamePlatform addPlatform(GamePlatform gamePlatform) {
+        if (gamePlatform.getPlatformId() != null) {
+            gamePlatformRepository.save(gamePlatform);
+        }
+        return null;
+    }
+
+    @Override
+    public void deletePlatform(Long platformId) {
+        GamePlatform gamePlatform = gamePlatformRepository.findById(platformId).orElse(null);
+        if (gamePlatform != null) {
+            gamePlatformRepository.delete(gamePlatform);
+        }
+    }
 }

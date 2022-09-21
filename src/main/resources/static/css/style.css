@@ -57,7 +57,7 @@ h6 {
 
 p {
 	font-size: 18px;
-	color: #585858;
+	color: #fff;
 	line-height: 1.6;
 	font-weight: 500;
 }
@@ -289,7 +289,7 @@ main {
 .footer-social p,
 .geme-social-share p {
 	display: inline-block;
-	color: #9190a5;
+	color: #fff;
 	font-size: 16px;
 	padding-top: 4px;
 }
@@ -337,7 +337,7 @@ main {
 	font-size: 20px;
 	font-weight: 500;
 	color: #fff;
-	padding-top: 3px;
+	padding-top: 15px;
 }
 
 .user-panel a {
@@ -519,13 +519,14 @@ main {
 }
 
 .hero-item {
-	height: 921px;
+	height: 500px;
 	padding-top: 125px;
+	padding-bottom: 125px;
 	border-bottom: 2px solid #b01ba5;
 }
 
 .hero-item h2 {
-	font-size: 160px;
+	font-size: 100px;
 	color: #fff;
 	font-weight: 500;
 	line-height: 1;
@@ -535,14 +536,15 @@ main {
 }
 
 .hero-item p {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 	font-size: 24px;
-	color: rgba(255, 255, 255, 0.4);
+	color: #fff;
 	font-weight: 500;
-	opacity: 0.39;
 	margin-bottom: 70px;
 	position: relative;
 	top: 80px;
-	opacity: 0;
 }
 
 .hero-item .site-btn {
@@ -604,7 +606,7 @@ main {
 }
 
 .text-box .top-meta a {
-	color: #b01ba5;
+	color: #56ff00;
 }
 
 .text-box h3 {
@@ -613,10 +615,13 @@ main {
 }
 
 .text-box p {
-	font-size: 15px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	max-height: 70px;
+	font-size: 18px;
 	font-weight: 500;
-	color: #68647d;
-	margin-bottom: 35px;
+	color: #fff;
 }
 
 .text-box .read-more {
@@ -624,7 +629,7 @@ main {
 	text-transform: uppercase;
 	font-weight: 700;
 	font-style: italic;
-	color: #fff;
+	color: #56ff00;
 }
 
 .text-box .read-more img {
@@ -695,9 +700,9 @@ main {
 	overflow: hidden;
 }
 
-.blog-item .text-box p {
-	margin-bottom: 42px;
-}
+/*.blog-item .text-box p {*/
+/*	margin-bottom: 42px;*/
+/*}*/
 
 .widget-item {
 	margin-bottom: 85px;
@@ -708,13 +713,21 @@ main {
 }
 
 .widget-item .widget-title {
+	white-space: nowrap;
+	max-height: 70px;
+	overflow: hidden;
+	text-overflow: ellipsis;
 	color: #fff;
 	text-transform: uppercase;
 	font-weight: 700;
 	font-style: italic;
 	padding-left: 38px;
 	padding-right: 38px;
-	margin-bottom: 48px;
+	margin-bottom: 20px;
+}
+
+.widget-item .widget-title a {
+	margin-bottom: 0;
 }
 
 .widget-item p {
@@ -746,19 +759,22 @@ main {
 }
 
 .trending-widget .tw-text .tw-meta a {
-	font-size: 16px;
-	color: #b01ba5;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	font-size: 25px;
+	color: #56ff00;
 }
 
 .trending-widget .tw-text span {
-	font-size: 18px;
+	font-size: 25px;
 	color: #fff;
 	line-height: 1.5;
 }
 
 .trending-widget .tw-text .tw-text__rating {
-	font-size: 18px;
-	color: #b01ba5;
+	font-size: 25px;
+	color: #56ff00;
 	line-height: 1.5;
 }
 
@@ -780,27 +796,21 @@ main {
 	display: inline-block;
 	position: relative;
 	font-size: 16px;
-	color: #68647d;
+	color: #fff;
 	font-weight: 500;
 	margin-bottom: 15px;
 	padding-right: 19px;
 	-webkit-transition: all 0.2s;
 	-o-transition: all 0.2s;
 	transition: all 0.2s;
-	background-image: url("../img/icons/double-arrow.png");
-	background-repeat: no-repeat;
-	background-position: right -120% center;
-	background-size: 11px;
 }
 
 .categories-widget ul li a:hover {
-	color: #b01ba5;
-	background-position: right center;
+	color: #56ff00;
 }
 
 .categories-widget a.disabled {
-	color: #b01ba5;
-	background-position: right center;
+	color: #56ff00;
 	cursor: default;
 	pointer-events: none;
 }
@@ -964,7 +974,7 @@ main {
 }
 
 .featured-box .text-box .read-more {
-	color: #251e2f;
+	color: #56ff00;
 }
 
 .gradient-bg,
@@ -1092,8 +1102,8 @@ main {
 ---------------------*/
 
 .page-top-section {
-	height: 355px;
-	padding-top: 210px;
+	height: 200px;
+	padding-top: 50px;
 }
 
 .page-info {
@@ -1122,7 +1132,7 @@ main {
 }
 
 .site-breadcrumb span {
-	color: #c313b7;
+	color: #56ff00;
 }
 
 /* --------------
@@ -1180,6 +1190,10 @@ main {
 }
 
 .game-item h5, .big-blog-item h5 {
+	white-space: pre-wrap;
+	max-height: 80px;
+	overflow: hidden;
+	text-overflow: ellipsis;
 	font-size: 20px;
 	color: #fff;
 	padding-top: 30px;
@@ -1191,11 +1205,16 @@ main {
 	text-transform: uppercase;
 	font-weight: 700;
 	font-style: italic;
-	color: #b01ba5;
+	color: #56ff00;
 }
 
 .game-item .age-limit {
-	color: #ad1000;
+	color: #56ff00;
+}
+
+.game-item img{
+	width: 100%;
+	height: 150px;
 }
 
 .game-item .read-more img, .big-blog-item .read-more img {
@@ -1286,39 +1305,39 @@ main {
 }
 
 .game-single-content .gs-title {
-	font-size: 36px;
-	color: #b01ba5;
+	font-size: 40px;
+	color: #fff;
 	margin-bottom: 40px;
 }
 
 .game-single-content h4 {
-	color: #b01ba5;
+	color: #56ff00;
 	margin-bottom: 20px;
 }
 
 .game-single-content p {
-	font-size: 16px;
+	font-size: 20px;
 	font-weight: 500;
 	color: #fff;
 	line-height: 1.8;
 }
 
 .game-single-content p span {
-	color: #b01ba5;
+	color: #56ff00;
 }
 
 .detailsGameRequirements p {
-	font-size: 16px;
-	font-weight: 500;
-	color: #b01ba5;
+	font-size: 18px;
+	font-weight: 700;
+	color: #56ff00;
 	line-height: 1.8;
 }
 
 .game-single-content .detailsGameRequirements span {
 	margin-left: 5px;
-	font-size: 16px;
+	font-size: 18px;
 	font-weight: 500;
-	color: #68647d;
+	color: #fff;
 	line-height: 1.8;
 }
 
@@ -1336,14 +1355,18 @@ main {
 .rating-widget ul li {
 	display: block;
 	font-size: 16px;
-	color: #b01ba5;
+	color: #fff;
 	font-weight: 500;
 	margin-bottom: 10px;
 }
 
 .rating-widget ul li span {
 	float: right;
-	color: #68647d;
+	color: #56ff00;
+}
+
+.maxRating {
+	color: #fff;
 }
 
 .rating-widget h5 {
@@ -1356,15 +1379,15 @@ main {
 
 .rating-widget h5 i {
 	font-weight: 500;
-	font-size: 16px;
+	font-size: 20px;
 	font-style: italic;
-	color: #65607b;
+	color: #fff;
 	text-transform: uppercase;
 	margin-right: 18px;
 }
 
 .rating-widget h5 span {
-	color: #b01ba5;
+	color: #56ff00;
 }
 
 .testimonials-widget {
@@ -1379,21 +1402,25 @@ main {
 }
 
 .testimonials-widget .testim-text p {
-	font-size: 16px;
+	white-space: nowrap;
+	max-height: 70px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	font-size: 18px;
 	font-weight: 500;
-	color: #68647d;
+	color: #fff;
 	line-height: 1.8;
-	margin-left: 5px;
+	margin-left: 15px;
 	margin-bottom: 40px;
 }
 
 .testimonials-widget .testim-text h6 {
-	color: #68647d;
+	color: #fff;
 	padding-left: 15px;
 }
 
 .testimonials-widget .testim-text h6 span {
-	color: #b01ba5;
+	color: #56ff00;
 }
 
 .game-author-section {

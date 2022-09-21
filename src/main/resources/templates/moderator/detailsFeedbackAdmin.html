@@ -25,7 +25,7 @@
                 <form class="mb-5" th:action="@{'/editFeedback'}" method="post">
                     <input type="hidden" name="feedbackId" th:value="${feedback.feedbackId}">
                     <div class="mt-3">
-                        <label>
+                        <label class="inputDetailsLabel">
                             <span th:text="#{nameProfile} + ':'"></span>
                             <input type="text" class="form-control" name="feedbackName" th:value="${feedback.feedbackName}" readonly>
                         </label>
@@ -37,13 +37,13 @@
                         </label>
                     </div>
                     <div class="mt-3">
-                        <label>
+                        <label class="inputDetailsLabel">
                             <span th:text="#{subjectFeedback} + ':'"></span>
                             <input type="text" class="form-control" name="feedbackSubject" th:value="${feedback.feedbackSubject}" readonly>
                         </label>
                     </div>
                     <div class="mt-3">
-                        <label>
+                        <labe class="textAreaLabel">
                             <span th:text="#{descriptionFeedback} + ':'"></span>
                             <textarea class="form-control" name="feedbackDescription" th:text="${feedback.feedbackDescription}" readonly></textarea>
                         </label>

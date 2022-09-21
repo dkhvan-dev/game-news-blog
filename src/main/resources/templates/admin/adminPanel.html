@@ -38,14 +38,43 @@
 
         </div>
 
-        <!-- News Collapse -->
-        <div class="d-flex">
+        <!-- BUTTONS -->
+        <div class="btn-group" role="group">
             <div class="admin-collapse">
-                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#newsCollapseAdmin" aria-expanded="false" aria-controls="collapseExample"
+                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#newsCollapseAdmin" aria-expanded="false"
                         th:text="#{news}">
                 </button>
             </div>
-            <div class="collapse admin-collapse__show" id="newsCollapseAdmin">
+            <div class="admin-collapse">
+                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#gamesCollapseAdmin" aria-expanded="false"
+                        th:text="#{games}">
+                </button>
+            </div>
+            <div class="admin-collapse">
+                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#blogsCollapseAdmin" aria-expanded="false" th:text="#{blogs}">
+                </button>
+            </div>
+            <div class="admin-collapse">
+                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#applicationForBloggerRole" aria-expanded="false" th:text="#{appForRoleBloggerBtn}">
+                </button>
+            </div>
+            <div class="admin-collapse">
+                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#feedbackAdmin" aria-expanded="false" th:text="#{feedback}">
+                </button>
+            </div>
+            <div class="admin-collapse">
+                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#commentsAdmin" aria-expanded="false" th:text="#{comments}">
+                </button>
+            </div>
+            <div class="admin-collapse">
+                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#usersAdmin" aria-expanded="false" th:text="#{users}">
+                </button>
+            </div>
+        </div>
+
+        <!-- News Collapse -->
+        <div class="d-flex col-10 mx-auto">
+            <div class="collapse admin-collapse__show mx-auto" id="newsCollapseAdmin">
                 <div class="card card-body">
                     <!-- Button addNews modal -->
                     <div>
@@ -55,7 +84,7 @@
 
                     <!-- AddNews Modal -->
                     <div class="modal fade" id="addNewsModal" tabindex="-1" aria-hidden="true">
-                        <div class="modal-dialog">
+                        <div class="modal-dialog" style="max-width: 900px">
                             <form class="form-control" th:action="@{'/addNews'}" method="post">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -69,7 +98,7 @@
                                         </label>
                                         <label class="form-label mt-3">
                                             <span th:text="#{descriptionFeedback} + ':'"></span>
-                                            <textarea id="tinyMceTextarea" class="form-control" name="newsDescription"></textarea>
+                                            <textarea rows="10" id="tinyMceTextarea" class="form-control" name="newsDescription"></textarea>
                                         </label>
                                         <select class="form-select mt-3 allGames" name="game">
 
@@ -103,7 +132,7 @@
                     <!-- Delete News Modal -->
                     <form th:action="@{'/deleteNewsAdmin'}" method="post">
                         <div class="modal fade" id="deleteNewsAdmin" tabindex="-1" aria-hidden="true">
-                            <div class="modal-dialog">
+                            <div class="modal-dialog" style="max-width: 900px">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" th:text="#{deleteNews}"></h5>
@@ -126,13 +155,8 @@
             </div>
         </div>
         <!-- Game Collapse -->
-        <div class="d-flex">
-            <div class="admin-collapse">
-                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#gamesCollapseAdmin" aria-expanded="false" aria-controls="collapseExample"
-                        th:text="#{games}">
-                </button>
-            </div>
-            <div class="collapse admin-collapse__show" id="gamesCollapseAdmin">
+        <div class="d-flex col-10 mx-auto">
+            <div class="collapse admin-collapse__show mx-auto" id="gamesCollapseAdmin">
                 <div class="card card-body">
                     <!-- Button addGame modal -->
                     <div>
@@ -142,7 +166,7 @@
 
                     <!-- AddGame Modal -->
                     <div class="modal fade" id="addGameModal" tabindex="-1" aria-hidden="true">
-                        <div class="modal-dialog">
+                        <div class="modal-dialog" style="max-width: 900px">
                             <form class="form-control" th:action="@{'/addGame'}" method="post" enctype="multipart/form-data">
                                 <div class="modal-content">
                                 <div class="modal-header">
@@ -151,28 +175,22 @@
                                 </div>
                                 <div class="modal-body">
                                     <div class="mt-3">
-                                        <label>
-                                            <span th:text="#{nameProfile} + ':'"></span>
-                                            <input type="text" class="form-control" name="gameName" required>
-                                        </label>
+                                        <span th:text="#{nameProfile} + ':'"></span> <br>
+                                        <input type="text" class="form-control" name="gameName" required>
                                     </div>
                                     <div class="mt-3">
-                                        <label>
-                                            <span th:text="#{age} + ':'"></span>
-                                            <input type="number" class="form-control" name="gameAge" required>
-                                        </label>
+                                        <span th:text="#{age} + ':'"></span> <br>
+                                        <input type="number" class="form-control" name="gameAge" required>
                                     </div>
                                     <div class="mt-3">
                                         <label class="form-label">
-                                            <span th:text="#{image} + ':'"></span>
+                                            <span th:text="#{image} + ':'"></span> <br>
                                             <input class="form-control" type="file" name="gameImageToken">
                                         </label>
                                     </div>
                                     <div class="mt-3">
-                                        <label>
-                                            <span th:text="#{descriptionFeedback} + ':'"></span>
-                                            <textarea id="tinyMceTextarea" class="form-control" name="gameDescription"></textarea>
-                                        </label>
+                                        <span th:text="#{descriptionFeedback} + ':'"></span> <br>
+                                        <textarea rows="10" id="tinyMceTextarea" class="form-control" name="gameDescription"></textarea>
                                     </div>
                                     <div class="mt-3 allPlatforms">
                                         <span th:text="#{platform} + ':'"></span>
@@ -182,48 +200,48 @@
                                         <span th:text="#{genre} + ':'"></span>
 
                                     </div>
-                                    <div class="mt-3">
-                                        <span th:text="#{gameRequirements} + ':'"></span>
-                                        <label class="form-label mt-3">
-                                            <span th:text="#{operationSystem} + ':'"></span>
+                                    <span th:text="#{gameRequirements} + ':'"></span><br>
+                                    <div class="mt-3 w-100 row">
+                                        <div class="col-4 mb-2">
+                                            <span class="mt-3" th:text="#{operationSystem} + ':'"></span>
                                             <input class="form-control" type="text" name="gameRequirementsOS">
-                                        </label>
-                                        <label class="form-label mt-3">
-                                            <span th:text="#{cpu} + ':'"></span>
+                                        </div>
+                                        <div class="col-4 mb-2">
+                                            <span class="mt-3" th:text="#{cpu} + ':'"></span>
                                             <input class="form-control" type="text" name="gameRequirementsCPU">
-                                        </label>
-                                        <label class="form-label mt-3">
-                                            <span th:text="#{memory} + ':'"></span>
+                                        </div>
+                                        <div class="col-4 mb-2">
+                                            <span class="mt-3" th:text="#{memory} + ':'"></span>
                                             <input class="form-control" type="text" name="gameRequirementsMemory">
-                                        </label>
-                                        <label class="form-label mt-3">
-                                            <span th:text="#{gpu} + ':'"></span>
+                                        </div>
+                                        <div class="col-4 mb-2">
+                                            <span class="mt-3" th:text="#{gpu} + ':'"></span>
                                             <input class="form-control" type="text" name="gameRequirementsGPU">
-                                        </label>
-                                        <label class="form-label mt-3">
-                                            <span th:text="#{storage} + ':'"></span>
+                                        </div>
+                                        <div class="col-4 mb-2">
+                                            <span class="mt-3" th:text="#{storage} + ':'"></span>
                                             <input class="form-control" type="text" name="gameRequirementsStorage">
-                                        </label>
+                                        </div>
                                     </div>
 
-                                    <div class="mt-3">
-                                        <span th:text="#{gameRatingIndexPage}"></span>
-                                        <label class="form-label mt-3">
-                                            <span th:text="#{gamePlay} + ':'"></span>
+                                    <span th:text="#{gameRatingIndexPage} + ':'"></span><br>
+                                    <div class="mt-3 w-100 row">
+                                        <div class="col-4 mb-2">
+                                            <span class="mt-3" th:text="#{gamePlay} + ':'"></span>
                                             <input class="form-control" type="number" step="0.1" name="gameRatingGameplay">
-                                        </label>
-                                        <label class="form-label mt-3">
-                                            <span th:text="#{graphics} + ':'"></span>
+                                        </div>
+                                        <div class="col-4 mb-2">
+                                            <span class="mt-3" th:text="#{graphics} + ':'"></span>
                                             <input class="form-control" type="number" step="0.1" name="gameRatingGraphics">
-                                        </label>
-                                        <label class="form-label mt-3">
-                                            <span th:text="#{difficulty} + ':'"></span>
+                                        </div>
+                                        <div class="col-4 mb-2">
+                                            <span class="mt-3" th:text="#{difficulty} + ':'"></span>
                                             <input class="form-control" type="number" step="0.1" name="gameRatingDifficulty">
-                                        </label>
-                                        <label class="form-label mt-3">
-                                            <span th:text="#{avgRating} + ':'"></span>
+                                        </div>
+                                        <div class="col-4 mb-2">
+                                            <span class="mt-3" th:text="#{avgRating} + ':'"></span>
                                             <input class="form-control" type="number" step="0.1" name="gameRatingAvg">
-                                        </label>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -255,7 +273,7 @@
 
                     <form th:action="@{'/deleteGameAdmin'}" method="post">
                         <div class="modal fade" id="deleteGameAdmin" tabindex="-1" aria-hidden="true">
-                            <div class="modal-dialog">
+                            <div class="modal-dialog" style="max-width: 900px">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" th:text="#{deleteGame}"></h5>
@@ -277,12 +295,8 @@
             </div>
         </div>
         <!-- Blogs Collapse -->
-        <div class="d-flex">
-            <div class="admin-collapse">
-                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#blogsCollapseAdmin" aria-expanded="false" aria-controls="collapseExample" th:text="#{blogs}">
-                </button>
-            </div>
-            <div class="collapse admin-collapse__show" id="blogsCollapseAdmin">
+        <div class="d-flex col-10 mx-auto">
+            <div class="collapse admin-collapse__show mx-auto" id="blogsCollapseAdmin">
                 <div class="card card-body">
                     <!-- ALL BLOGS TABLE -->
                     <table class="table">
@@ -305,7 +319,7 @@
 
                     <!-- Delete Blog Modal -->
                     <div class="modal fade" id="deleteBlogAdmin" tabindex="-1" aria-hidden="true">
-                        <div class="modal-dialog">
+                        <div class="modal-dialog" style="max-width: 900px">
                             <form th:action="@{'/deleteBlogAdmin'}" method="post">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -328,12 +342,8 @@
             </div>
         </div>
         <!-- ApplicationFormsBlogger Collapse -->
-        <div class="d-flex">
-            <div class="admin-collapse">
-                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#applicationForBloggerRole" aria-expanded="false" aria-controls="collapseExample" th:text="#{appForRoleBloggerBtn}">
-                </button>
-            </div>
-            <div class="collapse admin-collapse__show" id="applicationForBloggerRole">
+        <div class="d-flex col-10 mx-auto">
+            <div class="collapse admin-collapse__show mx-auto" id="applicationForBloggerRole">
                 <div class="card card-body">
                     <!-- ALL ApplicationFormsBlogger TABLE -->
                     <table class="table">
@@ -355,12 +365,8 @@
             </div>
         </div>
         <!-- Feedback Collapse -->
-        <div class="d-flex">
-            <div class="admin-collapse">
-                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#feedbackAdmin" aria-expanded="false" th:text="#{feedback}">
-                </button>
-            </div>
-            <div class="collapse admin-collapse__show" id="feedbackAdmin">
+        <div class="d-flex col-10 mx-auto">
+            <div class="collapse admin-collapse__show mx-auto" id="feedbackAdmin">
                 <div class="card card-body">
                     <!-- ALL FEEDBACK TABLE -->
                     <table class="table">
@@ -382,12 +388,8 @@
             </div>
         </div>
         <!-- Comments Collapse -->
-        <div class="d-flex">
-            <div class="admin-collapse">
-                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#commentsAdmin" aria-expanded="false" th:text="#{comments}">
-                </button>
-            </div>
-            <div class="collapse admin-collapse__show" id="commentsAdmin">
+        <div class="d-flex col-10 mx-auto">
+            <div class="collapse admin-collapse__show mx-auto" id="commentsAdmin">
                 <div class="card card-body">
                     <!-- ALL COMMENTS TABLE -->
                     <table class="table">
@@ -405,7 +407,7 @@
                         </tbody>
                     </table>
                     <div class="modal fade" id="deleteCommentModal" tabindex="-1" aria-hidden="true">
-                        <div class="modal-dialog">
+                        <div class="modal-dialog" style="max-width: 900px">
                             <form th:action="@{'/deleteCommentAdmin'}" method="post">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -429,12 +431,8 @@
         </div>
 
         <!-- Users Collapse -->
-        <div class="d-flex" sec:authorize="hasAnyRole('ROLE_MODERATOR', 'ROLE_ADMIN')">
-            <div class="admin-collapse">
-                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#usersAdmin" aria-expanded="false" th:text="#{users}">
-                </button>
-            </div>
-            <div class="collapse admin-collapse__show" id="usersAdmin">
+        <div class="d-flex col-10 mx-auto" sec:authorize="hasAnyRole('ROLE_MODERATOR', 'ROLE_ADMIN')">
+            <div class="collapse admin-collapse__show mx-auto" id="usersAdmin">
                 <div class="card card-body">
                     <!-- ALL Users TABLE -->
                     <table class="table">
@@ -501,7 +499,7 @@
                     content += "<td>" + allNews[i].newsTitle + "</td>"
                     content += "<td>" + allNews[i].newsCreateDate + "</td>"
                     content += "<td>" + allNews[i].game.gameName + "</td>"
-                    content += "<td><a class='btn btn-primary' th:href='/detailsNewsAdmin/" + allNews[i].newsId + "'>[[#{details}]]</a></td>"
+                    content += "<td><a class='btn btn-primary' href='/detailsNewsAdmin/" + allNews[i].newsId + "'>[[#{details}]]</a></td>"
                     content += "<td><button type='button' class='btn btn-danger deleteNewsModal' data-bs-toggle='modal' data-bs-target='#deleteNewsAdmin' data-id='" + allNews[i].newsId + "'>[[#{deleteBtn}]]</button></td>"
                     content += "</tr>"
                 }

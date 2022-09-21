@@ -96,7 +96,7 @@
 					content += "<img class='news-image' src='/getGameImage/" + allNewsByGenre[i].game.gameImage + "'>"
 					content += "<p class='mt-lg-3 blog-description'>" + allNewsByGenre[i].newsDescription + "</p>"
 					content += "<p class='blog-game'>[[#{game}]]: <span>" + allNewsByGenre[i].game.gameName + "</span></p>"
-					content += "<a href='/detailsNews/" + allNewsByGenre[i].newsId + "' class='read-more'>[[#{readMoreBtn}]] <img src='/img/icons/double-arrow.png'/></a>"
+					content += "<a href='/detailsNews/" + allNewsByGenre[i].newsId + "' class='read-more'>[[#{readMoreBtn}]] &#5125;</a>"
 					content += "</div>"
 					content += "</div>"
 				}
@@ -149,7 +149,7 @@
 				for (i = 0; i < allGenres.length; i++) {
 					content += "<li>"
 					if (allGenres[i].genreId == selectedGenreId) {
-						content += "<a class='disabled' href='/newsByGenre/" + allGenres[i].genreId + "'>" + allGenres[i].genreName + "</a>"
+						content += "<a class='disabled' href='/newsByGenre/" + allGenres[i].genreId + "'>" + allGenres[i].genreName + " &#5125;</a>"
 					} else {
 						content += "<a href='/newsByGenre/" + allGenres[i].genreId + "'>" + allGenres[i].genreName + "</a>"
 					}

@@ -92,6 +92,8 @@ public class UserServiceImpl implements UserService {
                     LocalDate userBirthDate = LocalDate.parse(birthdate, pattern);
                     user.setUserBirthdate(userBirthDate);
                     user.setUserPassword(passwordEncoder.encode(newPassword));
+                    user.setUserAvatar(getCurrentUser().getUserAvatar());
+                    user.setRoles(getCurrentUser().getRoles());
                     userRepository.save(user);
                     return "success";
                 } else {
@@ -119,6 +121,14 @@ public class UserServiceImpl implements UserService {
             return userRepository.save(user);
         }
         return null;
+    }
+
+    @Override
+    public void deleteUser(String email) {
+        User user = userRepository.findAllByUserEmail(email);
+        if (user != null) {
+            userRepository.delete(user);
+        }
     }
 
     @Override
