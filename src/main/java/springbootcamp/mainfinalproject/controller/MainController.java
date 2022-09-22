@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import springbootcamp.mainfinalproject.mapper.BlogMapper;
 import springbootcamp.mainfinalproject.model.*;
 import springbootcamp.mainfinalproject.model.dto.BlogDto;
 import springbootcamp.mainfinalproject.model.dto.NewsDto;
@@ -27,6 +28,8 @@ public class MainController {
     private final FeedbackService feedbackService;
     private final FeedbackStatusService feedbackStatusService;
     private final CommentsService commentsService;
+    private final FavoritesService favoritesService;
+    private final BlogMapper blogMapper;
     private final FileUploadService fileUploadService;
 
     @GetMapping("/")
@@ -232,6 +235,16 @@ public class MainController {
         if (blog != null) {
             model.addAttribute("blog", blog);
             if (userService.getCurrentUser() != null) {
+                List<Favorites> favorites = favoritesService.getAllFavoritesByUser(userService.getCurrentUser().getUserId());
+                boolean inFavorite = false;
+                for (int i = 0; i < favorites.size(); i++) {
+                    if (favorites.get(i).getBlogs().getBlogId().equals(blog.getBlogId())) {
+                        inFavorite = true;
+                        break;
+                    }
+                }
+                model.addAttribute("inFavorite", inFavorite);
+                model.addAttribute("currentUser", userService.getCurrentUser());
                 model.addAttribute("userEmail", userService.getCurrentUser().getUserEmail());
             }
             List<Comments> allComments = commentsService.getAllCommentsByBlog(blogId);
@@ -258,6 +271,36 @@ public class MainController {
             return "redirect:/addBlog?success";
         }
         return "redirect:/addBlog?errorAddBlog";
+    }
+
+    // FAVORITES
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/myFavorites")
+    public String myFavoritesPage(Model model) {
+        List<Favorites> allFavorites = favoritesService.getAllFavoritesByUser(userService.getCurrentUser().getUserId());
+        model.addAttribute("allFavorites", allFavorites);
+        return "myFavorites";
+    }
+
+    @PreAuthorize("isAuthenticated() && !hasRole('ROLE_BAN')")
+    @PostMapping("/addToFavorites")
+    public String addBlogToFavorites(@RequestParam(name = "blogId") Long blogId) {
+        Favorites newFavorite = favoritesService.addToFavorite(userService.getCurrentUser().getUserId(), blogId);
+        if (newFavorite != null) {
+            return "redirect:/detailsBlog/" + blogId + "?successAddToFavorites";
+        }
+        return "redirect:/detailsBlog/" + blogId + "?errorAddToFavorites";
+    }
+
+    @PreAuthorize("isAuthenticated() && !hasRole('ROLE_BAN')")
+    @PostMapping("/deleteFromFavorites")
+    public String deleteBlogFromFavorites(@RequestParam(name = "blogId") Long blogId) {
+        BlogDto blogDto = blogService.getBlogById(blogId);
+        if (blogDto != null) {
+            favoritesService.deleteFromFavorite(userService.getCurrentUser().getUserId(), blogId);
+            return "redirect:/detailsBlog/" + blogId + "?successRemoveFromFavorites";
+        }
+        return "redirect:/detailsBlog/" + blogId + "?errorRemoveFromFavorites";
     }
 
 }

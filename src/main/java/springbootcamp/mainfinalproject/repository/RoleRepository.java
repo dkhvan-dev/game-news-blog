@@ -10,4 +10,5 @@ import javax.transaction.Transactional;
 @Transactional
 public interface RoleRepository extends JpaRepository<Role, Long> {
     Role findAllByRoleName(String name);
+    void deleteByRoleName(String name);
 }

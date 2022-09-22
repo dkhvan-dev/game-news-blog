@@ -4,7 +4,7 @@
 <head th:insert="~{/toInsert/head.html}">
     <title>Admin Panel</title>
 </head>
-<body onload="getAllGames(); getAllNews(); getAllPlatforms(); getAllGenres(); getGamesTable();getBlogsTable(); getApplicationsTable(); getFeedbackTable(); getCommentsTable()">
+<body onload="getAllGames(); getAllNews(); getAllPlatforms(); getAllGenres(); getGamesTable();getBlogsTable(); getApplicationsTable(); getFeedbackTable(); getCommentsTable(); getPlatformsTable(); getGenresTable(); getRolesTable()">
 
     <div th:insert="~{/toInsert/preloader.html}"></div>
 
@@ -25,8 +25,52 @@
         <div class="alert alert-success" role="alert" th:if="${param.successDeleteBlog}" th:text="#{successDeleteBlog}">
 
         </div>
-        <!-- ADDGAME ALERT -->
+        <!-- GAME ALERT -->
         <div class="alert alert-danger" role="alert" th:if="${param.errorAddGame}" th:text="#{errorAddGame}">
+
+        </div>
+        <div class="alert alert-success" role="alert" th:if="${param.successDeleteGame}" th:text="#{successDeleteGame}">
+
+        </div>
+        <div class="alert alert-danger" role="alert" th:if="${param.errorDeleteGame}" th:text="#{errorDeleteGame}">
+
+        </div>
+        <!-- PLATFORM ALERT -->
+        <div class="alert alert-success" role="alert" th:if="${param.successAddPlatform}" th:text="#{successAddPlatform}">
+
+        </div>
+        <div class="alert alert-danger" role="alert" th:if="${param.errorAddPlatform}" th:text="#{errorAddPlatform}">
+
+        </div>
+        <div class="alert alert-success" role="alert" th:if="${param.successDeletePlatform}" th:text="#{successDeletePlatform}">
+
+        </div>
+        <div class="alert alert-danger" role="alert" th:if="${param.errorDeletePlatform}" th:text="#{errorDeletePlatform}">
+
+        </div>
+        <div class="alert alert-success" role="alert" th:if="${param.successEditPlatform}" th:text="#{successEditPlatform}">
+
+        </div>
+        <div class="alert alert-danger" role="alert" th:if="${param.errorEditPlatform}" th:text="#{errorEditPlatform}">
+
+        </div>
+        <!-- GENRE ALERT -->
+        <div class="alert alert-success" role="alert" th:if="${param.successAddGenre}" th:text="#{successAddGenre}">
+
+        </div>
+        <div class="alert alert-danger" role="alert" th:if="${param.errorAddGenre}" th:text="#{errorAddGenre}">
+
+        </div>
+        <div class="alert alert-success" role="alert" th:if="${param.successDeleteGenre}" th:text="#{successDeleteGenre}">
+
+        </div>
+        <div class="alert alert-danger" role="alert" th:if="${param.errorDeleteGenre}" th:text="#{errorDeleteGenre}">
+
+        </div>
+        <div class="alert alert-success" role="alert" th:if="${param.successEditGenre}" th:text="#{successEditGenre}">
+
+        </div>
+        <div class="alert alert-danger" role="alert" th:if="${param.errorEditGenre}" th:text="#{errorEditGenre}">
 
         </div>
         <!-- APPLICATION FORM BLOGGER ALERT -->
@@ -35,6 +79,25 @@
         </div>
         <!-- FEEDBACK ALERT -->
         <div class="alert alert-danger" role="alert" th:if="${param.errorFeedbackNotFound}" th:text="#{feedbackNotFound}">
+
+        </div>
+        <!-- ROLE ALERT -->
+        <div class="alert alert-success" role="alert" th:if="${param.successAddRole}" th:text="#{successAddRole}">
+
+        </div>
+        <div class="alert alert-danger" role="alert" th:if="${param.errorAddRole}" th:text="#{errorAddRole}">
+
+        </div>
+        <div class="alert alert-success" role="alert" th:if="${param.successDeleteRole}" th:text="#{successDeleteRole}">
+
+        </div>
+        <div class="alert alert-danger" role="alert" th:if="${param.errorDeleteRole}" th:text="#{errorDeleteRole}">
+
+        </div>
+        <div class="alert alert-success" role="alert" th:if="${param.successEditRole}" th:text="#{successEditRole}">
+
+        </div>
+        <div class="alert alert-danger" role="alert" th:if="${param.errorEditRole}" th:text="#{errorEditRole}">
 
         </div>
 
@@ -48,6 +111,14 @@
             <div class="admin-collapse">
                 <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#gamesCollapseAdmin" aria-expanded="false"
                         th:text="#{games}">
+                </button>
+            </div>
+            <div class="admin-collapse">
+                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#platformCollapseAdmin" aria-expanded="false" th:text="#{platform}">
+                </button>
+            </div>
+            <div class="admin-collapse">
+                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#genreCollapseAdmin" aria-expanded="false" th:text="#{genre}">
                 </button>
             </div>
             <div class="admin-collapse">
@@ -68,6 +139,10 @@
             </div>
             <div class="admin-collapse">
                 <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#usersAdmin" aria-expanded="false" th:text="#{users}">
+                </button>
+            </div>
+            <div class="admin-collapse">
+                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#roleCollapseAdmin" aria-expanded="false" th:text="#{roles}">
                 </button>
             </div>
         </div>
@@ -294,6 +369,190 @@
                 </div>
             </div>
         </div>
+        <!-- Platform Collapse -->
+        <div class="d-flex col-10 mx-auto">
+            <div class="collapse admin-collapse__show mx-auto" id="platformCollapseAdmin">
+                <div class="card card-body">
+                    <!-- Button addPlatform modal -->
+                    <div>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPlatformModal" th:text="#{addPlatform}">
+                        </button>
+                    </div>
+
+                    <!-- AddPlatform Modal -->
+                    <div class="modal fade" id="addPlatformModal" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog" style="max-width: 900px">
+                            <form class="form-control" th:action="@{'/addPlatformAdmin'}" method="post">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" th:text="#{addPlatform}"></h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="mt-3">
+                                            <span th:text="#{title} + ':'"></span> <br>
+                                            <input type="text" class="form-control" name="platformName" required>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{closeBtn}"></button>
+                                        <button class="btn btn-primary" th:text="#{addPlatform}"></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- ALL PLATFORMS TABLE -->
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col" th:text="#{nameProfile}"></th>
+                            <th scope="col" th:text="#{editBtn}"></th>
+                            <th scope="col" th:text="#{deleteBtn}"></th>
+                        </tr>
+                        </thead>
+                        <tbody class="platformsTable">
+
+                        </tbody>
+                    </table>
+
+                    <form th:action="@{'/deletePlatformAdmin'}" method="post">
+                        <div class="modal fade" id="deletePlatformAdmin" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog" style="max-width: 900px">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" th:text="#{deletePlatform}"></h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <span th:text="#{deletePlatformBody}"></span>
+                                        <input type="hidden" name="platformId" value="" id="platformId">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{closeBtn}"></button>
+                                        <button class="btn btn-danger" th:text="#{deleteBtn}"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <form th:action="@{'/editPlatformAdmin'}" method="post">
+                        <div class="modal fade" id="editPlatformAdmin" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog" style="max-width: 900px">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" th:text="#{editPlatform}"></h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <input type="hidden" name="platformId" value="" id="platformId">
+                                        <input type="text" name="platformName" value="" id="platformName">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{closeBtn}"></button>
+                                        <button class="btn btn-success" th:text="#{editBtn}"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Genre Collapse -->
+        <div class="d-flex col-10 mx-auto">
+            <div class="collapse admin-collapse__show mx-auto" id="genreCollapseAdmin">
+                <div class="card card-body">
+                    <!-- Button addPlatform modal -->
+                    <div>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addGenreModal" th:text="#{addGenre}">
+                        </button>
+                    </div>
+
+                    <!-- AddGenre Modal -->
+                    <div class="modal fade" id="addGenreModal" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog" style="max-width: 900px">
+                            <form class="form-control" th:action="@{'/addGenreAdmin'}" method="post">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" th:text="#{addGenre}"></h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="mt-3">
+                                            <span th:text="#{title} + ':'"></span> <br>
+                                            <input type="text" class="form-control" name="genreName" required>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{closeBtn}"></button>
+                                        <button class="btn btn-primary" th:text="#{addGenre}"></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- ALL GENRES TABLE -->
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col" th:text="#{nameProfile}"></th>
+                            <th scope="col" th:text="#{editBtn}"></th>
+                            <th scope="col" th:text="#{deleteBtn}"></th>
+                        </tr>
+                        </thead>
+                        <tbody class="genresTable">
+
+                        </tbody>
+                    </table>
+
+                    <form th:action="@{'/deleteGenreAdmin'}" method="post">
+                        <div class="modal fade" id="deleteGenreAdmin" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog" style="max-width: 900px">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" th:text="#{deleteGenre}"></h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <span th:text="#{deleteGenreBody}"></span>
+                                        <input type="hidden" name="genreId" value="" id="genreId">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{closeBtn}"></button>
+                                        <button class="btn btn-danger" th:text="#{deleteBtn}"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <form th:action="@{'/editGenreAdmin'}" method="post">
+                        <div class="modal fade" id="editGenreAdmin" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog" style="max-width: 900px">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" th:text="#{editGenre}"></h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <input type="hidden" name="genreId" value="" id="genreId">
+                                        <input type="text" name="genreName" value="" id="genreName">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{closeBtn}"></button>
+                                        <button class="btn btn-success" th:text="#{editBtn}"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
         <!-- Blogs Collapse -->
         <div class="d-flex col-10 mx-auto">
             <div class="collapse admin-collapse__show mx-auto" id="blogsCollapseAdmin">
@@ -458,6 +717,98 @@
                 </div>
             </div>
         </div>
+        <!-- Role Collapse -->
+        <div class="d-flex col-10 mx-auto">
+            <div class="collapse admin-collapse__show mx-auto" id="roleCollapseAdmin">
+                <div class="card card-body">
+                    <!-- Button addPlatform modal -->
+                    <div>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addRoleModal" th:text="#{addRole}">
+                        </button>
+                    </div>
+
+                    <!-- AddGenre Modal -->
+                    <div class="modal fade" id="addRoleModal" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog" style="max-width: 900px">
+                            <form class="form-control" th:action="@{'/addRoleAdmin'}" method="post">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" th:text="#{addRole}"></h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="mt-3">
+                                            <span th:text="#{nameProfile} + ':'"></span> <br>
+                                            <input type="text" class="form-control" name="roleName" required>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{closeBtn}"></button>
+                                        <button class="btn btn-primary" th:text="#{addRole}"></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- ALL GENRES TABLE -->
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col" th:text="#{nameProfile}"></th>
+                            <th scope="col" th:text="#{editBtn}"></th>
+                            <th scope="col" th:text="#{deleteBtn}"></th>
+                        </tr>
+                        </thead>
+                        <tbody class="rolesTable">
+
+                        </tbody>
+                    </table>
+
+                    <form th:action="@{'/deleteRoleAdmin'}" method="post">
+                        <div class="modal fade" id="deleteRoleAdmin" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog" style="max-width: 900px">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" th:text="#{deleteRole}"></h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <span th:text="#{deleteRoleBody}"></span>
+                                        <input type="hidden" name="roleId" value="" id="roleId">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{closeBtn}"></button>
+                                        <button class="btn btn-danger" th:text="#{deleteBtn}"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <form th:action="@{'/editRoleAdmin'}" method="post">
+                        <div class="modal fade" id="editRoleAdmin" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog" style="max-width: 900px">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" th:text="#{editRole}"></h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <input type="hidden" name="roleId" value="" id="roleId">
+                                        <input type="text" name="roleName" value="" id="roleName">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{closeBtn}"></button>
+                                        <button class="btn btn-success" th:text="#{editBtn}"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </main>
 
     <!-- Footer section -->
@@ -579,6 +930,91 @@
             }
         }
 
+        function getPlatformsTable() {
+            $(document).on("click", ".deletePlatformModal", function () {
+                var platformId = $(this).data("id");
+                $(".modal-body #platformId").val( platformId );
+            });
+            $(document).on("click", ".editPlatformModal", function () {
+                var platformId = $(this).data("id");
+                var platformName = $(this).data("name");
+                $(".modal-body #platformId").val( platformId );
+                $(".modal-body #platformName").val( platformName );
+            });
+            const res = new XMLHttpRequest()
+            res.open("GET", "http://localhost:8000/platforms")
+            res.send()
+            res.onload = function () {
+                let allPlatforms = JSON.parse(this.responseText)
+                let content = ""
+                for (i = 0; i < allPlatforms.length; i++) {
+                    content += "<tr>"
+                    content += "<th scope='row'>" + allPlatforms[i].platformId + "</th>"
+                    content += "<td>" + allPlatforms[i].platformName + "</td>"
+                    content += "<td><button type='button' class='btn btn-primary editPlatformModal' data-bs-toggle='modal' data-bs-target='#editPlatformAdmin' data-id='" + allPlatforms[i].platformId + "' data-name='" + allPlatforms[i].platformName + "'>[[#{editBtn}]]</button></td>"
+                    content += "<td><button type='button' class='btn btn-danger deletePlatformModal' data-bs-toggle='modal' data-bs-target='#deletePlatformAdmin' data-id='" + allPlatforms[i].platformId + "'>[[#{deleteBtn}]]</button></td>"
+                    content += "</tr>"
+                }
+                document.querySelector(".platformsTable").innerHTML = content
+            }
+        }
+
+        function getGenresTable() {
+            $(document).on("click", ".deleteGenreModal", function () {
+                var genreId = $(this).data("id");
+                $(".modal-body #genreId").val( genreId );
+            });
+            $(document).on("click", ".editGenreModal", function () {
+                var genreId = $(this).data("id");
+                var genreName = $(this).data("name");
+                $(".modal-body #genreId").val( genreId );
+                $(".modal-body #genreName").val( genreName );
+            });
+            const res = new XMLHttpRequest()
+            res.open("GET", "http://localhost:8000/genres")
+            res.send()
+            res.onload = function () {
+                let allGenres = JSON.parse(this.responseText)
+                let content = ""
+                for (i = 0; i < allGenres.length; i++) {
+                    content += "<tr>"
+                    content += "<th scope='row'>" + allGenres[i].genreId + "</th>"
+                    content += "<td>" + allGenres[i].genreName + "</td>"
+                    content += "<td><button type='button' class='btn btn-primary editGenreModal' data-bs-toggle='modal' data-bs-target='#editGenreAdmin' data-id='" + allGenres[i].genreId + "' data-name='" + allGenres[i].genreName + "'>[[#{editBtn}]]</button></td>"
+                    content += "<td><button type='button' class='btn btn-danger deleteGenreModal' data-bs-toggle='modal' data-bs-target='#deleteGenreAdmin' data-id='" + allGenres[i].genreId + "'>[[#{deleteBtn}]]</button></td>"
+                    content += "</tr>"
+                }
+                document.querySelector(".genresTable").innerHTML = content
+            }
+        }
+        function getRolesTable() {
+            $(document).on("click", ".deleteRoleModal", function () {
+                var roleId = $(this).data("id");
+                $(".modal-body #roleId").val( roleId );
+            });
+            $(document).on("click", ".editRoleModal", function () {
+                var roleId = $(this).data("id");
+                var roleName = $(this).data("name");
+                $(".modal-body #roleId").val( roleId );
+                $(".modal-body #roleName").val( roleName );
+            });
+            const res = new XMLHttpRequest()
+            res.open("GET", "http://localhost:8000/roles")
+            res.send()
+            res.onload = function () {
+                let allRoles = JSON.parse(this.responseText)
+                let content = ""
+                for (i = 0; i < allRoles.length; i++) {
+                    content += "<tr>"
+                    content += "<th scope='row'>" + allRoles[i].roleId + "</th>"
+                    content += "<td>" + allRoles[i].roleName + "</td>"
+                    content += "<td><button type='button' class='btn btn-primary editRoleModal' data-bs-toggle='modal' data-bs-target='#editRoleAdmin' data-id='" + allRoles[i].roleId + "' data-name='" + allRoles[i].roleName + "'>[[#{editBtn}]]</button></td>"
+                    content += "<td><button type='button' class='btn btn-danger deleteRoleModal' data-bs-toggle='modal' data-bs-target='#deleteRoleAdmin' data-id='" + allRoles[i].roleId + "'>[[#{deleteBtn}]]</button></td>"
+                    content += "</tr>"
+                }
+                document.querySelector(".rolesTable").innerHTML = content
+            }
+        }
         function getBlogsTable() {
             $(document).on("click", ".deleteBlogModal", function () {
                 var blogId = $(this).data("id");

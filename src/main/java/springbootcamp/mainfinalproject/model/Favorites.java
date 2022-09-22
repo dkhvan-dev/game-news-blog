@@ -8,17 +8,20 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "roles_color")
+@Table(name = "favorites")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RoleColor {
+public class Favorites {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long roleColorId;
+    private Long favoriteId;
 
-    @Column(name = "color")
-    private String roleColor;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private User user;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Blog blogs;
 }

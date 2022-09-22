@@ -2,6 +2,7 @@
 
 .admin-collapse, .admin-collapse button {
     width: 100%;
+    height: 60px;
 }
 
 .admin-collapse__show {
@@ -372,11 +373,11 @@
     width: 30px;
 }
 
-#tinyMceTextarea {
-    /*height: 600px;*/
+.detailsAdminSpan {
+    font-size: 20px;
 }
 
-.textAreaLabel, .inputDetailsLabel {
+.textAreaLabel, .inputDetailsLabel, #tinyMceTextarea {
     width: 90%;
 }
 
@@ -400,4 +401,8 @@
 
 .appFormLabel {
     width: 100%;
+}
+
+.alert {
+    text-align: center;
 }

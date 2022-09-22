@@ -6,9 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import springbootcamp.mainfinalproject.model.Role;
-import springbootcamp.mainfinalproject.model.RoleColor;
 import springbootcamp.mainfinalproject.model.User;
-import springbootcamp.mainfinalproject.service.RoleColorService;
 import springbootcamp.mainfinalproject.service.RoleService;
 import springbootcamp.mainfinalproject.service.UserService;
 

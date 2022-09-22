@@ -98,8 +98,76 @@ public class AdminController {
     @PreAuthorize("hasAnyRole('ROLE_MODERATOR', 'ROLE_ADMIN')")
     @PostMapping("/deleteGameAdmin")
     public String deleteGameAdmin(@RequestParam(name = "gameId") Long gameId) {
-        gameService.deleteGame(gameId);
-        return "redirect:/adminPanel";
+        Game game = gameService.getGameById(gameId);
+        if (game != null) {
+            gameService.deleteGame(gameId);
+            return "redirect:/adminPanel?successDeleteGame";
+        }
+        return "redirect:/adminPanel?errorDeleteGame";
+    }
+
+    // PLATFORM
+    @PreAuthorize("hasAnyRole('ROLE_MODERATOR', 'ROLE_ADMIN')")
+    @PostMapping("/addPlatformAdmin")
+    public String addPlatform(GamePlatform platform) {
+        GamePlatform newPlatform = gamePlatformService.addPlatform(platform);
+        if (newPlatform != null) {
+            return "redirect:/adminPanel?successAddPlatform";
+        }
+        return "redirect:/adminPanel?errorAddPlatform";
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_MODERATOR', 'ROLE_ADMIN')")
+    @PostMapping("/editPlatformAdmin")
+    public String editPlatform(GamePlatform platform) {
+        GamePlatform gamePlatform = gamePlatformService.editPlatform(platform);
+        if (gamePlatform != null) {
+            return "redirect:/adminPanel?successEditPlatform";
+        }
+        return "redirect:/adminPanel?errorEditPlatform";
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_MODERATOR', 'ROLE_ADMIN')")
+    @PostMapping("/deletePlatformAdmin")
+    public String deletePlatform(@RequestParam(name = "platformId") Long platformId) {
+        GamePlatform platform = gamePlatformService.getPlatformById(platformId);
+        if (platform != null) {
+            gamePlatformService.deletePlatform(platformId);
+            return "redirect:/adminPanel?successDeletePlatform";
+        }
+        return "redirect:/adminPanel?errorDeletePlatform";
+    }
+
+    // GENRE
+    @PreAuthorize("hasAnyRole('ROLE_MODERATOR', 'ROLE_ADMIN')")
+    @PostMapping("/addGenreAdmin")
+    public String addGenre(Genre genre) {
+        Genre newGenre = genreService.addGenre(genre);
+        if (newGenre != null) {
+            return "redirect:/adminPanel?successAddGenre";
+        }
+        return "redirect:/adminPanel?errorAddGenre";
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_MODERATOR', 'ROLE_ADMIN')")
+    @PostMapping("/editGenreAdmin")
+    public String editGenre(Genre genre) {
+        Genre editedGenre = genreService.editGenre(genre);
+        if (editedGenre != null) {
+            return "redirect:/adminPanel?successEditGenre";
+        }
+        return "redirect:/adminPanel?errorEditGenre";
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_MODERATOR', 'ROLE_ADMIN')")
+    @PostMapping("/deleteGenreAdmin")
+    public String deleteGenre(@RequestParam(name = "genreId") Long genreId) {
+        Genre genre = genreService.getGenreById(genreId);
+        if (genre != null) {
+            genreService.deleteGenre(genreId);
+            return "redirect:/adminPanel?successDeleteGenre";
+        }
+        return "redirect:/adminPanel?errorDeleteGenre";
     }
 
     // NEWS
@@ -300,6 +368,38 @@ public class AdminController {
             }
         }
         return "redirect:/detailsUserAdmin/" + userId + "?errorUpdateUser";
+    }
+
+    // ROLE
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping("/addRoleAdmin")
+    public String addRole(Role role) {
+        Role newRole = roleService.addRole(role);
+        if (newRole != null) {
+            return "redirect:/adminPanel?successAddRole";
+        }
+        return "redirect:/adminPanel?errorAddRole";
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping("/editRoleAdmin")
+    public String editRole(Role role) {
+        Role editedRole = roleService.editRole(role);
+        if (editedRole != null) {
+            return "redirect:/adminPanel?successEditRole";
+        }
+        return "redirect:/adminPanel?errorEditRole";
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping("/deleteRoleAdmin")
+    public String deleteRole(@RequestParam(name = "roleId") Long roleId) {
+        Role role = roleService.getRoleById(roleId);
+        if (role != null) {
+            roleService.deleteRole(role.getRoleName());
+            return "redirect:/adminPanel?successDeleteRole";
+        }
+        return "redirect:/adminPanel?errorDeleteRole";
     }
 
     // Load Image

@@ -24,9 +24,6 @@ public class Role implements GrantedAuthority {
     @Column(name = "name")
     private String roleName;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    private RoleColor roleColor;
-
     @Override
     public String getAuthority() {
         return this.roleName;

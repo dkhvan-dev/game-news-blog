@@ -85,17 +85,15 @@ public class GameServiceImpl implements GameService {
     @Override
     public void deleteGame(Long gameId) {
         Game game = gameRepository.findById(gameId).orElseThrow();
-        if (game != null) {
-            gameRepository.deleteById(gameId);
-            if (game.getGameRequirement() != null) {
-                gameRequirementsRepository.deleteById(game.getGameRequirement().getGameRequirementsId());
-            }
-            if (game.getGameRatings() != null) {
-                gameRatingRepository.deleteById(game.getGameRatings().getGameRatingId());
-            }
-            List<Blog> blogs = blogRepository.findAllByGames_GameId(game.getGameId());
-            blogRepository.deleteAll(blogs);
+        gameRepository.deleteById(gameId);
+        if (game.getGameRequirement() != null) {
+            gameRequirementsRepository.deleteById(game.getGameRequirement().getGameRequirementsId());
         }
+        if (game.getGameRatings() != null) {
+            gameRatingRepository.deleteById(game.getGameRatings().getGameRatingId());
+        }
+        List<Blog> blogs = blogRepository.findAllByGames_GameId(game.getGameId());
+        blogRepository.deleteAll(blogs);
     }
 
     @Override

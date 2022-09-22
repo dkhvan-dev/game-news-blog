@@ -17,6 +17,7 @@ INSERT INTO roles (name, role_color_id) VALUES
 
 INSERT INTO users_roles VALUES
     (1, 4),
+    (1, 3),
     (2, 1),
     (3, 2);
 

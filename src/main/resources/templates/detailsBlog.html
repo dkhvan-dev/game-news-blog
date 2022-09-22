@@ -31,6 +31,18 @@
 	<!-- Blog section -->
 	<section class="games-single-page">
 		<div class="container">
+			<div class="alert alert-success" role="alert" th:if="${param.successAddToFavorites}" th:text="#{successAddToFavorites}">
+
+			</div>
+			<div class="alert alert-danger" role="alert" th:if="${param.errorAddToFavorites}" th:text="#{failedAddToFavorites}">
+
+			</div>
+			<div class="alert alert-success" role="alert" th:if="${param.successRemoveFromFavorites}" th:text="#{successRemoveFromFavorites}">
+
+			</div>
+			<div class="alert alert-danger" role="alert" th:if="${param.errorRemoveFromFavorites}" th:text="#{errorRemoveFromFavorites}">
+
+			</div>
 			<div class="game-single-preview">
 
 			</div>
@@ -38,6 +50,18 @@
 				<div class="col-xl-9 col-lg-8 col-md-7">
 					<div class="game-single-content">
 
+					</div>
+					<div th:if="${currentUser != null && inFavorite == false}">
+						<form th:action="@{'/addToFavorites'}" method="post">
+							<input type="hidden" name="blogId" th:value="${blog.blogId}">
+							<button class="btn btn-success">Add to favorites</button>
+						</form>
+					</div>
+					<div th:if="${currentUser != null && inFavorite == true}">
+						<form th:action="@{'/deleteFromFavorites'}" method="post">
+							<input type="hidden" name="blogId" th:value="${blog.blogId}">
+							<button class="btn btn-danger">Remove from favorites</button>
+						</form>
 					</div>
 					<div class="geme-social-share pt-5 d-flex">
 						<p th:text="#{share} + ':'"></p>
@@ -122,7 +146,6 @@
 				content += "<p class='text-white'>" + blog.blogDescription + "</p>"
 				content += "<p>[[#{publicationDate}]]: <span>" + blog.blogCreateDate + "</span></p>"
 				content += "<p>Author: <span>" + blog.users.userFirstName + " " + blog.users.userSurname + "</span></p>"
-
 				document.querySelector(".game-single-preview").innerHTML = blogImage
 				document.querySelector(".game-single-content").innerHTML = content
 			}

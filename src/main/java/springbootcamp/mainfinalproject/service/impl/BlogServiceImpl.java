@@ -29,7 +29,7 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public List<BlogDto> getAllBlogs() {
-        return blogMapper.toDtoList(blogRepository.findAllByBlogStatusBlogStatusNameOrderByBlogCreateDateDesc("APPROVED"));
+        return blogMapper.toDtoList(blogRepository.findAll());
     }
 
     @Override

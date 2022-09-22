@@ -3,12 +3,12 @@ CREATE TABLE genres (
     name VARCHAR NOT NULL
 );
 
-INSERT INTO genres VALUES
-    (1, 'Online'),
-    (2, 'Adventure'),
-    (3, 'Strategy'),
-    (4, 'Racing'),
-    (5, 'Shooter');
+INSERT INTO genres (name) VALUES
+    ('Online'),
+    ('Adventure'),
+    ('Strategy'),
+    ('Racing'),
+    ('Shooter');
 
 CREATE TABLE genres_games (
     genre_id INT NOT NULL REFERENCES genres (id),
