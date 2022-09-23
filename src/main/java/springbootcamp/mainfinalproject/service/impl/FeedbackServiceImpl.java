@@ -50,4 +50,12 @@ public class FeedbackServiceImpl implements FeedbackService {
         }
         return null;
     }
+
+    @Override
+    public void deleteFeedback(Long feedbackId) {
+        Feedback feedback = feedbackRepository.findById(feedbackId).orElse(null);
+        if (feedback != null) {
+            feedbackRepository.deleteById(feedbackId);
+        }
+    }
 }

@@ -25,6 +25,9 @@
         <div class="alert alert-success" role="alert" th:if="${param.successDeleteBlog}" th:text="#{successDeleteBlog}">
 
         </div>
+        <div class="alert alert-danger" role="alert" th:if="${param.errorDeleteBlog}" th:text="#{errorDeleteBlog}">
+
+        </div>
         <!-- GAME ALERT -->
         <div class="alert alert-danger" role="alert" th:if="${param.errorAddGame}" th:text="#{errorAddGame}">
 

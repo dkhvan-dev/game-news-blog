@@ -203,7 +203,7 @@ public class MainController {
             model.addAttribute("game", game);
             return "blogsByGame";
         }
-        return "redirect:/allNews?errorGameNotFound";
+        return "redirect:/allBlogs?errorGameNotFound";
     }
 
     @GetMapping("/blogsByPlatform/{platformId}")
@@ -214,7 +214,7 @@ public class MainController {
             model.addAttribute("platform", platform);
             return "blogsByPlatform";
         }
-        return "redirect:/allNews?errorPlatformNotFound";
+        return "redirect:/allBlogs?errorPlatformNotFound";
     }
 
     @GetMapping("/blogsByGenre/{genreId}")
@@ -225,7 +225,7 @@ public class MainController {
             model.addAttribute("genre", genre);
             return "blogsByGenre";
         }
-        return "redirect:/allNews?errorGenreNotFound";
+        return "redirect:/allBlogs?errorGenreNotFound";
     }
 
     @GetMapping("/detailsBlog/{blogId}")
@@ -271,6 +271,54 @@ public class MainController {
             return "redirect:/addBlog?success";
         }
         return "redirect:/addBlog?errorAddBlog";
+    }
+
+    @PreAuthorize("hasRole('ROLE_BLOGGER')")
+    @PostMapping("/deleteBlog")
+    public String deleteBlog(@RequestParam(name = "blogId") Long blogId) {
+        BlogDto blogDto = blogService.getBlogById(blogId);
+        if (blogDto != null) {
+            if (blogDto.getUsers().getUserId().equals(userService.getCurrentUser().getUserId())) {
+                blogService.deleteBlog(blogId);
+                return "redirect:/myBlogs?successDeleteBlog";
+            }
+        }
+        return "redirect:/myBlogs?errorDeleteBlog";
+    }
+
+    @PreAuthorize("hasRole('ROLE_BLOGGER')")
+    @GetMapping("/detailsMyBlog/{blogId}")
+    public String detailsMyBlog(@PathVariable(name = "blogId") Long blogId,
+                                Model model) {
+        BlogDto blogDto = blogService.getBlogById(blogId);
+        if (blogDto != null && blogDto.getUsers().getUserId().equals(userService.getCurrentUser().getUserId())) {
+            model.addAttribute("blog", blogDto);
+            return "detailsMyBlog";
+        }
+        return "redirect:/myBlogs?blogNotFound";
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_BLOGGER')")
+    @PostMapping("/editBlog")
+    public String editBlog(Blog blog,
+                            @RequestParam(name = "blogImageToken") MultipartFile blogImageToken,
+                            @RequestParam(name = "createDate") String blogCreateDate,
+                            @RequestParam(name = "users") Long authorId) {
+        if (blog.getUsers().getUserId().equals(userService.getCurrentUser().getUserId())) {
+            Blog editedBlog = blogService.editBlog(blog, blogImageToken, blogCreateDate, authorId);
+            if (editedBlog != null) {
+                return "redirect:/detailsMyBlog/" + blog.getBlogId() + "?success";
+            }
+        }
+        return "redirect:/detailsMyBlog/" + blog.getBlogId() + "?errorEditBlog";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/myBlogs")
+    public String myBlogsPage(Model model) {
+        List<BlogDto> blogList = blogService.getAllBlogsByUser(userService.getCurrentUser().getUserId());
+        model.addAttribute("blogList", blogList);
+        return "myBlogs";
     }
 
     // FAVORITES

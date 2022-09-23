@@ -14,70 +14,71 @@
 	</header>
 	<!-- Header section end -->
 
-
-	<!-- Page top section -->
-	<section class="page-top-section set-bg" data-setbg="/img/page-top-bg/1.jpg">
-		<div class="page-info">
-			<h2 th:text="#{games}"></h2>
-			<div class="site-breadcrumb">
-				<a th:href="@{'/'}" th:text="#{home}"></a>  /
-				<span th:text="#{games}"></span>
+	<main class="main">
+		<!-- Page top section -->
+		<section class="page-top-section set-bg" data-setbg="/img/page-top-bg/1.jpg">
+			<div class="page-info">
+				<h2 th:text="#{games}"></h2>
+				<div class="site-breadcrumb">
+					<a th:href="@{'/'}" th:text="#{home}"></a>  /
+					<span th:text="#{games}"></span>
+				</div>
 			</div>
-		</div>
-	</section>
-	<!-- Page top end-->
+		</section>
+		<!-- Page top end-->
 
-	<!-- Games section -->
-	<section class="games-section">
-		<div class="container">
-			<div class="row">
-				<div class="col-xl-7 col-lg-8 col-md-7">
-					<div class="col-12 allGamesByKeyword">
-						<form action="" method="get">
-							<input type="text" name="keyword" id="keyword" placeholder="Game name">
-							<button type="submit" class="btn btn-info" th:text="#{search}"></button>
-						</form>
-					</div>
-				</div>
-				<div class="col-xl-7 col-lg-8 col-md-7">
-					<div class="row allGamesByGenre mt-3">
-
-					</div>
-				</div>
-				<div class="col-xl-3 col-lg-4 col-md-5 sidebar game-page-sidebar">
-					<div id="stickySidebar">
-						<div class="widget-item">
-							<div class="categories-widget">
-								<h4 class="widget-title" th:text="#{platform}"></h4>
-								<ul class="allPlatforms">
-
-								</ul>
-							</div>
-						</div>
-						<div class="widget-item">
-							<div class="categories-widget">
-								<h4 class="widget-title" th:text="#{genre}"></h4>
-								<ul class="allGenres">
-
-								</ul>
-							</div>
+		<!-- Games section -->
+		<section class="games-section">
+			<div class="container">
+				<div class="row">
+					<div class="col-xl-7 col-lg-8 col-md-7">
+						<div class="col-12 allGamesByKeyword">
+							<form action="" method="get">
+								<input type="text" name="keyword" id="keyword" placeholder="Game name">
+								<button type="submit" class="btn btn-info" th:text="#{search}"></button>
+							</form>
 						</div>
 					</div>
+					<div class="col-xl-7 col-lg-8 col-md-7">
+						<div class="row allGamesByGenre mt-3">
+
+						</div>
+					</div>
+					<div class="col-xl-3 col-lg-4 col-md-5 sidebar game-page-sidebar">
+						<div id="stickySidebar">
+							<div class="widget-item">
+								<div class="categories-widget">
+									<h4 class="widget-title" th:text="#{platform}"></h4>
+									<ul class="allPlatforms">
+
+									</ul>
+								</div>
+							</div>
+							<div class="widget-item">
+								<div class="categories-widget">
+									<h4 class="widget-title" th:text="#{genre}"></h4>
+									<ul class="allGenres">
+
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
-		</div>
-	</section>
-	<!-- Games end-->
+		</section>
+		<!-- Games end-->
 
 
-	<section class="featured-section">
-		<div class="featured-bg set-bg" data-setbg="../../img/featured-bg.jpg"></div>
-		<div class="featured-box">
-			<div class="text-box">
+		<section class="featured-section">
+			<div class="featured-bg set-bg" data-setbg="../../img/featured-bg.jpg"></div>
+			<div class="featured-box">
+				<div class="text-box">
 
+				</div>
 			</div>
-		</div>
-	</section>
+		</section>
+	</main>
 
 	<!-- Footer section -->
 	<footer class="footer-section" th:insert="~{/toInsert/footer.html}">

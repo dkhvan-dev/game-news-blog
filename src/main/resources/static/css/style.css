@@ -3,21 +3,27 @@
 /*----------------------------------------*/
 
 @font-face {
-	font-family: 'Modern Serif';
-	src: url("../fonts/Modern-Serif.ttf") format(".ttf");
+	font-family: 'Calibri';
+	font-weight: 400;
+	src: url("../fonts/calibri.ttf") format(".ttf");
 }
 
 @font-face {
-	font-family: 'Modern Serif Italic';
-	src: url("../fonts/Modern-Serif-Italic.ttf") format(".ttf");
+	font-family: 'Calibri';
+	font-weight: 700;
+	src: url("../fonts/calibri_bold.ttf") format(".ttf");
 }
 
 html,
 body {
 	height: 100%;
-	font-family: 'Modern Serif';
+	font-family: 'Calibri';
+	font-weight: 400;
 	-webkit-font-smoothing: antialiased;
 	font-smoothing: antialiased;
+	background: linear-gradient(45deg, #501755 0%, #2d1854 100%);
+	background: #501755;
+	background: -webkit-linear-gradient(45deg, #501755 0%, #2d1854 100%);
 }
 
 h1,
@@ -111,6 +117,7 @@ ol {
 
 main {
 	min-height: calc(100vh - 345px);
+	padding-bottom: 50px;
 }
 
 /*---------------------
@@ -350,7 +357,7 @@ main {
 }
 
 .user-panel a:hover {
-	border: 1px solid #b01ba5;
+	outline: 1px solid #b01ba5;
 	border-radius: 10px;
 	transition: .6s ease;
 	color: #b01ba5;
@@ -394,7 +401,7 @@ main {
 }
 
 .main-menu li a:hover {
-	border: 1px solid #b01ba5;
+	outline: 1px solid #b01ba5;
 	border-radius: 10px;
 	transition: .6s ease;
 	color: #b01ba5;
@@ -1052,18 +1059,6 @@ main {
 	padding: 60px 15px 25px;
 }
 
-.footer-left-pic {
-	position: absolute;
-	left: -13px;
-	bottom: 19px;
-}
-
-.footer-right-pic {
-	position: absolute;
-	right: 50px;
-	bottom: 19px;
-}
-
 .footer-menu {
 	padding-top: 62px;
 }
@@ -1558,7 +1553,7 @@ main {
 	font-weight: 500;
 	font-size: 16px;
 	font-style: italic;
-	color: #808080;
+	color: #000;
 	line-height: 1;
 }
 
@@ -1690,12 +1685,6 @@ main {
 		margin-right: 0;
 		margin-bottom: 40px;
 	}
-	.footer-right-pic {
-		right: 15px;
-	}
-	.footer-left-pic {
-		left: -44px;
-	}
 	.game-filter {
 		text-align: center;
 	}
@@ -1741,10 +1730,6 @@ main {
 	}
 	.hero-item p {
 		font-size: 18px;
-	}
-	.footer-right-pic,
-	.footer-left-pic {
-		display: none;
 	}
 	.hero-slider .owl-nav .owl-next {
 		top: auto;

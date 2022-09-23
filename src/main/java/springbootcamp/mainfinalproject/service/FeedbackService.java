@@ -9,4 +9,5 @@ public interface FeedbackService {
     Feedback getFeedbackById(Long feedbackId);
     Feedback addFeedback(Feedback feedback);
     Feedback editFeedback(Feedback feedback);
+    void deleteFeedback(Long feedbackId);
 }

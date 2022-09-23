@@ -222,6 +222,11 @@
     transition: all 200ms linear;
     box-shadow: 0 4px 8px 0 rgba(21,21,21,.2);
 }
+
+.authSection .form-style-pass {
+    text-transform: none;
+}
+
 .authSection .form-style:focus,
 .authSection .form-style:active {
     border: none;

@@ -12,110 +12,114 @@
 	<!-- Header section -->
 	<header th:insert="~{/toInsert/header.html}">
 	</header>
+
 	<!-- Header section end -->
 
-	<!-- Page top section -->
-	<section class="page-top-section set-bg" data-setbg="/img/page-top-bg/1.jpg">
-		<div class="page-info">
-			<h2 th:text="#{blogs}"></h2>
-			<div class="site-breadcrumb">
-				<a th:href="@{'/'}" th:text="#{home}"></a>  /
-				<a th:href="@{'/allBlogs'}" th:text="#{blogs}"></a>	 /
-				<span th:text="${blog.blogTitle}"></span>
-			</div>
-		</div>
-	</section>
-	<!-- Page top end-->
-
-
-	<!-- Blog section -->
-	<section class="games-single-page">
-		<div class="container">
-			<div class="alert alert-success" role="alert" th:if="${param.successAddToFavorites}" th:text="#{successAddToFavorites}">
-
-			</div>
-			<div class="alert alert-danger" role="alert" th:if="${param.errorAddToFavorites}" th:text="#{failedAddToFavorites}">
-
-			</div>
-			<div class="alert alert-success" role="alert" th:if="${param.successRemoveFromFavorites}" th:text="#{successRemoveFromFavorites}">
-
-			</div>
-			<div class="alert alert-danger" role="alert" th:if="${param.errorRemoveFromFavorites}" th:text="#{errorRemoveFromFavorites}">
-
-			</div>
-			<div class="game-single-preview">
-
-			</div>
-			<div class="row">
-				<div class="col-xl-9 col-lg-8 col-md-7">
-					<div class="game-single-content">
-
-					</div>
-					<div th:if="${currentUser != null && inFavorite == false}">
-						<form th:action="@{'/addToFavorites'}" method="post">
-							<input type="hidden" name="blogId" th:value="${blog.blogId}">
-							<button class="btn btn-success">Add to favorites</button>
-						</form>
-					</div>
-					<div th:if="${currentUser != null && inFavorite == true}">
-						<form th:action="@{'/deleteFromFavorites'}" method="post">
-							<input type="hidden" name="blogId" th:value="${blog.blogId}">
-							<button class="btn btn-danger">Remove from favorites</button>
-						</form>
-					</div>
-					<div class="geme-social-share pt-5 d-flex">
-						<p th:text="#{share} + ':'"></p>
-						<a href="https://ru.pinterest.com/"><i class="fa fa-pinterest"></i></a>
-						<a href="https://www.facebook.com/"><i class="fa fa-facebook"></i></a>
-						<a href="https://twitter.com/"><i class="fa fa-twitter"></i></a>
-						<a href="https://www.twitch.tv/"><i class="fa fa-twitch"></i></a>
-						<a href="https://github.com/"><i class="fa fa-github"></i></a>
-					</div>
+	<main class="main">
+		<!-- Page top section -->
+		<section class="page-top-section set-bg" data-setbg="/img/page-top-bg/1.jpg">
+			<div class="page-info">
+				<h2 th:text="#{blogs}"></h2>
+				<div class="site-breadcrumb">
+					<a th:href="@{'/'}" th:text="#{home}"></a>  /
+					<a th:href="@{'/allBlogs'}" th:text="#{blogs}"></a>	 /
+					<span th:text="${blog.blogTitle}"></span>
 				</div>
 			</div>
-		</div>
-		<!-- COMMENTS -->
-		<section class="container-fluid pb-lg-5">
+		</section>
+		<!-- Page top end-->
+
+
+		<!-- Blog section -->
+		<section class="games-single-page">
 			<div class="container">
-				<div sec:authorize="isAuthenticated() && !hasRole('ROLE_BAN')">
-					<input type="hidden" name="blogId" th:value="${blog.blogId}">
-					<div class="d-flex justify-content-between">
-						<label class="form-label mt-3 text-white" for="tinyMceTextarea" th:text="#{comment} + ':'">
-
-						</label> <br>
-						<a type="submit" class="btn btn-primary" th:onclick="'addComment(' + ${blog.blogId} + ')'" th:text="#{sendBtn}"></a>
-					</div>
-					<textarea class="comment-text tinyMceTextarea" name="tinyMceTextarea" id="tinyMceTextarea"></textarea>
-				</div>
-				<input type="hidden" id="userEmail" th:value="${userEmail}">
-				<div class="allComments">
+				<div class="alert alert-success" role="alert" th:if="${param.successAddToFavorites}" th:text="#{successAddToFavorites}">
 
 				</div>
-				<div class="modal fade" id="deleteCommentModal" tabindex="-1" aria-hidden="true">
-					<div class="modal-dialog">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title" th:text="#{deleteComment}"></h5>
-								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-							</div>
-							<div class="modal-body">
-								<input type="hidden" name="commentId" value="" id="commentId">
-								<span th:text="#{deleteCommentBody}"></span>
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{closeBtn}"></button>
-								<button class="btn btn-danger" data-bs-dismiss="modal" th:onclick="'deleteComment()'" th:text="#{deleteBtn}"></button>
-							</div>
+				<div class="alert alert-danger" role="alert" th:if="${param.errorAddToFavorites}" th:text="#{failedAddToFavorites}">
+
+				</div>
+				<div class="alert alert-success" role="alert" th:if="${param.successRemoveFromFavorites}" th:text="#{successRemoveFromFavorites}">
+
+				</div>
+				<div class="alert alert-danger" role="alert" th:if="${param.errorRemoveFromFavorites}" th:text="#{errorRemoveFromFavorites}">
+
+				</div>
+				<div class="game-single-preview">
+
+				</div>
+				<div class="row">
+					<div class="col-12">
+						<div class="game-single-content">
+
+						</div>
+						<div th:if="${currentUser != null && inFavorite == false}">
+							<form th:action="@{'/addToFavorites'}" method="post">
+								<input type="hidden" name="blogId" th:value="${blog.blogId}">
+								<button class="btn btn-success" th:text="#{addToFavorite}"></button>
+							</form>
+						</div>
+						<div th:if="${currentUser != null && inFavorite == true}">
+							<form th:action="@{'/deleteFromFavorites'}" method="post">
+								<input type="hidden" name="blogId" th:value="${blog.blogId}">
+								<button class="btn btn-danger" th:text="#{removeFromFavorite}">Remove from favorites</button>
+							</form>
+						</div>
+						<div class="geme-social-share pt-5 d-flex">
+							<p th:text="#{share} + ':'"></p>
+							<a href="https://ru.pinterest.com/"><i class="fa fa-pinterest"></i></a>
+							<a href="https://www.facebook.com/"><i class="fa fa-facebook"></i></a>
+							<a href="https://twitter.com/"><i class="fa fa-twitter"></i></a>
+							<a href="https://www.twitch.tv/"><i class="fa fa-twitch"></i></a>
+							<a href="https://github.com/"><i class="fa fa-github"></i></a>
 						</div>
 					</div>
 				</div>
-				<script>
-
-				</script>
 			</div>
+			<!-- COMMENTS -->
+			<section class="container-fluid pb-lg-5">
+				<div class="container">
+					<div sec:authorize="isAuthenticated() && !hasRole('ROLE_BAN')">
+						<input type="hidden" name="blogId" th:value="${blog.blogId}">
+						<div class="d-flex justify-content-between">
+							<label class="form-label mt-3 text-white" th:text="#{comment} + ':'">
+
+							</label> <br>
+							<a type="submit" class="btn btn-primary" th:onclick="'addComment(' + ${blog.blogId} + ')'" th:text="#{sendBtn}"></a>
+						</div>
+						<textarea class="comment-text tinyMceTextarea" name="commentText"></textarea>
+					</div>
+					<input type="hidden" id="userEmail" th:value="${userEmail}">
+					<div class="allComments">
+
+					</div>
+					<div class="modal fade" id="deleteCommentModal" tabindex="-1" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" th:text="#{deleteComment}"></h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<div class="modal-body">
+									<input type="hidden" name="commentId" value="" id="commentId">
+									<span th:text="#{deleteCommentBody}"></span>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{closeBtn}"></button>
+									<button class="btn btn-danger" data-bs-dismiss="modal" th:onclick="'deleteComment()'" th:text="#{deleteBtn}"></button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<script>
+
+					</script>
+				</div>
+			</section>
 		</section>
-	</section>
-	<!-- Games end-->
+		<!-- Games end-->
+	</main>
+
 
 	<!-- Footer section -->
 	<footer class="footer-section" th:insert="~{/toInsert/footer.html}">
@@ -170,8 +174,8 @@
 					}
 					content += "</div>"
 					content += "<p>"
-					content += "<span class='text-white'>[[#{author}]]:</span>"
-					content += "<span class='comment-author-name'>" + allComments[i].author.userFirstName + ' ' + allComments[i].author.userSurname + "</span> |"
+					content += "<span class='text-white'>[[#{author}]]: &nbsp;</span>"
+					content += "<span class='comment-author-name'>" + allComments[i].author.userFirstName + ' ' + allComments[i].author.userSurname + "</span> | &nbsp;"
 					content += "<span class='text-white'>" + allComments[i].commentCreateDate + "</span>"
 					content += "</p>"
 					content += "</div>"

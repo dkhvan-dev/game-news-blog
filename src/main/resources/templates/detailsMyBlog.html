@@ -15,10 +15,10 @@
 
     <main class="d-flex flex-column profileSection">
         <div class="container mt-3">
-            <div class="alert alert-success" role="alert" th:if="${param.success}" th:text="#{successEditBlog}">
+            <div class="alert alert-success" role="alert" th:if="${param.success}" th:text="#{successEditMyBlog}">
 
             </div>
-            <div class="alert alert-primary" role="alert" th:if="${param.errorEditBlog}" th:text="#{errorEditBlog}">
+            <div class="alert alert-danger" role="alert" th:if="${param.errorEditBlog}" th:text="#{errorEditBlog}">
 
             </div>
             <div class="blogInfo">
@@ -53,32 +53,24 @@
                     resStatus.onload = function () {
                         let allStatus = JSON.parse(resStatus.responseText)
                         let content = ""
-                        content += "<form class='mb-5' action='/editBlogAdmin' method='post' encType='multipart/form-data'>"
+                        content += "<form class='mb-5' action='/editBlog' method='post' encType='multipart/form-data'>"
                         content += "<input type='hidden' name='blogId' value='" + blog.blogId + "'>"
                         content += "<div class='mt-3'>"
                         content += "<label class='inputDetailsLabel'>"
                         content += "<span>[[#{title}]]:</span>"
-                        if (blog.blogStatus.blogStatusName == "IN WAITING") {
-                            content += "<input type='text' class='form-control' name='blogTitle' value='" + blog.blogTitle + "' placeholder='" + blog.blogTitle + "' required>"
-                        } else {
-                            content += "<input type='text' class='form-control' name='blogTitle' value='" + blog.blogTitle + "' placeholder='" + blog.blogTitle + "' readonly>"
-                        }
+                        content += "<input type='text' class='form-control' name='blogTitle' value='" + blog.blogTitle + "' placeholder='" + blog.blogTitle + "' required>"
                         content += "</label>"
                         content += "</div>"
                         content += "<div class='mt-3'>"
                         content += "<label class='textAreaLabel'>"
                         content += "<span>[[#{descriptionFeedback}]]:</span>"
-                        if (blog.blogStatus.blogStatusName == "IN WAITING") {
-                            content += "<textarea maxlength='10000' rows='10' id='tinyMceTextarea' class='form-control' name='blogDescription'>" + blog.blogDescription + "</textarea>"
-                        } else {
-                            content += "<textarea maxlength='10000' rows='10' id='tinyMceTextarea' class='form-control' name='blogDescription' readonly>" + blog.blogDescription + "</textarea>"
-                        }
+                        content += "<textarea maxlength='10000' rows='10' id='tinyMceTextarea' class='form-control' name='blogDescription'>" + blog.blogDescription + "</textarea>"
                         content += "</label>"
                         content += "</div>"
                         content += "<div class='mt-3'>"
                         content += "<label>"
                         content += "<span>[[#{createDate}]]:</span>"
-                        content += "<input type='date' class='form-control' name='createDate' value='" + blog.blogCreateDate + "' readOnly>"
+                        content += "<input type='date' class='form-control' name='createDate' value='" + blog.blogCreateDate + "'>"
                         content += "</label>"
                         content += "</div>"
                         content += "<div class='mt-3'>"
@@ -92,25 +84,19 @@
                         content += "<span>[[#{image}]]:</span> <br>"
                         content += "<img class='img-thumbnail gameImageAdmin' src='/getBlogImage/" + blog.blogImage + "'>"
                         content += "<input type='hidden' name='blogImage' value='" + blog.blogImage + "'>"
-                        if (blog.blogStatus.blogStatusName == "IN WAITING") {
-                            content += "<input class='form-control mt-3' type='file' name='blogImageToken'>"
-                        }
+                        content += "<input class='form-control mt-3' type='file' name='blogImageToken'>"
                         content += "</label>"
                         content += "</div>"
                         content += "<div class='mt-3'>"
-                        if (blog.blogStatus.blogStatusName == "IN WAITING") {
-                            content += "<select class='form-select mt-3' name='games'>"
-                            for (i = 0; i < allGames.length; i++) {
-                                if (allGames[i].gameId == blog.games.gameId) {
-                                    content += "<option value='" + allGames[i].gameId + "' selected>" + allGames[i].gameName + "</option>"
-                                } else {
-                                    content += "<option value='" + allGames[i].gameId + "'>" + allGames[i].gameName + "</option>"
-                                }
+                        content += "<select class='form-select mt-3' name='games'>"
+                        for (i = 0; i < allGames.length; i++) {
+                            if (allGames[i].gameId == blog.games.gameId) {
+                                content += "<option value='" + allGames[i].gameId + "' selected>" + allGames[i].gameName + "</option>"
+                            } else {
+                                content += "<option value='" + allGames[i].gameId + "'>" + allGames[i].gameName + "</option>"
                             }
-                            content += "</select>"
-                        } else {
-                            content += "<input class='form-control' type='text' value='" + blog.games.gameName+ "' readonly>"
                         }
+                        content += "</select>"
                         content += "</div>"
                         content += "<div class='mt-3'>"
                         content += "<label class='form-label'>"
@@ -120,23 +106,8 @@
                         content += "</label>"
                         content += "</div>"
                         content += "<div class='mt-3'>"
-                        if (blog.blogStatus.blogStatusName == "IN WAITING") {
-                            content += "<select class='form-select mt-3' name='blogStatus'>"
-                            for (j = 0; j < allStatus.length; j++) {
-                                if (allStatus[j].blogStatusId == blog.blogStatus.blogStatusId) {
-                                    content += "<option value='" + allStatus[j].blogStatusId + "' selected>" + allStatus[j].blogStatusName + "</option>"
-                                } else {
-                                    content += "<option value='" + allStatus[j].blogStatusId + "'>" + allStatus[j].blogStatusName + "</option>"
-                                }
-                            }
-                            content += "</select>"
-                        } else {
-                            content += "<input class='form-control' type='text' value='" + blog.blogStatus.blogStatusName + "' readonly>"
-                        }
                         content += "</div>"
-                        if (blog.blogStatus.blogStatusName == "IN WAITING") {
-                            content += "<button class='btn btn-primary mt-3'>[[#{editBlog}]]</button>"
-                        }
+                        content += "<button class='btn btn-primary mt-3'>[[#{editBlog}]]</button>"
                         content += "<button type='button' class='btn btn-danger mt-3' data-bs-toggle='modal' data-bs-target='#deleteBlogAdmin'>[[#{deleteBtn}]]</button>"
                         content += "</form>"
                         content += "<div class='modal fade' id='deleteBlogAdmin' tabIndex='-1' aria-hidden='true'>"

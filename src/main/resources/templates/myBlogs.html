@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:insert="~{/toInsert/head.html}">
+    <title>Profile Page</title>
+</head>
+<body>
+
+    <div th:insert="~{/toInsert/preloader.html}"></div>
+
+    <header class="header" th:insert="~{/toInsert/header.html}"></header>
+
+    <main class="main">
+        <section class="games-section">
+            <div class="alert alert-success" role="alert" th:if="${param.successDeleteBlog}" th:text="#{successDeleteBlog}">
+
+            </div>
+            <div class="alert alert-danger" role="alert" th:if="${param.errorDeleteBlog}" th:text="#{errorDeleteBlog}">
+
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-7 col-lg-8 col-md-7">
+                        <div class="row allBlogs">
+                            <div class="col-12" th:each="blog : ${blogList}">
+                                <div class="big-blog-item">
+                                    <h5 th:text="${blog.blogCreateDate + ' | ' + blog.blogTitle}"></h5>
+                                    <img class="news-image" th:src="@{'/getBlogImage/' + ${blog.blogImage}}">
+                                    <p class="mt-lg-3 blog-description" th:text="${blog.blogDescription}"></p>
+                                    <p class="blog-game"><span th:text="#{game} + ': '"></span><span th:text="${blog.getGames().gameName}"></span> </p>
+                                    <a th:href="@{'/detailsMyBlog/' + ${blog.blogId}}" class="read-more" th:text="#{readMoreBtn} + ' &#5125;'"></a><br>
+                                    <button type="button" class="btn btn-danger mt-3 deleteBlogModal" data-bs-toggle="modal" data-bs-target="#deleteBlogModal" th:data-id="${blog.blogId}">
+                                        Delete
+                                    </button>
+                                </div>
+                            </div>
+                            <form th:action="@{'/deleteBlog'}" method="post">
+                                <div class="modal fade" id="deleteBlogModal" tabindex="-1" aria-hidden="true">
+                                    <div class="modal-dialog" style="max-width: 900px">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" th:text="#{deleteBlog}"></h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <input type="hidden" name="blogId" id="blogId" value="">
+                                                <span th:text="#{deleteBlogBody}"></span>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{closeBtn}"></button>
+                                                <button class="btn btn-danger" th:text="#{deleteBtn}"></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div th:insert="~{/toInsert/scripts.html}"></div>
+    <script>
+        $(document).on("click", ".deleteBlogModal", function () {
+            var blogId = $(this).data("id");
+            $(".modal-body #blogId").val(blogId);
+        });
+    </script>
+
+</body>
+</html>

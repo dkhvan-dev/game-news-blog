@@ -241,7 +241,7 @@ public class AdminController {
                                 @RequestParam(name = "createDate") String blogCreateDate,
                                 @RequestParam(name = "users") Long authorId) {
         if (blog.getBlogStatus().getBlogStatusName().equals("REJECTED")) {
-            blogService.deleteBlogAdmin(blog.getBlogId());
+            blogService.deleteBlog(blog.getBlogId());
             return "redirect:/adminPanel?successRejectedBlog";
         } else {
             Blog editedBlog = blogService.editBlogAdmin(blog, blogImageToken, blogCreateDate, authorId);
@@ -255,8 +255,12 @@ public class AdminController {
     @PreAuthorize("hasAnyRole('ROLE_MODERATOR', 'ROLE_ADMIN')")
     @PostMapping("/deleteBlogAdmin")
     public String deleteBlogAdmin(@RequestParam(name = "blogId") Long blogId) {
-        blogService.deleteBlogAdmin(blogId);
-        return "redirect:/adminPanel?successDeleteBlog";
+        BlogDto blogDto = blogService.getBlogById(blogId);
+        if (blogDto != null) {
+            blogService.deleteBlog(blogId);
+            return "redirect:/adminPanel?successDeleteBlog";
+        }
+        return "redirect:/adminPanel?errorDeleteBlog";
     }
 
     //APPLICATION FOR ROLE BLOGGER

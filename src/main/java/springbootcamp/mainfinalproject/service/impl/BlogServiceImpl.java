@@ -42,6 +42,14 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
+    public List<BlogDto> getAllBlogsByUser(Long userId) {
+        if (userService.getCurrentUser().getUserId().equals(userId)) {
+            return blogMapper.toDtoList(blogRepository.findAllByUsersUserIdOrderByBlogCreateDateDesc(userId));
+        }
+        return null;
+    }
+
+    @Override
     public BlogDto getBlogById(Long blogId) {
         Blog blog = blogRepository.findById(blogId).orElse(null);
         if (blog != null) {
@@ -56,10 +64,10 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public BlogDto getLastBlogByGame(Long gameId) {
+    public BlogDto getLastBlogByGame(Long gameId, Long statusId) {
         Game checkGame = gameService.getGameById(gameId);
         if (checkGame != null) {
-            return blogMapper.toDto(blogRepository.findLastBlogByGame(gameId));
+            return blogMapper.toDto(blogRepository.findLastBlogByGameAndStatus(gameId, statusId));
         }
         return null;
     }
@@ -120,10 +128,25 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public void deleteBlogAdmin(Long blogId) {
-        Blog blog = blogRepository.findById(blogId).orElse(null);
+    public Blog editBlog(Blog blog, MultipartFile blogImageToken, String blogCreateDate, Long authorId) {
         if (blog != null) {
-            blogRepository.deleteById(blogId);
+            DateTimeFormatter pattern = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate createDate = LocalDate.parse(blogCreateDate, pattern);
+            User author = userService.getUserById(authorId);
+            if (author != null && userService.getCurrentUser().getUserId().equals(author.getUserId())) {
+                fileUploadService.uploadBlogImage(blogImageToken, blog);
+                blog.setBlogCreateDate(createDate);
+                blog.setUsers(author);
+                BlogStatus status = blogStatusService.getStatusById(1L);
+                blog.setBlogStatus(status);
+                return blogRepository.save(blog);
+            }
         }
+        return null;
+    }
+
+    @Override
+    public void deleteBlog(Long blogId) {
+        blogRepository.deleteById(blogId);
     }
 }

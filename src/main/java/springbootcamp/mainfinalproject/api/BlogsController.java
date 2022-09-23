@@ -54,8 +54,9 @@ public class BlogsController {
         return new ResponseEntity<>(blogService.getTop3Blogs(), HttpStatus.OK);
     }
 
-    @GetMapping("/lastBlogByGame/{gameId}")
-    public ResponseEntity<BlogDto> getLast3BlogsByGame(@PathVariable(name = "gameId") Long gameId) {
-        return new ResponseEntity<>(blogService.getLastBlogByGame(gameId), HttpStatus.OK);
+    @GetMapping("/lastBlogByGame/{gameId}/byStatus/{statusId}")
+    public ResponseEntity<BlogDto> getLast3BlogsByGame(@PathVariable(name = "gameId") Long gameId,
+                                                       @PathVariable(name = "statusId") Long statusId) {
+        return new ResponseEntity<>(blogService.getLastBlogByGame(gameId, statusId), HttpStatus.OK);
     }
 }

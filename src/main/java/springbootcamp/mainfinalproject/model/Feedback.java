@@ -34,4 +34,9 @@ public class Feedback {
 
     @ManyToOne(fetch = FetchType.EAGER)
     private FeedbackStatus feedbackStatus;
+
+    @PrePersist
+    public void preStatus() {
+        this.feedbackStatus.setFeedbackStatusId(1L);
+    }
 }

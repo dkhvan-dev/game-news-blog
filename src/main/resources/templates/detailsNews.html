@@ -14,41 +14,45 @@
 	</header>
 	<!-- Header section end -->
 
-	<!-- Page top section -->
-	<section class="page-top-section set-bg" data-setbg="/img/page-top-bg/1.jpg">
-		<div class="page-info">
-			<h2 th:text="#{news}"></h2>
-			<div class="site-breadcrumb">
-				<a th:href="@{'/'}" th:text="#{home}"></a>  /
-				<a th:href="@{'/allNews'}" th:text="#{home}"></a>	 /
-				<span th:text="${news.newsTitle}"></span>
+	<main class="main">
+		<!-- Page top section -->
+		<section class="page-top-section set-bg" data-setbg="/img/page-top-bg/1.jpg">
+			<div class="page-info">
+				<h2 th:text="#{news}"></h2>
+				<div class="site-breadcrumb">
+					<a th:href="@{'/'}" th:text="#{home}"></a>  /
+					<a th:href="@{'/allNews'}" th:text="#{home}"></a>	 /
+					<span th:text="${news.newsTitle}"></span>
+				</div>
 			</div>
-		</div>
-	</section>
-	<!-- Page top end-->
+		</section>
+		<!-- Page top end-->
 
-	<section class="games-single-page">
-		<div class="container">
-			<div class="game-single-preview">
+		<section class="games-single-page">
+			<div class="container">
+				<div class="game-single-preview">
 
-			</div>
-			<div class="row">
-				<div class="col-xl-9 col-lg-8 col-md-7">
-					<div class="game-single-content">
+				</div>
+				<div class="row">
+					<div class="col-12">
+						<div class="game-single-content">
 
-					</div>
-					<div class="geme-social-share pt-5 d-flex">
-						<p th:text="#{share} + ':'"></p>
-						<a href="https://ru.pinterest.com/"><i class="fa fa-pinterest"></i></a>
-						<a href="https://www.facebook.com/"><i class="fa fa-facebook"></i></a>
-						<a href="https://twitter.com/"><i class="fa fa-twitter"></i></a>
-						<a href="https://www.twitch.tv/"><i class="fa fa-twitch"></i></a>
-						<a href="https://github.com/"><i class="fa fa-github"></i></a>
+						</div>
+						<div class="geme-social-share pt-5 d-flex">
+							<p th:text="#{share} + ':'"></p>
+							<a href="https://ru.pinterest.com/"><i class="fa fa-pinterest"></i></a>
+							<a href="https://www.facebook.com/"><i class="fa fa-facebook"></i></a>
+							<a href="https://twitter.com/"><i class="fa fa-twitter"></i></a>
+							<a href="https://www.twitch.tv/"><i class="fa fa-twitch"></i></a>
+							<a href="https://github.com/"><i class="fa fa-github"></i></a>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	</section>
+		</section>
+	</main>
+
+
 
 	<!-- Footer section -->
 	<footer class="footer-section" th:insert="~{/toInsert/footer.html}">

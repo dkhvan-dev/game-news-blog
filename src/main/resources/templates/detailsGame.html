@@ -14,71 +14,73 @@
 	</header>
 	<!-- Header section end -->
 
-	<!-- Page top section -->
-	<section class="page-top-section set-bg" data-setbg="/img/page-top-bg/1.jpg">
-		<div class="page-info">
-			<h2 th:text="#{games}"></h2>
-			<div class="site-breadcrumb">
-				<a th:href="@{'/'}" th:text="#{home}"></a>  /
-				<a th:href="@{'/allGames/keyword?keyword='}" th:text="#{games}"></a>	 /
-				<span th:text="${game.gameName}"></span>
-			</div>
-		</div>
-	</section>
-	<!-- Page top end-->
-
-
-	<!-- Games section -->
-	<section class="games-single-page">
-		<div class="container">
-			<div class="game-single-preview">
-
-			</div>
-			<div class="row">
-				<div class="col-xl-9 col-lg-8 col-md-7 ">
-					<div class="game-single-content">
-
-					</div>
-					<div class="geme-social-share pt-5 d-flex">
-						<p th:text="#{share} + ':'"></p>
-						<a href="https://ru.pinterest.com/"><i class="fa fa-pinterest"></i></a>
-						<a href="https://www.facebook.com/"><i class="fa fa-facebook"></i></a>
-						<a href="https://twitter.com/"><i class="fa fa-twitter"></i></a>
-						<a href="https://www.twitch.tv/"><i class="fa fa-twitch"></i></a>
-						<a href="https://github.com/"><i class="fa fa-github"></i></a>
-					</div>
-				</div>
-				<div class="col-xl-3 col-lg-4 col-md-5 sidebar game-page-sideber">
-					<div id="stickySidebar">
-						<div class="widget-item">
-							<div class="rating-widget">
-
-							</div>
-						</div>
-						<div class="widget-item">
-							<div class="testimonials-widget">
-
-							</div>
-						</div>
-					</div>
+	<main class="main">
+		<!-- Page top section -->
+		<section class="page-top-section set-bg" data-setbg="/img/page-top-bg/1.jpg">
+			<div class="page-info">
+				<h2 th:text="#{games}"></h2>
+				<div class="site-breadcrumb">
+					<a th:href="@{'/'}" th:text="#{home}"></a>  /
+					<a th:href="@{'/allGames/keyword?keyword='}" th:text="#{games}"></a>	 /
+					<span th:text="${game.gameName}"></span>
 				</div>
 			</div>
-		</div>
-	</section>
-	<!-- Games end-->
+		</section>
+		<!-- Page top end-->
 
-	<!-- Latest News -->
-	<section class="intro-section">
-		<div class="container">
-			<div class="col-md-4 text-center mx-auto">
-				<h2 class="text-white" th:text="#{latestNews}"></h2>
-			</div>
-			<div class="row mt-lg-5 last3NewsByGame">
 
+		<!-- Games section -->
+		<section class="games-single-page">
+			<div class="container">
+				<div class="game-single-preview">
+
+				</div>
+				<div class="row">
+					<div class="col-xl-9 col-lg-8 col-md-7">
+						<div class="game-single-content">
+
+						</div>
+						<div class="geme-social-share pt-5 d-flex">
+							<p th:text="#{share} + ':'"></p>
+							<a href="https://ru.pinterest.com/"><i class="fa fa-pinterest"></i></a>
+							<a href="https://www.facebook.com/"><i class="fa fa-facebook"></i></a>
+							<a href="https://twitter.com/"><i class="fa fa-twitter"></i></a>
+							<a href="https://www.twitch.tv/"><i class="fa fa-twitch"></i></a>
+							<a href="https://github.com/"><i class="fa fa-github"></i></a>
+						</div>
+					</div>
+					<div class="col-xl-3 col-lg-4 col-md-5 sidebar game-page-sideber">
+						<div id="stickySidebar">
+							<div class="widget-item">
+								<div class="rating-widget">
+
+								</div>
+							</div>
+							<div class="widget-item">
+								<div class="testimonials-widget">
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
-		</div>
-	</section>
-	<!-- Latest News end -->
+		</section>
+		<!-- Games end-->
+
+		<!-- Latest News -->
+		<section class="intro-section">
+			<div class="container">
+				<div class="col-md-4 text-center mx-auto">
+					<h2 class="text-white" th:text="#{latestNews}"></h2>
+				</div>
+				<div class="row mt-lg-5 last3NewsByGame">
+
+				</div>
+			</div>
+		</section>
+		<!-- Latest News end -->
+	</main>
 
 	<!-- Footer section -->
 	<footer class="footer-section" th:insert="~{/toInsert/footer.html}">
@@ -147,8 +149,8 @@
 
 		function getLastBLogByGame() {
 			const result = new XMLHttpRequest()
-			var url = document.location.href.charAt(document.location.href.length-1)
-			result.open("GET", "http://localhost:8000/blogs/lastBlogByGame/" + url)
+			var url = document.location.href.split("/").pop()
+			result.open("GET", "http://localhost:8000/blogs/lastBlogByGame/" + url + "/byStatus/" + 2)
 			result.send()
 			result.onload = function () {
 			let lastBlogByGame = JSON.parse(this.responseText)
