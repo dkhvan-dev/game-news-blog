@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:insert="~{/toInsert/head.html}">
+    <title>Admin Panel</title>
+</head>
+<body onload="getGameByid()">
+
+    <div th:insert="~{/toInsert/preloader.html}"></div>
+
+    <!-- Header section -->
+    <header th:insert="~{/toInsert/header.html}">
+    </header>
+    <!-- Header section end -->
+
+    <main class="d-flex flex-column profileSection">
+        <div class="container mt-3">
+            <div class="alert alert-success" role="alert" th:if="${param.success}" th:text="#{successEditGame}">
+
+            </div>
+            <div class="gameInfo">
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer section -->
+    <footer class="footer-section" th:insert="~{/toInsert/footer.html}">
+    </footer>
+    <!-- Footer section end -->
+
+    <div th:insert="~{/toInsert/scripts.html}"></div>
+
+    <script>
+        function getGameByid() {
+            const res = new XMLHttpRequest()
+            let gameId = document.location.href.split("/").pop()
+            res.open("GET", "http://localhost:8000/games/" + gameId)
+            res.send()
+            res.onload = function () {
+                let game = JSON.parse(this.responseText)
+                const resPlatform = new XMLHttpRequest()
+                resPlatform.open("GET", "http://localhost:8000/platforms")
+                resPlatform.send()
+                resPlatform.onload = function () {
+                    let allPlatforms = JSON.parse(resPlatform.responseText)
+                    const resGenre = new XMLHttpRequest()
+                    resGenre.open("GET", "http://localhost:8000/genres")
+                    resGenre.send()
+                    resGenre.onload = function () {
+                        let allGenres = JSON.parse(resGenre.responseText)
+                        let content = ""
+                        content += "<form class='mb-5' action='/editGame' method='post' encType='multipart/form-data'>"
+                        content += "<input type='hidden' name='gameId' value='" + game.gameId + "'>"
+                        content += "<div class='mt-3'>"
+                        content += "<label class='inputDetailsLabel'>"
+                        content += "<span class='detailsAdminSpan'>[[#{nameProfile}]]:</span>"
+                        content += "<input type='text' class='form-control' name='gameName' value='" + game.gameName + "' placeholder='" + game.gameName + "' required>"
+                        content += "</label>"
+                        content += "</div>"
+                        content += "<div class='mt-3'>"
+                        content += "<label>"
+                        content += "<span class='detailsAdminSpan'>[[#{age}]]:</span>"
+                        content += "<input type='number' class='form-control' name='gameAge' value='" + game.gameAge + "' th:placeholder='" + game.gameAge + "' required>"
+                        content += "</label>"
+                        content += "</div>"
+                        content += "<div class='mt-3'>"
+                        content += "<label class='form-label'>"
+                        content += "<span class='detailsAdminSpan'>[[#{image}]]:</span> <br>"
+                        content += "<img class='img-thumbnail gameImageAdmin' src='/getGameImage/" + game.gameImage + "'>"
+                        content += "<input type='hidden' name='gameImage' value='" + game.gameImage + "'>"
+                        content += "<input class='form-control mt-3' type='file' name='gameImageToken'>"
+                        content += "</label>"
+                        content += "</div>"
+                        content += "<div class='mt-3'>"
+                        content += "<label class='textAreaLabel'>"
+                        content += "<span class='detailsAdminSpan'>[[#{descriptionFeedback}]]:</span>"
+                        content += "<textarea rows='10' id='tinyMceTextarea' class='form-control' name='gameDescription'>" + game.gameDescription + "</textarea>"
+                        content += "</label>"
+                        content += "</div>"
+                        content += "<div class='mt-3'>"
+                        let equal = false
+                        for (i = 0; i < allPlatforms.length; i++) {
+                            content += "<div class='form-check'>"
+                            for (q = 0; q < game.platform.length; q++) {
+                                if (game.platform[q].platformId === allPlatforms[i].platformId) {
+                                    equal = true
+                                    break
+                                }
+                                equal = false
+                            }
+
+                            if (equal == true) {
+                                content += "<input class='form-check-input' type='checkbox' name='platform' value='" + allPlatforms[i].platformId + "' id='" + allPlatforms[i].platformId + "' checked>"
+                            } else {
+                                content += "<input class='form-check-input' type='checkbox' name='platform' value='" + allPlatforms[i].platformId + "' id='" + allPlatforms[i].platformId + "'>"
+                            }
+                            content += "<label class='form-check-label' for='" + allPlatforms[i].platformId + "'>" + allPlatforms[i].platformName
+                            content += "</label>"
+                            content += "</div>"
+                        }
+                        content += "</div>"
+                        content += "<div class='mt-3'>"
+                        for (j = 0; j < allGenres.length; j++) {
+                            content += "<div class='form-check'>"
+                            for (k = 0; k < game.genres.length; k++) {
+                                if (game.genres[k].genreId === allGenres[j].genreId) {
+                                    equal = true
+                                    break
+                                }
+                                equal = false
+                            }
+
+                            if (equal == true) {
+                                content += "<input class='form-check-input' type='checkbox' name='genres' value='" + allGenres[j].genreId + "' id='" + allGenres[j].genreId + "' checked>"
+                            } else {
+                                content += "<input class='form-check-input' type='checkbox' name='genres' value='" + allGenres[j].genreId + "' id='" + allGenres[j].genreId + "'>"
+                            }
+                            content += "<label class='form-check-label' for='" + allGenres[j].genreId + "'>" + allGenres[j].genreName
+                            content += "</label>"
+                            content += "</div>"
+                        }
+                        content += "</div>"
+                        content += "<div class='mt-3 d-flex flex-column'>"
+                        content += "<input type='hidden' name='gameRequirementsId' value='" + game.gameRequirement.gameRequirementsId + "'>"
+                        content += "<span class='detailsAdminSpan'>[[#{gameRequirements}]]:</span><br>"
+                        content += "<label class='form-label inputDetailsLabel'>"
+                        content += "<span class='detailsAdminSpan'>[[#{operationSystem}]]:</span>"
+                        content += "<input class='form-control' type='text' name='gameRequirementsOS' value='" + game.gameRequirement.gameRequirementsOS + "'>"
+                        content += "</label>"
+                        content += "<label class='form-label mt-3 inputDetailsLabel'>"
+                        content += "<span class='detailsAdminSpan'>[[#{cpu}]]:</span>"
+                        content += "<input class='form-control' type='text' name='gameRequirementsCPU' value='" + game.gameRequirement.gameRequirementsCPU + "'>"
+                        content += "</label>"
+                        content += "<label class='form-label mt-3 inputDetailsLabel'>"
+                        content += "<span class='detailsAdminSpan'>[[#{memory}]]:</span>"
+                        content += "<input class='form-control' type='text' name='gameRequirementsMemory' value='" + game.gameRequirement.gameRequirementsMemory + "'>"
+                        content += "</label>"
+                        content += "<label class='form-label mt-3 inputDetailsLabel'>"
+                        content += "<span class='detailsAdminSpan'>[[#{gpu}]]:</span>"
+                        content += "<input class='form-control' type='text' name='gameRequirementsGPU' value='" + game.gameRequirement.gameRequirementsGPU + "'>"
+                        content += "</label>"
+                        content += "<label class='form-label mt-3 inputDetailsLabel'>"
+                        content += "<span class='detailsAdminSpan'>[[#{storage}]]:</span>"
+                        content += "<input class='form-control' type='text' name='gameRequirementsStorage' value='" + game.gameRequirement.gameRequirementsStorage + "'>"
+                        content += "</label>"
+                        content += "</div>"
+                        content += "<span class='detailsAdminSpan'>[[#{gameRatingIndexPage}]]:</span><br>"
+                        content += "<div class='row mt-3' style='width: 90%'>"
+                        content += "<input type='hidden' name='gameRatingId' value='" + game.gameRatings.gameRatingId + "'>"
+                        content += "<div class='col-3 mt-3'>"
+                        content += "<span class='detailsAdminSpan'>[[#{gamePlay}]]:</span>"
+                        content += "<input class='form-control' type='number' step='0.1' name='gameRatingGameplay' value='" + game.gameRatings.gameRatingGameplay + "'>"
+                        content += "</div>"
+                        content += "<div class='col-3 mt-3'>"
+                        content += "<span class='detailsAdminSpan'>[[#{graphics}]]:</span>"
+                        content += "<input class='form-control' type='number' step='0.1' name='gameRatingGraphics' value='" + game.gameRatings.gameRatingGraphics + "'>"
+                        content += "</div>"
+                        content += "<div class='col-3 mt-3'>"
+                        content += "<span class='detailsAdminSpan'>[[#{difficulty}]]:</span>"
+                        content += "<input class='form-control' type='number' step='0.1' name='gameRatingDifficulty' value='" + game.gameRatings.gameRatingDifficulty + "'>"
+                        content += "</div>"
+                        content += "<div class='col-3 mt-3'>"
+                        content += "<span class='detailsAdminSpan'>[[#{avgRating}]]:</span>"
+                        content += "<input class='form-control' type='number' step='0.1' name='gameRatingAvg' value='" + game.gameRatings.gameRatingAvg + "'>"
+                        content += "</div>"
+                        content += "</div>"
+                        content += "<button class='btn btn-primary mt-3'>[[#{editGame}]]</button>"
+                        content += "<button type='button' class='btn btn-danger mt-3 mx-3' data-bs-toggle='modal' data-bs-target='#deleteGameAdmin'>[[#{deleteBtn}]]</button>"
+                        content += "</form>"
+                        content += "<div class='modal fade' id='deleteGameAdmin' tabIndex='-1' aria-hidden='true'>"
+                        content += "<div class='modal-dialog'>"
+                        content += "<form action='/deleteGameAdmin' method='post'>"
+                        content += "<div class='modal-content'>"
+                        content += "<div class='modal-header'>"
+                        content += "<h5 class='modal-title'>[[#{deleteGame}]]</h5>"
+                        content += "<button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>"
+                        content += "</div>"
+                        content += "<div class='modal-body'>"
+                        content += "<span>[[#{deleteGameBody}]]</span>"
+                        content += "<input type='hidden' name='gameId' value='" + game.gameId + "' id='gameId'>"
+                        content += "</div>"
+                        content += "<div class='modal-footer'>"
+                        content += "<button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>[[#{closeBtn}]]</button>"
+                        content += "<button class='btn btn-danger'>[[#{deleteGame}]]</button>"
+                        content += "</div>"
+                        content += "</div>"
+                        content += "</form>"
+                        content += "</div>"
+                        content += "</div>"
+                        document.querySelector(".gameInfo").innerHTML = content
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>

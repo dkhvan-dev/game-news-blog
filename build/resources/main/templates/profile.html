@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:insert="~{/toInsert/head.html}">
+    <title>Profile Page</title>
+</head>
+<body>
+
+    <div th:insert="~{/toInsert/preloader.html}"></div>
+
+    <header class="header" th:insert="~{/toInsert/header.html}"></header>
+
+    <main class="main">
+        <section class="profileSection pb-xxl-5">
+            <div class="container mt-3">
+                <div class="alert alert-success" role="alert" th:if="${param.successSwapAvatar}" th:text="#{avatarReplaced}">
+
+                </div>
+                <div class="alert alert-danger" role="alert" th:if="${#authentication.getAuthorities().contains(banRole)}" th:text="#{accBanned}">
+
+                </div>
+                <div class="alert alert-danger" role="alert" th:if="${param.errorSwapAvatar}" th:text="#{failedUpdateAvatar}">
+
+                </div>
+                <div class="alert alert-success" role="alert" th:if="${param.success}" th:text="#{successEditedProfile}">
+
+                </div>
+                <div class="alert alert-danger" role="alert" th:if="${param.newPasswordsNotSame}" th:text="#{passwordsNotSame}">
+
+                </div>
+                <div class="alert alert-danger" role="alert" th:if="${param.oldPasswordNotSameCurrentPassword}" th:text="#{oldPasswordInvalid}">
+
+                </div>
+                <div class="alert alert-danger" role="alert" th:if="${param.notEnoughRights}" th:text="#{notEnoughRights}">
+
+                </div>
+                <div class="mx-auto">
+                    <div class="typewriter">
+                        <h1 class="mb-3 text-center text-white" th:text="'Whats up?, ' + ${currentUser.userFirstName} + ' ' + ${currentUser.userSurname}"></h1>
+                    </div>
+                </div>
+                <form class="col-6" th:action="@{'/swapUserAvatar'}" method="post" enctype="multipart/form-data">
+                    <div class="mt-3">
+                        <label>Avatar: <br>
+                            <input class="form-control" type="file" name="userImageToken">
+                        </label>
+                        <button class="btn btn-primary mx-lg-3" th:text="#{swapAvaBtn}"></button>
+                    </div>
+                </form>
+                <form class="col-6" th:action="@{'/editUser'}" method="post">
+                    <input type="hidden" name="userId" th:value="${currentUser.userId}">
+                    <input type="hidden" name="userEmail" th:value="${currentUser.userEmail}">
+                    <div class="mt-3">
+                        <img class="user-avatar-img" th:src="@{'/getUserImage/' + ${currentUser.getUserAvatar()}}">
+                    </div>
+                    <div class="mt-3">
+                        <label>
+                            <span th:text="#{nameProfile} + ':'"></span>
+                            <input type="text" class="form-control" name="userFirstName" th:placeholder="${currentUser.userFirstName}" th:value="${currentUser.userFirstName}">
+                        </label>
+                    </div>
+                    <div class="mt-3">
+                        <label>
+                            <span th:text="#{surnameProfile} + ':'"></span>
+                            <input type="text" class="form-control" name="userSurname" th:placeholder="${currentUser.userSurname}" th:value="${currentUser.userSurname}">
+                        </label>
+                    </div>
+                    <div class="mt-3">
+                        <label>
+                            <span th:text="#{birthdateProfile} + ':'"></span>
+                            <input type="date" class="form-control" name="birthDate" th:value="${currentUser.userBirthdate}">
+                        </label>
+                    </div>
+                    <div class="mt-3">
+                        <label>
+                            <span th:text="#{oldPasswordProfile} + ':'"></span>
+                            <input type="password" name="oldPassword" class="form-control">
+                        </label>
+                    </div>
+                    <div class="mt-3">
+                        <label>
+                            <span th:text="#{newPasswordProfile} + ':'"></span>
+                            <input type="password" name="userPassword" class="form-control">
+                        </label>
+                    </div>
+                    <div class="mt-3">
+                        <label>
+                            <span th:text="#{reNewPasswordProfile} + ':'"></span>
+                            <input type="password" name="reNewPassword" class="form-control">
+                        </label>
+                    </div>
+                    <div class="mt-3">
+                        <div class="form-check" th:each="role : ${currentUser.getRoles()}">
+                            <input class="form-check-input" type="checkbox" name="roles" disabled th:value="${role.roleId}" th:id="${role.roleId}" checked>
+                            <label class="form-check-label" th:for="${role.roleId}" th:text="${role.roleName}">
+                            </label>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary mt-3" th:text="#{editUserBtn}"></button>
+                    <a th:href="@{'/signOut'}" class="btn btn-danger mt-3" th:text="#{logout}"></a>
+                </form>
+
+                <div class="mt-3" sec:authorize="!hasRole('ROLE_BLOGGER')">
+                    <button class="btn btn-primary" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#applicationFormBlogger" aria-expanded="false" th:text="#{appForRoleBloggerBtn}">
+                    </button>
+                </div>
+                <div class="collapse mb-lg-5" id="applicationFormBlogger">
+                    <form class="form-control mt-3" style="width: 300px" th:action="@{'/applicationFormBlogger'}" method="post">
+                        <label class="mt-3 appFormLabel">
+                            <span th:text="#{descriptionFeedback} + ':'"></span> <br>
+                            <textarea name="applicationFormBloggerDescription" id="formAppDescription"></textarea>
+                        </label><br>
+                        <button class="btn btn-primary mt-3" th:text="#{submitBtn}"></button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div th:insert="~{/toInsert/scripts.html}"></div>
+    <script>
+        $(document).ready(() => {
+            let typingElement = $('.typing');
+
+            typingElement.on('click', (e) => {
+                typingElement.removeClass('animate');
+                setTimeout(() => typingElement.addClass('animate'), 1);
+            })
+        });
+    </script>
+</body>
+</html>

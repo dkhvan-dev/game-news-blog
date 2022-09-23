@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:insert="~{/toInsert/head.html}">
+    <title>Admin Panel</title>
+</head>
+<body onload="getAllGames(); getAllNews(); getAllPlatforms(); getAllGenres(); getGamesTable();getBlogsTable(); getApplicationsTable(); getFeedbackTable(); getCommentsTable(); getPlatformsTable(); getGenresTable(); getRolesTable()">
+
+    <div th:insert="~{/toInsert/preloader.html}"></div>
+
+    <!-- Header section -->
+    <header th:insert="~{/toInsert/header.html}">
+    </header>
+    <!-- Header section end -->
+
+    <main class="d-flex flex-column adminPanel">
+        <!-- ADDNEWS ALERT -->
+        <div class="alert alert-danger" role="alert" th:if="${param.errorAddNews}" th:text="#{errorAddNews}">
+
+        </div>
+        <!-- BLOG -->
+        <div class="alert alert-success" role="alert" th:if="${param.successRejectedBlog}" th:text="#{successRejectedBlog}">
+
+        </div>
+        <div class="alert alert-success" role="alert" th:if="${param.successDeleteBlog}" th:text="#{successDeleteBlog}">
+
+        </div>
+        <div class="alert alert-danger" role="alert" th:if="${param.errorDeleteBlog}" th:text="#{errorDeleteBlog}">
+
+        </div>
+        <!-- GAME ALERT -->
+        <div class="alert alert-danger" role="alert" th:if="${param.errorAddGame}" th:text="#{errorAddGame}">
+
+        </div>
+        <div class="alert alert-success" role="alert" th:if="${param.successDeleteGame}" th:text="#{successDeleteGame}">
+
+        </div>
+        <div class="alert alert-danger" role="alert" th:if="${param.errorDeleteGame}" th:text="#{errorDeleteGame}">
+
+        </div>
+        <!-- PLATFORM ALERT -->
+        <div class="alert alert-success" role="alert" th:if="${param.successAddPlatform}" th:text="#{successAddPlatform}">
+
+        </div>
+        <div class="alert alert-danger" role="alert" th:if="${param.errorAddPlatform}" th:text="#{errorAddPlatform}">
+
+        </div>
+        <div class="alert alert-success" role="alert" th:if="${param.successDeletePlatform}" th:text="#{successDeletePlatform}">
+
+        </div>
+        <div class="alert alert-danger" role="alert" th:if="${param.errorDeletePlatform}" th:text="#{errorDeletePlatform}">
+
+        </div>
+        <div class="alert alert-success" role="alert" th:if="${param.successEditPlatform}" th:text="#{successEditPlatform}">
+
+        </div>
+        <div class="alert alert-danger" role="alert" th:if="${param.errorEditPlatform}" th:text="#{errorEditPlatform}">
+
+        </div>
+        <!-- GENRE ALERT -->
+        <div class="alert alert-success" role="alert" th:if="${param.successAddGenre}" th:text="#{successAddGenre}">
+
+        </div>
+        <div class="alert alert-danger" role="alert" th:if="${param.errorAddGenre}" th:text="#{errorAddGenre}">
+
+        </div>
+        <div class="alert alert-success" role="alert" th:if="${param.successDeleteGenre}" th:text="#{successDeleteGenre}">
+
+        </div>
+        <div class="alert alert-danger" role="alert" th:if="${param.errorDeleteGenre}" th:text="#{errorDeleteGenre}">
+
+        </div>
+        <div class="alert alert-success" role="alert" th:if="${param.successEditGenre}" th:text="#{successEditGenre}">
+
+        </div>
+        <div class="alert alert-danger" role="alert" th:if="${param.errorEditGenre}" th:text="#{errorEditGenre}">
+
+        </div>
+        <!-- APPLICATION FORM BLOGGER ALERT -->
+        <div class="alert alert-danger" role="alert" th:if="${param.errorNotFoundApplication}" th:text="#{appNotFound}">
+
+        </div>
+        <!-- FEEDBACK ALERT -->
+        <div class="alert alert-danger" role="alert" th:if="${param.errorFeedbackNotFound}" th:text="#{feedbackNotFound}">
+
+        </div>
+        <!-- ROLE ALERT -->
+        <div class="alert alert-success" role="alert" th:if="${param.successAddRole}" th:text="#{successAddRole}">
+
+        </div>
+        <div class="alert alert-danger" role="alert" th:if="${param.errorAddRole}" th:text="#{errorAddRole}">
+
+        </div>
+        <div class="alert alert-success" role="alert" th:if="${param.successDeleteRole}" th:text="#{successDeleteRole}">
+
+        </div>
+        <div class="alert alert-danger" role="alert" th:if="${param.errorDeleteRole}" th:text="#{errorDeleteRole}">
+
+        </div>
+        <div class="alert alert-success" role="alert" th:if="${param.successEditRole}" th:text="#{successEditRole}">
+
+        </div>
+        <div class="alert alert-danger" role="alert" th:if="${param.errorEditRole}" th:text="#{errorEditRole}">
+
+        </div>
+
+        <!-- BUTTONS -->
+        <div class="btn-group" role="group">
+            <div class="admin-collapse">
+                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#newsCollapseAdmin" aria-expanded="false"
+                        th:text="#{news}">
+                </button>
+            </div>
+            <div class="admin-collapse">
+                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#gamesCollapseAdmin" aria-expanded="false"
+                        th:text="#{games}">
+                </button>
+            </div>
+            <div class="admin-collapse">
+                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#platformCollapseAdmin" aria-expanded="false" th:text="#{platform}">
+                </button>
+            </div>
+            <div class="admin-collapse">
+                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#genreCollapseAdmin" aria-expanded="false" th:text="#{genre}">
+                </button>
+            </div>
+            <div class="admin-collapse">
+                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#blogsCollapseAdmin" aria-expanded="false" th:text="#{blogs}">
+                </button>
+            </div>
+            <div class="admin-collapse">
+                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#applicationForBloggerRole" aria-expanded="false" th:text="#{appForRoleBloggerBtn}">
+                </button>
+            </div>
+            <div class="admin-collapse">
+                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#feedbackAdmin" aria-expanded="false" th:text="#{feedback}">
+                </button>
+            </div>
+            <div class="admin-collapse">
+                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#commentsAdmin" aria-expanded="false" th:text="#{comments}">
+                </button>
+            </div>
+            <div class="admin-collapse">
+                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#usersAdmin" aria-expanded="false" th:text="#{users}">
+                </button>
+            </div>
+            <div class="admin-collapse">
+                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#roleCollapseAdmin" aria-expanded="false" th:text="#{roles}">
+                </button>
+            </div>
+        </div>
+
+        <!-- News Collapse -->
+        <div class="d-flex col-10 mx-auto">
+            <div class="collapse admin-collapse__show mx-auto" id="newsCollapseAdmin">
+                <div class="card card-body">
+                    <!-- Button addNews modal -->
+                    <div>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addNewsModal" th:text="#{addNews}">
+                        </button>
+                    </div>
+
+                    <!-- AddNews Modal -->
+                    <div class="modal fade" id="addNewsModal" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog" style="max-width: 900px">
+                            <form class="form-control" th:action="@{'/addNews'}" method="post">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" th:text="#{addNews}"></h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body d-flex flex-column">
+                                        <label class="form-label mt-3">
+                                            <span th:text="#{title} + ':'"></span>
+                                            <input type="text" class="form-control" name="newsTitle" required>
+                                        </label>
+                                        <label class="form-label mt-3">
+                                            <span th:text="#{descriptionFeedback} + ':'"></span>
+                                            <textarea rows="10" id="tinyMceTextarea" class="form-control" name="newsDescription"></textarea>
+                                        </label>
+                                        <select class="form-select mt-3 allGames" name="game">
+
+                                        </select>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{closeBtn}"></button>
+                                        <button class="btn btn-primary" th:text="#{addNews}"></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- ALL NEWS TABLE -->
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col" th:text="#{title}"></th>
+                            <th scope="col" th:text="#{createDate}"></th>
+                            <th scope="col" th:text="#{game}"></th>
+                            <th scope="col" th:text="#{details}"></th>
+                            <th scope="col" th:text="#{deleteBtn}"></th>
+                        </tr>
+                        </thead>
+                        <tbody class="allNews">
+
+                        </tbody>
+                    </table>
+                    <!-- Delete News Modal -->
+                    <form th:action="@{'/deleteNewsAdmin'}" method="post">
+                        <div class="modal fade" id="deleteNewsAdmin" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog" style="max-width: 900px">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" th:text="#{deleteNews}"></h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <span th:text="#{deleteNewsBody}"></span>
+                                        <input type="hidden" name="newsId" value="" id="newsId">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{closeBtn}"></button>
+                                        <button class="btn btn-danger" th:text="#{deleteNews}"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        <!-- Game Collapse -->
+        <div class="d-flex col-10 mx-auto">
+            <div class="collapse admin-collapse__show mx-auto" id="gamesCollapseAdmin">
+                <div class="card card-body">
+                    <!-- Button addGame modal -->
+                    <div>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addGameModal" th:text="#{addGame}">
+                        </button>
+                    </div>
+
+                    <!-- AddGame Modal -->
+                    <div class="modal fade" id="addGameModal" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog" style="max-width: 900px">
+                            <form class="form-control" th:action="@{'/addGame'}" method="post" enctype="multipart/form-data">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" th:text="#{addGame}"></h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="mt-3">
+                                        <span th:text="#{nameProfile} + ':'"></span> <br>
+                                        <input type="text" class="form-control" name="gameName" required>
+                                    </div>
+                                    <div class="mt-3">
+                                        <span th:text="#{age} + ':'"></span> <br>
+                                        <input type="number" class="form-control" name="gameAge" required>
+                                    </div>
+                                    <div class="mt-3">
+                                        <label class="form-label">
+                                            <span th:text="#{image} + ':'"></span> <br>
+                                            <input class="form-control" type="file" name="gameImageToken">
+                                        </label>
+                                    </div>
+                                    <div class="mt-3">
+                                        <span th:text="#{descriptionFeedback} + ':'"></span> <br>
+                                        <textarea rows="10" id="tinyMceTextarea" class="form-control" name="gameDescription"></textarea>
+                                    </div>
+                                    <div class="mt-3 allPlatforms">
+                                        <span th:text="#{platform} + ':'"></span>
+
+                                    </div>
+                                    <div class="mt-3 allGenres">
+                                        <span th:text="#{genre} + ':'"></span>
+
+                                    </div>
+                                    <span th:text="#{gameRequirements} + ':'"></span><br>
+                                    <div class="mt-3 w-100 row">
+                                        <div class="col-4 mb-2">
+                                            <span class="mt-3" th:text="#{operationSystem} + ':'"></span>
+                                            <input class="form-control" type="text" name="gameRequirementsOS">
+                                        </div>
+                                        <div class="col-4 mb-2">
+                                            <span class="mt-3" th:text="#{cpu} + ':'"></span>
+                                            <input class="form-control" type="text" name="gameRequirementsCPU">
+                                        </div>
+                                        <div class="col-4 mb-2">
+                                            <span class="mt-3" th:text="#{memory} + ':'"></span>
+                                            <input class="form-control" type="text" name="gameRequirementsMemory">
+                                        </div>
+                                        <div class="col-4 mb-2">
+                                            <span class="mt-3" th:text="#{gpu} + ':'"></span>
+                                            <input class="form-control" type="text" name="gameRequirementsGPU">
+                                        </div>
+                                        <div class="col-4 mb-2">
+                                            <span class="mt-3" th:text="#{storage} + ':'"></span>
+                                            <input class="form-control" type="text" name="gameRequirementsStorage">
+                                        </div>
+                                    </div>
+
+                                    <span th:text="#{gameRatingIndexPage} + ':'"></span><br>
+                                    <div class="mt-3 w-100 row">
+                                        <div class="col-4 mb-2">
+                                            <span class="mt-3" th:text="#{gamePlay} + ':'"></span>
+                                            <input class="form-control" type="number" step="0.1" name="gameRatingGameplay">
+                                        </div>
+                                        <div class="col-4 mb-2">
+                                            <span class="mt-3" th:text="#{graphics} + ':'"></span>
+                                            <input class="form-control" type="number" step="0.1" name="gameRatingGraphics">
+                                        </div>
+                                        <div class="col-4 mb-2">
+                                            <span class="mt-3" th:text="#{difficulty} + ':'"></span>
+                                            <input class="form-control" type="number" step="0.1" name="gameRatingDifficulty">
+                                        </div>
+                                        <div class="col-4 mb-2">
+                                            <span class="mt-3" th:text="#{avgRating} + ':'"></span>
+                                            <input class="form-control" type="number" step="0.1" name="gameRatingAvg">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{closeBtn}"></button>
+                                    <button class="btn btn-primary" th:text="#{addGame}"></button>
+                                </div>
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- ALL GAMES TABLE -->
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col" th:text="#{nameProfile}"></th>
+                            <th scope="col" th:text="#{age}"></th>
+                            <th scope="col" th:text="#{platform}"></th>
+                            <th scope="col" th:text="#{genre}"></th>
+                            <th scope="col" th:text="#{details}"></th>
+                            <th scope="col" th:text="#{deleteBtn}"></th>
+                        </tr>
+                        </thead>
+                        <tbody class="gamesTable">
+
+                        </tbody>
+                    </table>
+
+                    <form th:action="@{'/deleteGameAdmin'}" method="post">
+                        <div class="modal fade" id="deleteGameAdmin" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog" style="max-width: 900px">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" th:text="#{deleteGame}"></h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <span th:text="#{deleteGameBody}"></span>
+                                        <input type="hidden" name="gameId" value="" id="gameId">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{closeBtn}"></button>
+                                        <button class="btn btn-danger" th:text="#{deleteGame}"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Platform Collapse -->
+        <div class="d-flex col-10 mx-auto">
+            <div class="collapse admin-collapse__show mx-auto" id="platformCollapseAdmin">
+                <div class="card card-body">
+                    <!-- Button addPlatform modal -->
+                    <div>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPlatformModal" th:text="#{addPlatform}">
+                        </button>
+                    </div>
+
+                    <!-- AddPlatform Modal -->
+                    <div class="modal fade" id="addPlatformModal" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog" style="max-width: 900px">
+                            <form class="form-control" th:action="@{'/addPlatformAdmin'}" method="post">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" th:text="#{addPlatform}"></h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="mt-3">
+                                            <span th:text="#{title} + ':'"></span> <br>
+                                            <input type="text" class="form-control" name="platformName" required>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{closeBtn}"></button>
+                                        <button class="btn btn-primary" th:text="#{addPlatform}"></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- ALL PLATFORMS TABLE -->
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col" th:text="#{nameProfile}"></th>
+                            <th scope="col" th:text="#{editBtn}"></th>
+                            <th scope="col" th:text="#{deleteBtn}"></th>
+                        </tr>
+                        </thead>
+                        <tbody class="platformsTable">
+
+                        </tbody>
+                    </table>
+
+                    <form th:action="@{'/deletePlatformAdmin'}" method="post">
+                        <div class="modal fade" id="deletePlatformAdmin" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog" style="max-width: 900px">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" th:text="#{deletePlatform}"></h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <span th:text="#{deletePlatformBody}"></span>
+                                        <input type="hidden" name="platformId" value="" id="platformId">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{closeBtn}"></button>
+                                        <button class="btn btn-danger" th:text="#{deleteBtn}"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <form th:action="@{'/editPlatformAdmin'}" method="post">
+                        <div class="modal fade" id="editPlatformAdmin" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog" style="max-width: 900px">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" th:text="#{editPlatform}"></h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <input type="hidden" name="platformId" value="" id="platformId">
+                                        <input type="text" name="platformName" value="" id="platformName">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{closeBtn}"></button>
+                                        <button class="btn btn-success" th:text="#{editBtn}"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Genre Collapse -->
+        <div class="d-flex col-10 mx-auto">
+            <div class="collapse admin-collapse__show mx-auto" id="genreCollapseAdmin">
+                <div class="card card-body">
+                    <!-- Button addPlatform modal -->
+                    <div>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addGenreModal" th:text="#{addGenre}">
+                        </button>
+                    </div>
+
+                    <!-- AddGenre Modal -->
+                    <div class="modal fade" id="addGenreModal" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog" style="max-width: 900px">
+                            <form class="form-control" th:action="@{'/addGenreAdmin'}" method="post">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" th:text="#{addGenre}"></h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="mt-3">
+                                            <span th:text="#{title} + ':'"></span> <br>
+                                            <input type="text" class="form-control" name="genreName" required>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{closeBtn}"></button>
+                                        <button class="btn btn-primary" th:text="#{addGenre}"></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- ALL GENRES TABLE -->
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col" th:text="#{nameProfile}"></th>
+                            <th scope="col" th:text="#{editBtn}"></th>
+                            <th scope="col" th:text="#{deleteBtn}"></th>
+                        </tr>
+                        </thead>
+                        <tbody class="genresTable">
+
+                        </tbody>
+                    </table>
+
+                    <form th:action="@{'/deleteGenreAdmin'}" method="post">
+                        <div class="modal fade" id="deleteGenreAdmin" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog" style="max-width: 900px">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" th:text="#{deleteGenre}"></h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <span th:text="#{deleteGenreBody}"></span>
+                                        <input type="hidden" name="genreId" value="" id="genreId">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{closeBtn}"></button>
+                                        <button class="btn btn-danger" th:text="#{deleteBtn}"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <form th:action="@{'/editGenreAdmin'}" method="post">
+                        <div class="modal fade" id="editGenreAdmin" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog" style="max-width: 900px">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" th:text="#{editGenre}"></h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <input type="hidden" name="genreId" value="" id="genreId">
+                                        <input type="text" name="genreName" value="" id="genreName">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{closeBtn}"></button>
+                                        <button class="btn btn-success" th:text="#{editBtn}"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Blogs Collapse -->
+        <div class="d-flex col-10 mx-auto">
+            <div class="collapse admin-collapse__show mx-auto" id="blogsCollapseAdmin">
+                <div class="card card-body">
+                    <!-- ALL BLOGS TABLE -->
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col" th:text="#{title}"></th>
+                            <th scope="col" th:text="#{createDate}"></th>
+                            <th scope="col" th:text="#{updateDate}"></th>
+                            <th scope="col" th:text="#{game}"></th>
+                            <th scope="col" th:text="#{status}"></th>
+                            <th scope="col" th:text="#{details}"></th>
+                            <th scope="col" th:text="#{deleteBtn}"></th>
+                        </tr>
+                        </thead>
+                        <tbody class="blogsTable">
+
+                        </tbody>
+                    </table>
+
+                    <!-- Delete Blog Modal -->
+                    <div class="modal fade" id="deleteBlogAdmin" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog" style="max-width: 900px">
+                            <form th:action="@{'/deleteBlogAdmin'}" method="post">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" th:text="#{deleteBlog}"></h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <span th:text="#{deleteBlogBody}"></span>
+                                        <input type="hidden" name="blogId" value="" id="blogId">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{closeBtn}"></button>
+                                        <button class="btn btn-danger" th:text="#{deleteBlog}"></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ApplicationFormsBlogger Collapse -->
+        <div class="d-flex col-10 mx-auto">
+            <div class="collapse admin-collapse__show mx-auto" id="applicationForBloggerRole">
+                <div class="card card-body">
+                    <!-- ALL ApplicationFormsBlogger TABLE -->
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col" th:text="#{receiptDate}"></th>
+                            <th scope="col" th:text="#{updateDate}"></th>
+                            <th scope="col" th:text="#{status}"></th>
+                            <th scope="col" th:text="#{author}"></th>
+                            <th scope="col" th:text="#{details}"></th>
+                        </tr>
+                        </thead>
+                        <tbody class="applicationsForBloggerTable">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- Feedback Collapse -->
+        <div class="d-flex col-10 mx-auto">
+            <div class="collapse admin-collapse__show mx-auto" id="feedbackAdmin">
+                <div class="card card-body">
+                    <!-- ALL FEEDBACK TABLE -->
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col" th:text="#{nameProfile}"></th>
+                                <th scope="col" th:text="#{email}"></th>
+                                <th scope="col" th:text="#{subjectFeedback}"></th>
+                                <th scope="col" th:text="#{status}"></th>
+                                <th scope="col" th:text="#{details}"></th>
+                            </tr>
+                        </thead>
+                        <tbody class="feedbackTable">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- Comments Collapse -->
+        <div class="d-flex col-10 mx-auto">
+            <div class="collapse admin-collapse__show mx-auto" id="commentsAdmin">
+                <div class="card card-body">
+                    <!-- ALL COMMENTS TABLE -->
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col" th:text="#{comment}"></th>
+                            <th scope="col" th:text="#{author}"></th>
+                            <th scope="col" th:text="#{createDate}"></th>
+                            <th scope="col" th:text="#{deleteBtn}"></th>
+                        </tr>
+                        </thead>
+                        <tbody class="commentsTable">
+
+                        </tbody>
+                    </table>
+                    <div class="modal fade" id="deleteCommentModal" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog" style="max-width: 900px">
+                            <form th:action="@{'/deleteCommentAdmin'}" method="post">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" th:text="#{deleteComment}"></h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <input type="hidden" name="commentId" value="" id="commentId">
+                                        <span th:text="#{deleteCommentBody}"></span>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{closeBtn}"></button>
+                                        <button class="btn btn-danger" th:text="#{deleteBtn}"></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Users Collapse -->
+        <div class="d-flex col-10 mx-auto" sec:authorize="hasAnyRole('ROLE_MODERATOR', 'ROLE_ADMIN')">
+            <div class="collapse admin-collapse__show mx-auto" id="usersAdmin">
+                <div class="card card-body">
+                    <!-- ALL Users TABLE -->
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col" th:text="#{email}"></th>
+                            <th scope="col" th:text="#{fullName}"></th>
+                            <th scope="col" th:text="#{roles}"></th>
+                            <th scope="col" th:text="#{details}"></th>
+                        </tr>
+                        </thead>
+                        <tbody class="usersTable">
+                            <tr th:each="user : ${allUsers}">
+                                <th scope="row" th:text="${user.userId}"></th>
+                                <td th:text="${user.userEmail}"></td>
+                                <td th:text="${user.userFirstName + ' ' + user.userSurname}"></td>
+                                <td><span th:each="role : ${user.getRoles()}" th:text="${role.roleName}"></span></td>
+                                <td><a th:href="@{'/detailsUserAdmin/' + ${user.userId}}" class="btn btn-primary" th:text="#{details}"></a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- Role Collapse -->
+        <div class="d-flex col-10 mx-auto">
+            <div class="collapse admin-collapse__show mx-auto" id="roleCollapseAdmin">
+                <div class="card card-body">
+                    <!-- Button addPlatform modal -->
+                    <div>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addRoleModal" th:text="#{addRole}">
+                        </button>
+                    </div>
+
+                    <!-- AddGenre Modal -->
+                    <div class="modal fade" id="addRoleModal" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog" style="max-width: 900px">
+                            <form class="form-control" th:action="@{'/addRoleAdmin'}" method="post">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" th:text="#{addRole}"></h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="mt-3">
+                                            <span th:text="#{nameProfile} + ':'"></span> <br>
+                                            <input type="text" class="form-control" name="roleName" required>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{closeBtn}"></button>
+                                        <button class="btn btn-primary" th:text="#{addRole}"></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- ALL GENRES TABLE -->
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col" th:text="#{nameProfile}"></th>
+                            <th scope="col" th:text="#{editBtn}"></th>
+                            <th scope="col" th:text="#{deleteBtn}"></th>
+                        </tr>
+                        </thead>
+                        <tbody class="rolesTable">
+
+                        </tbody>
+                    </table>
+
+                    <form th:action="@{'/deleteRoleAdmin'}" method="post">
+                        <div class="modal fade" id="deleteRoleAdmin" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog" style="max-width: 900px">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" th:text="#{deleteRole}"></h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <span th:text="#{deleteRoleBody}"></span>
+                                        <input type="hidden" name="roleId" value="" id="roleId">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{closeBtn}"></button>
+                                        <button class="btn btn-danger" th:text="#{deleteBtn}"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <form th:action="@{'/editRoleAdmin'}" method="post">
+                        <div class="modal fade" id="editRoleAdmin" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog" style="max-width: 900px">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" th:text="#{editRole}"></h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <input type="hidden" name="roleId" value="" id="roleId">
+                                        <input type="text" name="roleName" value="" id="roleName">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{closeBtn}"></button>
+                                        <button class="btn btn-success" th:text="#{editBtn}"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer section -->
+    <footer class="footer-section" th:insert="~{/toInsert/footer.html}">
+    </footer>
+    <!-- Footer section end -->
+
+    <div th:insert="~{/toInsert/scripts.html}"></div>
+
+    <script>
+        function getAllGames() {
+            const result = new XMLHttpRequest()
+            result.open("GET", "http://localhost:8000/games")
+            result.send()
+            result.onload = function () {
+                let allGames = JSON.parse(this.responseText)
+                let content = ""
+                for (i = 0; i < allGames.length; i++) {
+                    content += "<option value='" + allGames[i].gameId + "'>" + allGames[i].gameName + "</option>"
+                }
+                document.querySelector(".allGames").innerHTML = content
+            }
+        }
+
+        function getAllNews() {
+            $(document).on("click", ".deleteNewsModal", function () {
+                var newsId = $(this).data("id");
+                $(".modal-body #newsId").val(newsId);
+            });
+            const result = new XMLHttpRequest()
+            result.open("GET", "http://localhost:8000/news")
+            result.send()
+            result.onload = function () {
+                let allNews = JSON.parse(this.responseText)
+                let content = ""
+                for (i = 0; i < allNews.length; i++) {
+                    content += "<tr>"
+                    content += "<th scope='row'>" + allNews[i].newsId + "</th>"
+                    content += "<td>" + allNews[i].newsTitle + "</td>"
+                    content += "<td>" + allNews[i].newsCreateDate + "</td>"
+                    content += "<td>" + allNews[i].game.gameName + "</td>"
+                    content += "<td><a class='btn btn-primary' href='/detailsNewsAdmin/" + allNews[i].newsId + "'>[[#{details}]]</a></td>"
+                    content += "<td><button type='button' class='btn btn-danger deleteNewsModal' data-bs-toggle='modal' data-bs-target='#deleteNewsAdmin' data-id='" + allNews[i].newsId + "'>[[#{deleteBtn}]]</button></td>"
+                    content += "</tr>"
+                }
+                document.querySelector(".allNews").innerHTML = content
+            }
+        }
+
+        function getAllPlatforms() {
+            const result = new XMLHttpRequest()
+            result.open("GET", "http://localhost:8000/platforms")
+            result.send()
+            result.onload = function () {
+                let allPlatforms = JSON.parse(this.responseText)
+                let content = ""
+                for (i = 0; i < allPlatforms.length; i++) {
+                    content += "<div class='form-check'>"
+                    content += "<input class='form-check-input' type='checkbox' name='platform' value='" + allPlatforms[i].platformId + "' id='" + allPlatforms[i].platformId + "'>"
+                    content += "<label class='form-check-label' for='" + allPlatforms[i].platformId + "'>" + allPlatforms[i].platformName + "</label>"
+                    content += "</div>"
+                }
+                document.querySelector(".allPlatforms").innerHTML += content
+            }
+        }
+
+        function getAllGenres() {
+            const result = new XMLHttpRequest()
+            result.open("GET", "http://localhost:8000/genres")
+            result.send()
+            result.onload = function () {
+                let allGenres = JSON.parse(this.responseText)
+                let content = ""
+                for (i = 0; i < allGenres.length; i++) {
+                    content += "<div class='form-check'>"
+                    content += "<input class='form-check-input' type='checkbox' name='genres' value='" + allGenres[i].genreId + "' id='" + allGenres[i].genreId + "'>"
+                    content += "<label class='form-check-label' for='" + allGenres[i].genreId + "'>" + allGenres[i].genreName + "</label>"
+                    content += "</div>"
+                }
+                document.querySelector(".allGenres").innerHTML += content
+            }
+        }
+
+        function getGamesTable() {
+            $(document).on("click", ".deleteGameModal", function () {
+                var gameId = $(this).data("id");
+                $(".modal-body #gameId").val( gameId );
+            });
+            const result = new XMLHttpRequest()
+            result.open("GET", "http://localhost:8000/games")
+            result.send()
+            result.onload = function () {
+                let allGames = JSON.parse(this.responseText)
+                let content = ""
+                let allGenres = ""
+                let allPlatforms = ""
+                for (i = 0; i < allGames.length; i++) {
+                    content += "<tr>"
+                    content += "<th scope='row'>" + allGames[i].gameId + "</th>"
+                    content += "<td>" + allGames[i].gameName + "</td>"
+                    content += "<td>" + allGames[i].gameAge + "+</td>"
+                    content += "<td>"
+                    allPlatforms = allGames[i].platform
+                for (j = 0; j < allPlatforms.length; j++) {
+                    content += "<span>" + allPlatforms[j].platformName + "/</span>"
+                }
+                    content += "</td>"
+                    content += "<td>"
+                    allGenres = allGames[i].genres
+                for (k = 0; k < allGenres.length; k++) {
+                    content += "<span>" + allGenres[k].genreName + "</span>"
+                }
+                    content += "</td>"
+                    content += "<td><a class='btn btn-primary' href='/detailsGameAdmin/" + allGames[i].gameId + "'>[[#{details}]]</a></td>"
+                    content += "<td><button type='button' class='btn btn-danger deleteGameModal' data-bs-toggle='modal' data-bs-target='#deleteGameAdmin' data-id='" + allGames[i].gameId + "'>[[#{deleteBtn}]]</button></td>"
+                    content += "</tr>"
+                    document.querySelector(".gamesTable").innerHTML = content
+                }
+            }
+        }
+
+        function getPlatformsTable() {
+            $(document).on("click", ".deletePlatformModal", function () {
+                var platformId = $(this).data("id");
+                $(".modal-body #platformId").val( platformId );
+            });
+            $(document).on("click", ".editPlatformModal", function () {
+                var platformId = $(this).data("id");
+                var platformName = $(this).data("name");
+                $(".modal-body #platformId").val( platformId );
+                $(".modal-body #platformName").val( platformName );
+            });
+            const res = new XMLHttpRequest()
+            res.open("GET", "http://localhost:8000/platforms")
+            res.send()
+            res.onload = function () {
+                let allPlatforms = JSON.parse(this.responseText)
+                let content = ""
+                for (i = 0; i < allPlatforms.length; i++) {
+                    content += "<tr>"
+                    content += "<th scope='row'>" + allPlatforms[i].platformId + "</th>"
+                    content += "<td>" + allPlatforms[i].platformName + "</td>"
+                    content += "<td><button type='button' class='btn btn-primary editPlatformModal' data-bs-toggle='modal' data-bs-target='#editPlatformAdmin' data-id='" + allPlatforms[i].platformId + "' data-name='" + allPlatforms[i].platformName + "'>[[#{editBtn}]]</button></td>"
+                    content += "<td><button type='button' class='btn btn-danger deletePlatformModal' data-bs-toggle='modal' data-bs-target='#deletePlatformAdmin' data-id='" + allPlatforms[i].platformId + "'>[[#{deleteBtn}]]</button></td>"
+                    content += "</tr>"
+                }
+                document.querySelector(".platformsTable").innerHTML = content
+            }
+        }
+
+        function getGenresTable() {
+            $(document).on("click", ".deleteGenreModal", function () {
+                var genreId = $(this).data("id");
+                $(".modal-body #genreId").val( genreId );
+            });
+            $(document).on("click", ".editGenreModal", function () {
+                var genreId = $(this).data("id");
+                var genreName = $(this).data("name");
+                $(".modal-body #genreId").val( genreId );
+                $(".modal-body #genreName").val( genreName );
+            });
+            const res = new XMLHttpRequest()
+            res.open("GET", "http://localhost:8000/genres")
+            res.send()
+            res.onload = function () {
+                let allGenres = JSON.parse(this.responseText)
+                let content = ""
+                for (i = 0; i < allGenres.length; i++) {
+                    content += "<tr>"
+                    content += "<th scope='row'>" + allGenres[i].genreId + "</th>"
+                    content += "<td>" + allGenres[i].genreName + "</td>"
+                    content += "<td><button type='button' class='btn btn-primary editGenreModal' data-bs-toggle='modal' data-bs-target='#editGenreAdmin' data-id='" + allGenres[i].genreId + "' data-name='" + allGenres[i].genreName + "'>[[#{editBtn}]]</button></td>"
+                    content += "<td><button type='button' class='btn btn-danger deleteGenreModal' data-bs-toggle='modal' data-bs-target='#deleteGenreAdmin' data-id='" + allGenres[i].genreId + "'>[[#{deleteBtn}]]</button></td>"
+                    content += "</tr>"
+                }
+                document.querySelector(".genresTable").innerHTML = content
+            }
+        }
+        function getRolesTable() {
+            $(document).on("click", ".deleteRoleModal", function () {
+                var roleId = $(this).data("id");
+                $(".modal-body #roleId").val( roleId );
+            });
+            $(document).on("click", ".editRoleModal", function () {
+                var roleId = $(this).data("id");
+                var roleName = $(this).data("name");
+                $(".modal-body #roleId").val( roleId );
+                $(".modal-body #roleName").val( roleName );
+            });
+            const res = new XMLHttpRequest()
+            res.open("GET", "http://localhost:8000/roles")
+            res.send()
+            res.onload = function () {
+                let allRoles = JSON.parse(this.responseText)
+                let content = ""
+                for (i = 0; i < allRoles.length; i++) {
+                    content += "<tr>"
+                    content += "<th scope='row'>" + allRoles[i].roleId + "</th>"
+                    content += "<td>" + allRoles[i].roleName + "</td>"
+                    content += "<td><button type='button' class='btn btn-primary editRoleModal' data-bs-toggle='modal' data-bs-target='#editRoleAdmin' data-id='" + allRoles[i].roleId + "' data-name='" + allRoles[i].roleName + "'>[[#{editBtn}]]</button></td>"
+                    content += "<td><button type='button' class='btn btn-danger deleteRoleModal' data-bs-toggle='modal' data-bs-target='#deleteRoleAdmin' data-id='" + allRoles[i].roleId + "'>[[#{deleteBtn}]]</button></td>"
+                    content += "</tr>"
+                }
+                document.querySelector(".rolesTable").innerHTML = content
+            }
+        }
+        function getBlogsTable() {
+            $(document).on("click", ".deleteBlogModal", function () {
+                var blogId = $(this).data("id");
+                $(".modal-body #blogId").val( blogId );
+            });
+            const resBlog = new XMLHttpRequest()
+            resBlog.open("GET", "http://localhost:8000/blogs")
+            resBlog.send()
+            resBlog.onload = function () {
+                let allBlogs = JSON.parse(this.responseText)
+                let content = ""
+                for (i = 0; i < allBlogs.length; i++) {
+                    content += "<tr>"
+                    content += "<th scope='row'>" + allBlogs[i].blogId + "</th>"
+                    content += "<td>" + allBlogs[i].blogTitle + "</td>"
+                    content += "<td>" + allBlogs[i].blogCreateDate + "</td>"
+                    content += "<td>" + allBlogs[i].blogUpdateDate + "</td>"
+                    content += "<td>" + allBlogs[i].games.gameName + "</td>"
+                    content += "<td>" + allBlogs[i].blogStatus.blogStatusName + "</td>"
+                    content += "<td><a class='btn btn-primary' href='/detailsBlogAdmin/" + allBlogs[i].blogId + "'>[[#{details}]]</a></td>"
+                    content += "<td><button type='button' class='btn btn-danger deleteBlogModal' data-bs-toggle='modal' data-bs-target='#deleteBlogAdmin' data-id='" + allBlogs[i].blogId + "'>[[#{deleteBtn}]]</button></td>"
+                    content += "</tr>"
+                }
+                document.querySelector(".blogsTable").innerHTML = content
+            }
+        }
+
+        function getApplicationsTable() {
+            const res = new XMLHttpRequest()
+            res.open("GET", "http://localhost:8000/applicationForms")
+            res.send()
+            res.onload = function () {
+                let allApplications = JSON.parse(this.responseText)
+                let content = ""
+                for (i = 0; i < allApplications.length; i++) {
+                    content += "<tr>"
+                    content += "<th scope='row'>" + allApplications[i].applicationFormBloggerId + "</th>"
+                    content += "<td>" + allApplications[i].applicationFormBloggerReceiptDate + "</td>"
+                    content += "<td>" + allApplications[i].applicationFormBloggerUpdateDate + "</td>"
+                    content += "<td style='color:" + allApplications[i].applicationBloggerStatus.applicationBloggerStatusColor + "'>" + allApplications[i].applicationBloggerStatus.applicationBloggerStatus + "</td>"
+                    content += "<td>" + allApplications[i].users.userFirstName + " " + allApplications[i].users.userSurname + "</td>"
+                    content += "<td><a class='btn btn-primary' href='/detailsApplicationFormBloggerAdmin/" + allApplications[i].applicationFormBloggerId + "'>[[#{details}]]</a>"
+                    content += "</td>"
+                    content += "</tr>"
+                }
+                document.querySelector(".applicationsForBloggerTable").innerHTML = content
+            }
+        }
+
+        function getFeedbackTable() {
+            const res = new XMLHttpRequest()
+            res.open("GET", "http://localhost:8000/feedback")
+            res.send()
+            res.onload = function () {
+                let allFeedback = JSON.parse(this.responseText)
+                let content = ""
+                for (i = 0; i < allFeedback.length; i++) {
+                    content += "<tr>"
+                    content += "<th scope='row'>" + allFeedback[i].feedbackId + "</th>"
+                    content += "<td>" + allFeedback[i].feedbackName + "</td>"
+                    content += "<td>" + allFeedback[i].feedbackEmail + "</td>"
+                    content += "<td>" + allFeedback[i].feedbackSubject + "</td>"
+                    content += "<td style='color: " + allFeedback[i].feedbackStatus.feedbackStatusColor + "'>" + allFeedback[i].feedbackStatus.feedbackStatus + "</td>"
+                    content += "<td><a class='btn btn-primary' href='/detailsFeedbackAdmin/" + allFeedback[i].feedbackId + "'>[[#{details}]]</a></td>"
+                    content += "</tr>"
+                }
+                document.querySelector(".feedbackTable").innerHTML = content
+            }
+        }
+
+        function getCommentsTable() {
+            $(document).on("click", ".deleteCommentModal", function () {
+                var commentId = $(this).data("id");
+                $(".modal-body #commentId").val(commentId);
+            });
+            const res = new XMLHttpRequest()
+            res.open("GET", "http://localhost:8000/comments")
+            res.send()
+            res.onload = function () {
+                let allComments = JSON.parse(this.responseText)
+                let content = ""
+                for (i = 0; i < allComments.length; i++) {
+                    content += "<tr>"
+                    content += "<th scope='row'>" + allComments[i].commentId + "</th>"
+                    content += "<td>" + allComments[i].commentText + "</td>"
+                    content += "<td>" + allComments[i].author.userFirstName + " " + allComments[i].author.userSurname + "</td>"
+                    content += "<td>" + allComments[i].commentCreateDate + "</td>"
+                    content += "<td>"
+                    content += "<button type='button' class='btn btn-danger deleteCommentModal' data-id='" + allComments[i].commentId + "' data-bs-toggle='modal' data-bs-target='#deleteCommentModal'>[[#{deleteBtn}]]</button>"
+                    content += "</td>"
+                    content += "</tr>"
+                }
+                document.querySelector(".commentsTable").innerHTML = content
+            }
+        }
+    </script>
+</body>
+</html>

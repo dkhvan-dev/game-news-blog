@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:insert="~{/toInsert/head.html}">
+	<title>EndGame - Gaming Magazine Template</title>
+</head>
+<body onload="getAllBlogsByGame(); getAllGames(); getAllGenres(); getAllPlatforms()">
+	<!-- Page Preloder -->
+	<div th:insert="~{/toInsert/preloader.html}">
+	</div>
+
+	<!-- Header section -->
+	<header th:insert="~{/toInsert/header.html}">
+	</header>
+	<!-- Header section end -->
+
+	<main class="main">
+		<!-- Page top section -->
+		<section class="page-top-section set-bg" data-setbg="/img/page-top-bg/1.jpg">
+			<div class="page-info">
+				<h2 th:text="#{blogs}"></h2>
+				<div class="site-breadcrumb">
+					<a th:href="@{'/'}" th:text="#{home}"></a>  /
+					<a th:href="@{'/allBlogs'}" th:text="#{blogs}"></a>  /
+					<span class="site-breadcrumb-disabled-span" th:text="#{game}"></span>  /
+					<span th:text="${game.gameName}"></span>
+				</div>
+			</div>
+		</section>
+		<!-- Page top end-->
+
+		<!-- Blogs section -->
+		<section class="games-section">
+			<div class="container">
+				<a th:href="@{'/addBlog'}" class="btn btn-primary w-25" sec:authorize="hasRole('ROLE_BLOGGER') && !hasRole('ROLE_BAN')" th:text="#{addBlog}"></a>
+				<div class="row">
+					<div class="col-xl-7 col-lg-8 col-md-7">
+						<div class="row allBlogsByGame">
+
+						</div>
+					</div>
+					<div class="col-xl-3 col-lg-4 col-md-5 sidebar game-page-sidebar">
+						<div id="stickySidebar">
+							<div class="widget-item">
+								<div class="categories-widget">
+									<h4 class="widget-title" th:text="#{game}"></h4>
+									<ul class="allGames">
+
+									</ul>
+								</div>
+							</div>
+							<div class="widget-item">
+								<div class="categories-widget">
+									<h4 class="widget-title" th:text="#{platform}"></h4>
+									<ul class="allPlatforms">
+
+									</ul>
+								</div>
+							</div>
+							<div class="widget-item">
+								<div class="categories-widget">
+									<h4 class="widget-title" th:text="#{genre}"></h4>
+									<ul class="allGenres">
+
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- Blogs end-->
+	</main>
+
+	<!-- Footer section -->
+	<footer class="footer-section" th:insert="~{/toInsert/footer.html}">
+	</footer>
+	<!-- Footer section end -->
+
+
+	<!--====== Javascripts & Jquery ======-->
+	<div th:insert="~{/toInsert/scripts.html}"></div>
+
+	<script>
+		function getAllBlogsByGame() {
+			const result = new XMLHttpRequest();
+			var url = document.location.href
+			let sections = url.split('/');
+			let lastSection = sections.pop();
+			result.open("GET", "http://localhost:8000/blogs/byGame/" + lastSection)
+			result.send()
+			result.onload = function () {
+				let allBlogsByGame = JSON.parse(this.responseText)
+				let content = "";
+				if (allBlogsByGame != null) {
+					for (i = 0; i < allBlogsByGame.length; i++) {
+						content += "<div class='col-12'>"
+						content += "<div class='big-blog-item'>"
+						content += "<h5>" + allBlogsByGame[i].blogCreateDate + " | " + allBlogsByGame[i].blogTitle + "</h5>"
+						content += "<img class='news-image' src='/getBlogImage/" + allBlogsByGame[i].blogImage + "'>"
+						content += "<p class='mt-lg-3 blog-description'>" + allBlogsByGame[i].blogDescription + "</p>"
+						content += "<p class='blog-game'>[[#{game}]]: <span>" + allBlogsByGame[i].games.gameName + "</span></p>"
+						content += "<a href='/detailsBlog/" + allBlogsByGame[i].blogId + "' class='read-more'>[[#{readMoreBtn}]] &#5125;</a>"
+						content += "</div>"
+						content += "</div>"
+					}
+				}
+				document.querySelector(".allBlogsByGame").innerHTML = content;
+			}
+		}
+
+		function getAllGames() {
+			const result = new XMLHttpRequest();
+			result.open("GET", "http://localhost:8000/games")
+			result.send()
+			result.onload = function () {
+				let allGames = JSON.parse(this.responseText)
+				let content = ""
+				var url = document.location.href
+				let sections = url.split('/');
+				let selectedGameId = sections.pop();
+				for (i = 0; i < allGames.length; i++) {
+					content += "<li>"
+					if (allGames[i].gameId == selectedGameId) {
+						content += "<a class='disabled' href='/blogsByGame/" + allGames[i].gameId + "'>" + allGames[i].gameName + " &#5125;</a>"
+					} else {
+						content += "<a href='/blogsByGame/" + allGames[i].gameId + "'>" + allGames[i].gameName + "</a>"
+					}
+					content += "</li>"
+				}
+				document.querySelector(".allGames").innerHTML = content;
+			}
+		}
+
+		function getAllPlatforms() {
+			const result = new XMLHttpRequest();
+			result.open("GET", "http://localhost:8000/platforms")
+			result.send()
+			result.onload = function () {
+				let allPlatforms = JSON.parse(this.responseText)
+				let content = ""
+				for (i = 0; i < allPlatforms.length; i++) {
+					content += "<li>"
+					content += "<a href='/blogsByPlatform/" + allPlatforms[i].platformId + "'>" + allPlatforms[i].platformName + "</a>"
+					content += "</li>"
+				}
+				document.querySelector(".allPlatforms").innerHTML = content;
+			}
+		}
+
+		function getAllGenres() {
+			const result = new XMLHttpRequest();
+			result.open("GET", "http://localhost:8000/genres")
+			result.send()
+			result.onload = function () {
+				let allGenres = JSON.parse(this.responseText)
+				let content = ""
+				for (i = 0; i < allGenres.length; i++) {
+					content += "<li>"
+					content += "<a href='/blogsByGenre/" + allGenres[i].genreId + "'>" + allGenres[i].genreName + "</a>"
+					content += "</li>"
+				}
+				document.querySelector(".allGenres").innerHTML = content;
+			}
+		}
+	</script>
+
+	</body>
+</html>

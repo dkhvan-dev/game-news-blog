@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:insert="~{/toInsert/head.html}">
+	<title>Game Page</title>
+</head>
+<body onload="getGameInfo(); getLast3NewsByGame(); getLastBLogByGame()">
+	<!-- Page Preloder -->
+	<div th:insert="~{/toInsert/preloader.html}">
+	</div>
+
+	<!-- Header section -->
+	<header th:insert="~{/toInsert/header.html}">
+	</header>
+	<!-- Header section end -->
+
+	<main class="main">
+		<!-- Page top section -->
+		<section class="page-top-section set-bg" data-setbg="/img/page-top-bg/1.jpg">
+			<div class="page-info">
+				<h2 th:text="#{games}"></h2>
+				<div class="site-breadcrumb">
+					<a th:href="@{'/'}" th:text="#{home}"></a>  /
+					<a th:href="@{'/allGames/keyword?keyword='}" th:text="#{games}"></a>	 /
+					<span th:text="${game.gameName}"></span>
+				</div>
+			</div>
+		</section>
+		<!-- Page top end-->
+
+
+		<!-- Games section -->
+		<section class="games-single-page">
+			<div class="container">
+				<div class="game-single-preview">
+
+				</div>
+				<div class="row">
+					<div class="col-xl-9 col-lg-8 col-md-7">
+						<div class="game-single-content">
+
+						</div>
+						<div class="geme-social-share pt-5 d-flex">
+							<p th:text="#{share} + ':'"></p>
+							<a href="https://ru.pinterest.com/"><i class="fa fa-pinterest"></i></a>
+							<a href="https://www.facebook.com/"><i class="fa fa-facebook"></i></a>
+							<a href="https://twitter.com/"><i class="fa fa-twitter"></i></a>
+							<a href="https://www.twitch.tv/"><i class="fa fa-twitch"></i></a>
+							<a href="https://github.com/"><i class="fa fa-github"></i></a>
+						</div>
+					</div>
+					<div class="col-xl-3 col-lg-4 col-md-5 sidebar game-page-sideber">
+						<div id="stickySidebar">
+							<div class="widget-item">
+								<div class="rating-widget">
+
+								</div>
+							</div>
+							<div class="widget-item">
+								<div class="testimonials-widget">
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- Games end-->
+
+		<!-- Latest News -->
+		<section class="intro-section">
+			<div class="container">
+				<div class="col-md-4 text-center mx-auto">
+					<h2 class="text-white" th:text="#{latestNews}"></h2>
+				</div>
+				<div class="row mt-lg-5 last3NewsByGame">
+
+				</div>
+			</div>
+		</section>
+		<!-- Latest News end -->
+	</main>
+
+	<!-- Footer section -->
+	<footer class="footer-section" th:insert="~{/toInsert/footer.html}">
+	</footer>
+	<!-- Footer section end -->
+
+	<!--====== Javascripts & Jquery ======-->
+	<div th:insert="~{/toInsert/scripts.html}"></div>
+
+	<script>
+		function getGameInfo() {
+			const result = new XMLHttpRequest()
+			var url = document.location.href.charAt(document.location.href.length-1)
+			result.open("GET", "http://localhost:8000/games/" + url)
+			result.send()
+			result.onload = function () {
+				let game = JSON.parse(this.responseText)
+				let gameImage = "<img src='/getGameImage/" + game.gameImage + "' alt='#'>"
+				let content = ""
+				content += "<h2 class='gs-title'>" + game.gameName + "</h2>"
+				content += "<h4>[[#{aboutGame}]]</h4>"
+				content += "<p>" + game.gameDescription + "</p>"
+				content += "<h4>[[#{minRequirements}]]:</h4>"
+				content += "<div class='d-flex detailsGameRequirements'>"
+				content += "<p>[[#{os}]]: </p>"
+				content += "<span>" + game.gameRequirement.gameRequirementsOS + "</span>"
+				content += "</div>"
+				content += "<div class='d-flex detailsGameRequirements'>"
+				content += "<p>[[#{processor}]]: <span>" + game.gameRequirement.gameRequirementsCPU + "</span></p>"
+				content += "</div>"
+				content += "<div class='d-flex detailsGameRequirements'>"
+				content += "<p>[[#{ram}]]: <span>" + game.gameRequirement.gameRequirementsMemory + "</span></p>"
+				content += "</div>"
+				content += "<div class='d-flex detailsGameRequirements'>"
+				content += "<p>[[#{graphicsCard}]]: <span>" + game.gameRequirement.gameRequirementsGPU + "</span></p>"
+				content += "</div>"
+				content += "<div class='d-flex detailsGameRequirements'>"
+				content += "<p>[[#{hardDrive}]]: <span>" + game.gameRequirement.gameRequirementsStorage + "</span></p>"
+				content += "</div>"
+
+				let gameRatings = ""
+				gameRatings += "<h4 class='widget-title'>[[#{ratings}]]</h4>"
+				gameRatings += "<ul>"
+				gameRatings += "<li>[[#{gamePlay}]]"
+				gameRatings += "<span>" + game.gameRatings.gameRatingGameplay + "<span class='maxRating'>&nbsp;&nbsp;/5</span></span>"
+				gameRatings += "</li>"
+				gameRatings += "<li>[[#{graphics}]]"
+				gameRatings += "<span>" + game.gameRatings.gameRatingGraphics + "&nbsp;&nbsp;/5</span>"
+				gameRatings += "</li>"
+				gameRatings += "<li>[[#{difficulty}]]"
+				gameRatings += "<span>" + game.gameRatings.gameRatingDifficulty + "&nbsp;&nbsp;/5</span>"
+				gameRatings += "</li>"
+				gameRatings += "<li>[[#{gameAge}]]"
+				gameRatings += "<span>" + game.gameAge + "+</span>"
+				gameRatings += "</li>"
+				gameRatings += "</ul>"
+				gameRatings += "<div class='rating'>"
+				gameRatings += "<h5><i>[[#{rating}]]</i><span>" + game.gameRatings.gameRatingAvg + "</span>&nbsp;&nbsp;/5</h5>"
+				gameRatings += "</div>"
+
+				document.querySelector(".game-single-preview").innerHTML = gameImage
+				document.querySelector(".game-single-content").innerHTML = content
+				document.querySelector(".rating-widget").innerHTML = gameRatings
+			}
+		}
+
+		function getLastBLogByGame() {
+			const result = new XMLHttpRequest()
+			var url = document.location.href.split("/").pop()
+			result.open("GET", "http://localhost:8000/blogs/lastBlogByGame/" + url + "/byStatus/" + 2)
+			result.send()
+			result.onload = function () {
+			let lastBlogByGame = JSON.parse(this.responseText)
+			let content = ""
+			content += "<h4 class='widget-title'>[[#{lastBlogGame}]]<span></span></h4>"
+			content += "<a href='/detailsBlog/" + lastBlogByGame.blogId + "' class='widget-title'>" + lastBlogByGame.blogTitle + "</a>"
+			content += "<div class='testim-text'>"
+			content += "<p>" + lastBlogByGame.blogDescription + "</p>"
+			content += "<h6>[[#{author}]]: <span>" + lastBlogByGame.users.userFirstName + ' ' + lastBlogByGame.users.userSurname + "</span>"
+			content += "</h6>"
+			content += "</div>"
+			document.querySelector(".testimonials-widget").innerHTML = content
+			}
+		}
+
+		function getLast3NewsByGame() {
+			const result = new XMLHttpRequest()
+			var url = document.location.href.charAt(document.location.href.length-1)
+			result.open("GET", "http://localhost:8000/news/last3NewsByGame/" + url)
+			result.send()
+			result.onload = function () {
+				let last3NewsByGame = JSON.parse(this.responseText)
+				let content = ""
+				for (i = 0; i < last3NewsByGame.length; i++) {
+					content += "<div class='col-md-4'>"
+					content += "<div class='intro-text-box text-box text-white d-flex flex-column'>"
+					content += "<div class='top-meta'>"
+					content += "<span>" + last3NewsByGame[i].newsCreateDate + "&nbsp;&nbsp;/&nbsp;&nbsp;in&nbsp;&nbsp;</span>"
+					content += "<a href='/allNews'>[[#{news}]]</a>"
+					content += "</div>"
+					content += "<h3>" + last3NewsByGame[i].newsTitle + "</h3>"
+					content += "<p>" + last3NewsByGame[i].newsDescription + "</p>"
+					content += "<a href='/detailsNews/" + last3NewsByGame[i].newsId + "' class='read-more justify-content-end align-content-end'>[[#{readMoreBtn}]] &#5125;</a>"
+					content += "</div>"
+					content += "</div>"
+				}
+				document.querySelector(".last3NewsByGame").innerHTML = content
+			}
+		}
+	</script>
+
+	</body>
+</html>

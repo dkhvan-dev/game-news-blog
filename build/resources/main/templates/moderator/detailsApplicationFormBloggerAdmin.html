@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:insert="~{/toInsert/head.html}">
+    <title>Admin Panel</title>
+</head>
+<body onload="getApplication()">
+
+    <div th:insert="~{/toInsert/preloader.html}"></div>
+
+    <!-- Header section -->
+    <header th:insert="~{/toInsert/header.html}">
+    </header>
+    <!-- Header section end -->
+
+    <main class="d-flex flex-column profileSection">
+        <div class="container mt-3">
+            <div class="alert alert-success" role="alert" th:if="${param.success}" th:text="#{successUpdateApp}">
+
+            </div>
+            <div class="alert alert-danger" role="alert" th:if="${param.errorUpdateApplication}" th:text="#{failedUpdateApp}">
+
+            </div>
+            <div class="applicationInfo">
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer section -->
+    <footer class="footer-section" th:insert="~{/toInsert/footer.html}">
+    </footer>
+    <!-- Footer section end -->
+
+    <div th:insert="~{/toInsert/scripts.html}"></div>
+
+    <script>
+        function getApplication() {
+            const res = new XMLHttpRequest()
+            let appId = document.location.href.split("/").pop()
+            res.open("GET", "http://localhost:8000/applicationForms/" + appId)
+            res.send()
+            res.onload = function () {
+                let applicationForm = JSON.parse(this.responseText)
+                const resStatus = new XMLHttpRequest()
+                resStatus.open("GET", "http://localhost:8000/applicationStatus")
+                resStatus.send()
+                resStatus.onload = function () {
+                    let allStatus = JSON.parse(resStatus.responseText)
+                    let content = ""
+                    content += "<form class='mb-5' action='/updateFormBlogger' method='post'>"
+                    content += "<input type='hidden' name='applicationFormBloggerId' value='" + applicationForm.applicationFormBloggerId + "'>"
+                    content += "<div class='mt-3'>"
+                    content += "<label class='textAreaLabel'>"
+                    content += "<span class='detailsAdminSpan'>[[#{descriptionFeedback}]]:</span> <br>"
+                    if ([[${!canUpdateApplication}]]) {
+                        content += "<textarea maxlength='10000' rows='10' class='form-control' name='applicationFormBloggerDescription' readonly>" + applicationForm.applicationFormBloggerDescription + "</textarea>"
+                    } else {
+                        content += "<textarea maxlength='10000' rows='10' class='form-control' name='applicationFormBloggerDescription'>" + applicationForm.applicationFormBloggerDescription + "</textarea>"
+                    }
+                    content += "</label>"
+                    content += "</div>"
+                    content += "<div class='mt-3'>"
+                    content += "<label>"
+                    content += "<span class='detailsAdminSpan'>[[#{receiptDate}]]:</span> <br>"
+                    content += "<input type='date' class='form-control' name='receiptDate' value='" + applicationForm.applicationFormBloggerReceiptDate + "' readOnly>"
+                    content += "</label>"
+                    content += "</div>"
+                    content += "<div class='mt-3'>"
+                    content += "<label>"
+                    content += "<span class='detailsAdminSpan'>[[#{updateDate}]]:</span> <br>"
+                    if ([[${!canUpdateApplication}]]) {
+                        content += "<input type='date' class='form-control' name='updateDate' value='" + applicationForm.applicationFormBloggerUpdateDate + "' readonly>"
+                    } else {
+                        content += "<input type='date' class='form-control' name='updateDate' value='" + applicationForm.applicationFormBloggerUpdateDate + "'>"
+                    }
+                    content += "</label>"
+                    content += "</div>"
+                    content += "<div class='mt-3'>"
+                    content += "<span class='detailsAdminSpan'>[[#{author}]]: &nbsp;&nbsp;</span>"
+                    content += "<span class='detailsAdminSpan'>" + applicationForm.users.userFirstName + ' ' + applicationForm.users.userSurname + "</span>"
+                    content += "<input type='hidden' name='authorId' value='" + applicationForm.users.userId + "'>"
+                    content += "</div>"
+                    content += "<div class='mt-3'>"
+                    if ([[${!canUpdateApplication}]]) {
+                        content += "<input type='text' class='form-control' value='" + applicationForm.applicationBloggerStatus.applicationBloggerStatus + "' style='color: " + applicationForm.applicationBloggerStatus.applicationBloggerStatusColor + "; width: 90%' readOnly>"
+                    } else {
+                        content += "<select class='form-select' name='applicationBloggerStatus'>"
+                        for (i = 0; i < allStatus.length; i++) {
+                            if (allStatus[i].applicationBloggerStatusId == applicationForm.applicationBloggerStatus.applicationBloggerStatusId) {
+                                content += "<option value='" + allStatus[i].applicationBloggerStatusId + "' selected style='color: " + allStatus[i].applicationBloggerStatusColor + "'>" + allStatus[i].applicationBloggerStatus + "</option>"
+                            } else {
+                                content += "<option value='" + allStatus[i].applicationBloggerStatusId + "' style='color: " + allStatus[i].applicationBloggerStatusColor + "'>" + allStatus[i].applicationBloggerStatus + "</option>"
+                            }
+                        }
+                        content += "</select>"
+                    }
+                    content += "</div>"
+                    content += "<div class='mt-3'>"
+                    if ([[${param.success != null}]]) {
+                        content += "<span>Updated by " + [[${#authorization.getAuthentication().getPrincipal().getUserFirstName()}]] + ' ' + [[${#authorization.getAuthentication().getPrincipal().getUserSurname()}]] + "</span>"
+                    }
+                    content += "</div>"
+                    if ([[${canUpdateApplication}]]) {
+                        content += "<button class='btn btn-primary mt-3'>[[#{updateApp}]]</button>"
+                    }
+                    content += "</form>"
+                    document.querySelector(".applicationInfo").innerHTML = content
+                }
+            }
+        }
+    </script>
+</body>
+</html>

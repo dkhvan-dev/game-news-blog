@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:insert="~{/toInsert/head.html}">
+    <title>Admin Panel</title>
+</head>
+<body onload="getNewsById()">
+
+    <div th:insert="~{/toInsert/preloader.html}"></div>
+
+    <!-- Header section -->
+    <header th:insert="~{/toInsert/header.html}">
+    </header>
+    <!-- Header section end -->
+
+    <main class="d-flex flex-column profileSection">
+        <div class="container mt-3">
+            <div class="alert alert-success" role="alert" th:if="${param.success}" th:text="#{successNewsAdd}">
+
+            </div>
+            <div class="alert alert-primary" role="alert" th:if="${param.errorEditNews}" th:text="#{errorEditNews}">
+
+            </div>
+            <div class="newsInfo">
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer section -->
+    <footer class="footer-section" th:insert="~{/toInsert/footer.html}">
+    </footer>
+    <!-- Footer section end -->
+
+    <div th:insert="~{/toInsert/scripts.html}"></div>
+
+    <script>
+        function getNewsById() {
+            const res = new XMLHttpRequest()
+            let newsId = document.location.href.split("/").pop()
+            res.open("GET", "http://localhost:8000/news/" + newsId)
+            res.send()
+            res.onload = function () {
+                let news = JSON.parse(this.responseText)
+                const resGames = new XMLHttpRequest()
+                resGames.open("GET", "http://localhost:8000/games")
+                resGames.send()
+                resGames.onload = function () {
+                    let allGames = JSON.parse(resGames.responseText)
+                    let content = ""
+                    content += "<form class='mb-5' action='/editNews' method='post' encType='multipart/form-data'>"
+                    content += "<input type='hidden' name='newsId' value='" + news.newsId + "'>"
+                    content += "<div class='mt-3'>"
+                    content += "<label class='inputDetailsLabel'>"
+                    content += "<span class='detailsAdminSpan'>[[#{title}]]</span>"
+                    content += "<input type='text' class='form-control' name='newsTitle' value='" + news.newsTitle + "' th:placeholder='" + news.newsTitle + "' required>"
+                    content += "</label>"
+                    content += "</div>"
+                    content += "<div class='mt-3'>"
+                    content += "<label class='textAreaLabel'>"
+                    content += "<span class='detailsAdminSpan'>[[#{descriptionFeedback}]]:</span>"
+                    content += "<textarea maxlength='10000' rows='10' id='tinyMceTextarea' class='form-control' name='newsDescription'>" + news.newsDescription + "</textarea>"
+                    content += "</label>"
+                    content += "</div>"
+                    content += "<div class='mt-3'>"
+                    content += "<label>"
+                    content += "<span class='detailsAdminSpan'>[[#{createDate}]]:</span>"
+                    content += "<input type='date' class='form-control' name='createNews' value='" + news.newsCreateDate + "' required>"
+                    content += "</label>"
+                    content += "</div>"
+                    content += "<div class='mt-3'>"
+                    content += "<select class='form-select mt-3' name='game'>"
+                    for (i = 0; i < allGames.length; i++) {
+                        if (allGames[i].gameId == news.game.gameId) {
+                            content += "<option value='" + allGames[i].gameId + "' selected>" + allGames[i].gameName + "</option>"
+                        } else {
+                            content += "<option value='" + allGames[i].gameId + "'>" + allGames[i].gameName + "</option>"
+                        }
+                    }
+                    content += "</select>"
+                    content += "</div>"
+                    content += "<div class='mt-3'>"
+                    content += "<label class='form-label'>"
+                    content += "<span class='detailsAdminSpan'>[[#{author}]]:</span>"
+                    content += "<span class='detailsAdminSpan'>" + news.author.userFirstName + ' ' + news.author.userSurname + "</span>"
+                    content += "<input class='form-control' type='hidden' name='author' value='" + news.author.userId + "'>"
+                    content += "</label>"
+                    content += "</div>"
+                    content += "<button class='btn btn-primary mt-3'>[[#{editNews}]]</button>"
+                    content += "<button type='button' class='btn btn-danger mt-3' data-bs-toggle='modal' data-bs-target='#deleteNewsModal'>[[#{deleteBtn}]]"
+                    content += "</button>"
+                    content += "</form>"
+                    content += "<div class='modal fade' id='deleteNewsModal' tabIndex='-1' aria-hidden='true'>"
+                    content += "<div class='modal-dialog' style='max-width: 900px'>"
+                    content += "<form class='form-control' action='/deleteNewsAdmin' method='post'>"
+                    content += "<div class='modal-content'>"
+                    content += "<div class='modal-header'>"
+                    content += "<h5 class='modal-title'>[[#{deleteNews}]]</h5>"
+                    content += "<button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>"
+                    content += "</div>"
+                    content += "<div class='modal-body d-flex flex-column'>"
+                    content += "<span>[[#{deleteNewsBody}]]</span>"
+                    content += "<input type='hidden' name='newsId' th:value='" + news.newsId + "'>"
+                    content += "</div>"
+                    content += "<div class='modal-footer'>"
+                    content += "<button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>[[#{closeBtn}]]</button>"
+                    content += "<button class='btn btn-danger'>[[#{deleteNews}]]</button>"
+                    content += "</div>"
+                    content += "</div>"
+                    content += "</form>"
+                    content += "</div>"
+                    content += "</div>"
+                    document.querySelector(".newsInfo").innerHTML = content
+                }
+            }
+        }
+    </script>
+</body>
+</html>

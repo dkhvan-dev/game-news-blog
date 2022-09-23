@@ -1,0 +1,59 @@
+<header class="header-section">
+  <div class="header-warp">
+    <div class="header-social d-flex justify-content-end">
+      <p th:text="#{followUs} + ':'"></p>
+      <a href="https://ru.pinterest.com/"><i class="fa fa-pinterest"></i></a>
+      <a href="https://www.facebook.com/"><i class="fa fa-facebook"></i></a>
+      <a href="https://twitter.com/"><i class="fa fa-twitter"></i></a>
+      <a href="https://www.instagram.com/"><i class="fa fa-dribbble"></i></a>
+      <a href="https://www.reddit.com/"><i class="fa fa-behance"></i></a>
+    </div>
+    <div class="header-bar-warp d-flex">
+      <!-- site logo -->
+      <a th:href="@{'/'}" class="site-logo">
+        <img th:src="@{'/../img/logo.png'}" alt="">
+      </a>
+      <nav class="top-nav-area w-100">
+        <div class="user-panel">
+
+          <ul class="navbar-nav" sec:authorize="isAuthenticated()">
+            <li class="nav-item dropdown">
+              <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="#{profileHeader}">
+
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" th:href="@{'/profile'}" th:text="#{profileHeader}"></a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" th:href="@{'/myBlogs'}" th:text="#{myBlogs}" sec:authorize="hasRole('ROLE_BLOGGER')"></a></li>
+                <li><a class="dropdown-item" th:href="@{'/myFavorites'}" th:text="#{favoritesBlogs}"></a></li>
+                <li><a class="dropdown-item" th:href="@{'/adminPanel'}" sec:authorize="hasRole('ROLE_MODERATOR')" th:text="#{adminPanelHeader}"></a></li>
+                <li><a th:href="@{'/signOut'}" class="dropdown-item text-danger" th:text="#{logout}"></a></li>
+              </ul>
+            </li>
+          </ul>
+          <div sec:authorize="isAnonymous()">
+            <a th:href="@{'/signIn'}" th:text="#{authentication}"></a>
+          </div>
+        </div>
+        <!-- Menu -->
+        <ul class="main-menu primary-menu">
+          <li><a th:href="@{'/'}" th:text="#{home}"></a></li>
+          <li><a th:href="@{'/allGames/keyword?keyword='}" th:text="#{games}"></a></li>
+          <li><a th:href="@{'/allBlogs'}" th:text="#{blogs}"></a></li>
+          <li><a th:href="@{'/allNews'}" th:text="#{news}"></a></li>
+          <li>
+            <a th:href="@{'?language=en'}">
+              <img class="localization-img" th:src="@{'/img/localization/en_local.jpg'}">
+            </a>
+          </li>
+          <li>
+            <a th:href="@{'?language=ru'}">
+              <img class="localization-img" th:src="@{'/img/localization/ru_local.jpg'}">
+            </a>
+          </li>
+        </ul>
+
+      </nav>
+    </div>
+  </div>
+</header>

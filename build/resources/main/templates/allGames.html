@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:insert="~{/toInsert/head.html}">
+	<title>EndGame - Gaming Magazine Template</title>
+</head>
+<body onload="getAllGames(); getLastNews(); getAllPlatforms(); getAllGenres()">
+	<!-- Page Preloder -->
+	<div th:insert="~{/toInsert/preloader.html}">
+	</div>
+
+	<!-- Header section -->
+	<header th:insert="~{/toInsert/header.html}">
+	</header>
+	<!-- Header section end -->
+
+	<main class="main">
+		<!-- Page top section -->
+		<section class="page-top-section set-bg" data-setbg="/img/page-top-bg/1.jpg">
+			<div class="page-info">
+				<h2 th:text="#{games}"></h2>
+				<div class="site-breadcrumb">
+					<a th:href="@{'/'}" th:text="#{home}"></a>  /
+					<span th:text="#{games}"></span>
+				</div>
+			</div>
+		</section>
+		<!-- Page top end-->
+
+		<!-- Games section -->
+		<section class="games-section">
+			<div class="container">
+				<div class="row">
+					<div class="col-xl-7 col-lg-8 col-md-7">
+						<div class="col-12 allGamesByKeyword">
+							<form action="" method="get">
+								<input type='search' name="keyword" id="keyword" placeholder="Game name">
+								<button type="submit" class="btn btn-info" th:text="#{search}"></button>
+							</form>
+						</div>
+					</div>
+					<div class="col-xl-7 col-lg-8 col-md-7">
+						<div class="row allGames mt-3">
+
+						</div>
+					</div>
+					<div class="col-xl-3 col-lg-4 col-md-5 sidebar game-page-sideber">
+						<div id="stickySidebar">
+							<div class="widget-item">
+								<div class="categories-widget">
+									<h4 class="widget-title" th:text="#{platform}"></h4>
+									<ul class="allPlatforms">
+
+									</ul>
+								</div>
+							</div>
+							<div class="widget-item">
+								<div class="categories-widget">
+									<h4 class="widget-title" th:text="#{genre}"></h4>
+									<ul class="allGenres">
+
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- Games end-->
+
+
+		<section class="featured-section">
+			<div class="featured-bg set-bg" data-setbg="../img/featured-bg.jpg"></div>
+			<div class="featured-box">
+				<div class="text-box">
+
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<!-- Footer section -->
+	<footer class="footer-section" th:insert="~{/toInsert/footer.html}">
+	</footer>
+	<!-- Footer section end -->
+
+
+	<!--====== Javascripts & Jquery ======-->
+	<div th:insert="~{/toInsert/scripts.html}"></div>
+
+	<script>
+		function getAllGames() {
+			const result = new XMLHttpRequest();
+			let keyword = document.location.href.split("/").pop()
+			result.open("GET", "http://localhost:8000/games/keyword=" + keyword.substring(keyword.indexOf("=")+1))
+			result.send();
+			result.onload = function() {
+				let allGames = JSON.parse(this.responseText)
+				let content = ""
+				for (i = 0; i < allGames.length; i++) {
+					content += "<div class='col-lg-4 col-md-6'>"
+					content += "<div class='game-item'>"
+					content += "<img src='/getGameImage/" + allGames[i].gameImage + "' alt='#'>"
+					content += "<h5>" + allGames[i].gameName + "</h5>"
+					content += "<p>[[#{gameAge}]]: <span class='age-limit'>" + allGames[i].gameAge + "+</span></p>"
+					content += "<a href='/detailsGame/" + allGames[i].gameId + "' class='read-more'>[[#{readMoreBtn}]] &#5125;</a>"
+					content += "</div>"
+					content += "</div>"
+				}
+				document.querySelector(".allGames").innerHTML = content;
+			}
+		}
+
+		function getLastNews() {
+			const result = new XMLHttpRequest();
+			result.open("GET", "http://localhost:8000/news/lastNews")
+			result.send();
+			result.onload = function () {
+				let lastNews = JSON.parse(this.responseText);
+				let content = "<div class='top-meta'>";
+				content += "<span>" + lastNews.newsCreateDate + "&nbsp;&nbsp;in&nbsp;&nbsp;</span>"
+				content += "<a href='/allGames/keyword?keyword='>[[#{games}]]</a>"
+				content += "</div>"
+				content += "<h3>" + lastNews.newsTitle + "</h3>"
+				content += "<p>" + lastNews.newsDescription + "</p>"
+				content += "<a href='/detailsNews/" + lastNews.newsId + "' class='read-more'>[[#{readMoreBtn}]] &#5125;</a>"
+				document.querySelector(".text-box").innerHTML = content;
+			}
+		}
+
+		function getAllPlatforms() {
+			const result = new XMLHttpRequest();
+			result.open("GET", "http://localhost:8000/platforms")
+			result.send()
+			result.onload = function () {
+				let allPlatforms = JSON.parse(this.responseText)
+				let content = ""
+				for (i = 0; i < allPlatforms.length; i++) {
+					content += "<li>"
+					content += "<a href='/gamesByPlatform/" + allPlatforms[i].platformId + "/keyword?keyword='>" + allPlatforms[i].platformName + "</a>"
+					content += "</li>"
+				}
+				document.querySelector(".allPlatforms").innerHTML = content;
+			}
+		}
+
+		function getAllGenres() {
+			const result = new XMLHttpRequest();
+			result.open("GET", "http://localhost:8000/genres")
+			result.send()
+			result.onload = function () {
+				let allGenres = JSON.parse(this.responseText)
+				let content = ""
+				for (i = 0; i < allGenres.length; i++) {
+					content += "<li>"
+					content += "<a href='/gamesByGenre/" + allGenres[i].genreId + "/keyword?keyword='>" + allGenres[i].genreName + "</a>"
+					content += "</li>"
+				}
+				document.querySelector(".allGenres").innerHTML = content;
+			}
+		}
+
+	</script>
+
+	</body>
+</html>

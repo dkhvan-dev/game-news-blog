@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:insert="~{/toInsert/head.html}">
+	<title>Blog Page</title>
+</head>
+<body onload="getBlogInfo(); getALlComments()">
+	<!-- Page Preloder -->
+	<div th:insert="~{/toInsert/preloader.html}">
+	</div>
+
+	<!-- Header section -->
+	<header th:insert="~{/toInsert/header.html}">
+	</header>
+
+	<!-- Header section end -->
+
+	<main class="main">
+		<!-- Page top section -->
+		<section class="page-top-section set-bg" data-setbg="/img/page-top-bg/1.jpg">
+			<div class="page-info">
+				<h2 th:text="#{blogs}"></h2>
+				<div class="site-breadcrumb">
+					<a th:href="@{'/'}" th:text="#{home}"></a>  /
+					<a th:href="@{'/allBlogs'}" th:text="#{blogs}"></a>	 /
+					<span th:text="${blog.blogTitle}"></span>
+				</div>
+			</div>
+		</section>
+		<!-- Page top end-->
+
+
+		<!-- Blog section -->
+		<section class="games-single-page">
+			<div class="container">
+				<div class="alert alert-success" role="alert" th:if="${param.successAddToFavorites}" th:text="#{successAddToFavorites}">
+
+				</div>
+				<div class="alert alert-danger" role="alert" th:if="${param.errorAddToFavorites}" th:text="#{failedAddToFavorites}">
+
+				</div>
+				<div class="alert alert-success" role="alert" th:if="${param.successRemoveFromFavorites}" th:text="#{successRemoveFromFavorites}">
+
+				</div>
+				<div class="alert alert-danger" role="alert" th:if="${param.errorRemoveFromFavorites}" th:text="#{errorRemoveFromFavorites}">
+
+				</div>
+				<div class="game-single-preview">
+
+				</div>
+				<div class="row">
+					<div class="col-12">
+						<div class="game-single-content">
+
+						</div>
+						<div th:if="${currentUser != null && inFavorite == false}">
+							<form th:action="@{'/addToFavorites'}" method="post">
+								<input type="hidden" name="blogId" th:value="${blog.blogId}">
+								<button class="btn btn-success" th:text="#{addToFavorite}"></button>
+							</form>
+						</div>
+						<div th:if="${currentUser != null && inFavorite == true}">
+							<form th:action="@{'/deleteFromFavorites'}" method="post">
+								<input type="hidden" name="blogId" th:value="${blog.blogId}">
+								<button class="btn btn-danger" th:text="#{removeFromFavorite}">Remove from favorites</button>
+							</form>
+						</div>
+						<div class="geme-social-share pt-5 d-flex">
+							<p th:text="#{share} + ':'"></p>
+							<a href="https://ru.pinterest.com/"><i class="fa fa-pinterest"></i></a>
+							<a href="https://www.facebook.com/"><i class="fa fa-facebook"></i></a>
+							<a href="https://twitter.com/"><i class="fa fa-twitter"></i></a>
+							<a href="https://www.twitch.tv/"><i class="fa fa-twitch"></i></a>
+							<a href="https://github.com/"><i class="fa fa-github"></i></a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- COMMENTS -->
+			<section class="container-fluid pb-lg-5">
+				<div class="container">
+					<div sec:authorize="isAuthenticated() && !hasRole('ROLE_BAN')">
+						<input type="hidden" name="blogId" th:value="${blog.blogId}">
+						<div class="d-flex justify-content-between">
+							<label class="form-label mt-3 text-white" th:text="#{comment} + ':'">
+
+							</label> <br>
+							<a type="submit" class="btn btn-primary" th:onclick="'addComment(' + ${blog.blogId} + ')'" th:text="#{sendBtn}"></a>
+						</div>
+						<textarea class="comment-text tinyMceTextarea" name="commentText"></textarea>
+					</div>
+					<input type="hidden" id="userEmail" th:value="${userEmail}">
+					<div class="allComments">
+
+					</div>
+					<div class="modal fade" id="deleteCommentModal" tabindex="-1" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" th:text="#{deleteComment}"></h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<div class="modal-body">
+									<input type="hidden" name="commentId" value="" id="commentId">
+									<span th:text="#{deleteCommentBody}"></span>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{closeBtn}"></button>
+									<button class="btn btn-danger" data-bs-dismiss="modal" th:onclick="'deleteComment()'" th:text="#{deleteBtn}"></button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<script>
+
+					</script>
+				</div>
+			</section>
+		</section>
+		<!-- Games end-->
+	</main>
+
+
+	<!-- Footer section -->
+	<footer class="footer-section" th:insert="~{/toInsert/footer.html}">
+	</footer>
+	<!-- Footer section end -->
+
+	<!--====== Javascripts & Jquery ======-->
+	<div th:insert="~{/toInsert/scripts.html}"></div>
+
+	<input type="hidden" name="blogId" id="blogId" th:value="${blog.blogId}">
+	<script>
+		function getBlogInfo() {
+			$(document).on("click", ".deleteCommentModal", function () {
+				var commentId = $(this).data("id");
+				$(".modal-body #commentId").val(commentId);
+			});
+			const result = new XMLHttpRequest()
+			var url = document.location.href
+			let sections = url.split('/');
+			let lastSection = sections.pop();
+			result.open("GET", "http://localhost:8000/blogs/" + lastSection)
+			result.send()
+			result.onload = function () {
+				let blog = JSON.parse(this.responseText)
+				let blogImage = "<img src='/getBlogImage/" + blog.blogImage + "' alt='#'>"
+				let content = ""
+				content += "<h2 class='gs-title'>" + blog.blogTitle + "</h2>"
+				content += "<p class='text-white'>" + blog.blogDescription + "</p>"
+				content += "<p>[[#{publicationDate}]]: <span>" + blog.blogCreateDate + "</span></p>"
+				content += "<p>Author: <span>" + blog.users.userFirstName + " " + blog.users.userSurname + "</span></p>"
+				document.querySelector(".game-single-preview").innerHTML = blogImage
+				document.querySelector(".game-single-content").innerHTML = content
+			}
+		}
+
+		function getALlComments() {
+			const res = new XMLHttpRequest()
+			let blogId = document.querySelector("#blogId").value
+			res.open("GET", "http://localhost:8000/comments/byBlog/" + blogId)
+			res.send()
+			res.onload = function () {
+				let allComments = JSON.parse(this.responseText)
+				let content = ""
+				let userEmail = document.querySelector("#userEmail").value
+				for (i = 0; i < allComments.length; i++) {
+					content += "<div class='pt-3 added-comment'>"
+					content += "<div class='d-flex justify-content-between col-12'>"
+					content += "<p class='text-white'>" + allComments[i].commentText + "</p>"
+					if (allComments[i].author.userEmail == userEmail) {
+						content += "<button type='button' class='btn btn-danger deleteCommentModal' data-id='" + allComments[i].commentId + "' data-bs-toggle='modal' data-bs-target='#deleteCommentModal'>x"
+						content += "</button>"
+					}
+					content += "</div>"
+					content += "<p>"
+					content += "<span class='text-white'>[[#{author}]]: &nbsp;</span>"
+					content += "<span class='comment-author-name'>" + allComments[i].author.userFirstName + ' ' + allComments[i].author.userSurname + "</span> | &nbsp;"
+					content += "<span class='text-white'>" + allComments[i].commentCreateDate + "</span>"
+					content += "</p>"
+					content += "</div>"
+				}
+				document.querySelector(".allComments").innerHTML = content
+			}
+		}
+
+		function addComment(blogId) {
+			let tinyMceTextarea = document.querySelector(".tinyMceTextarea")
+			let xhttp = new XMLHttpRequest()
+			xhttp.onload = function () {
+				getALlComments()
+			}
+			xhttp.open("POST", "http://localhost:8000/comments/addComment")
+			xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
+			xhttp.send("tinyMceTextarea=" + tinyMceTextarea.value + "&blogId=" + blogId)
+		}
+
+		function deleteComment() {
+			let commentId = document.querySelector("#commentId").value
+			let xhttp = new XMLHttpRequest()
+			xhttp.onload = function () {
+				getALlComments()
+			}
+			xhttp.open("POST", "http://localhost:8000/comments/deleteComment")
+			xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
+			xhttp.send("commentId=" + commentId)
+		}
+	</script>
+
+	</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:insert="~{/toInsert/head.html}">
+  <title>Auth page</title>
+</head>
+<body>
+  <div th:insert="~{/toInsert/preloader.html}"></div>
+
+  <header th:insert="~{/toInsert/header.html}">
+  </header>
+
+  <main class="main profileSection">
+    <div class="container mt-3">
+      <div class="alert alert-success" role="alert" th:if="${param.success}" th:text="#{successAddBLog}">
+
+      </div>
+      <div class="alert alert-danger" role="alert" th:if="${param.errorAddBlog}" th:text="#{failedUpdateAvatar}">
+
+      </div>
+      <form th:action="@{'/addBlog'}" method="post" enctype="multipart/form-data">
+        <div class="mt-3">
+          <div class="mt-3">
+            <label class="form-label">
+              <span th:text="#{image} + ':'"></span>
+              <input class="form-control" type="file" name="blogImageToken">
+            </label>
+          </div>
+          <div class="inputDetailsLabel">
+            <span class="detailsAdminSpan" th:text="#{title} + ':'"></span>
+            <input class="form-control" type="text" name="blogTitle" required>
+          </div>
+        </div>
+        <div class="mt-3">
+            <span class="detailsAdminSpan" th:text="#{descriptionFeedback} + ':'"></span>
+            <textarea maxlength="10000" rows="10" id="tinyMceTextarea" class="form-control" name="blogDescription"></textarea>
+        </div>
+        <div class="mt-3 inputDetailsLabel">
+          <select class="form-select mt-3" name="games">
+            <option th:each="game : ${allGames}" th:text="${game.gameName}" th:value="${game.gameId}"></option>
+          </select>
+        </div>
+        <button class="btn btn-primary mt-3" th:text="#{addBlog}"></button>
+      </form>
+    </div>
+  </main>
+
+  <footer class="footer-section" th:insert="~{/toInsert/footer.html}"></footer>
+
+  <div th:insert="~{/toInsert/scripts.html}"></div>
+
+</body>
+</html>
