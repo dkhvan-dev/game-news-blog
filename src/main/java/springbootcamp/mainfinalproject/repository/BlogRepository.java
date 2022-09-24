@@ -12,6 +12,7 @@ import java.util.List;
 @Transactional
 public interface BlogRepository extends JpaRepository<Blog, Long> {
     List<Blog> findAllByBlogStatusBlogStatusNameOrderByBlogCreateDateDesc(String blogStatusName);
+    List<Blog> findAllByOrderByBlogStatusAsc();
     List<Blog> findAllByUsersUserIdOrderByBlogCreateDateDesc(Long userId);
     @Query(nativeQuery = true, value = "SELECT * FROM blogs ORDER BY blogs.create_date DESC LIMIT 3")
     List<Blog> findAllTop3OrderByCreateDateDesc();

@@ -87,7 +87,7 @@
 							</label> <br>
 							<a type="submit" class="btn btn-primary" th:onclick="'addComment(' + ${blog.blogId} + ')'" th:text="#{sendBtn}"></a>
 						</div>
-						<textarea class="comment-text tinyMceTextarea" name="commentText"></textarea>
+						<textarea class="comment-text tinyMceTextarea" name="commentText" required></textarea>
 					</div>
 					<input type="hidden" id="userEmail" th:value="${userEmail}">
 					<div class="allComments">

@@ -33,11 +33,11 @@
                       <form class="section text-center" th:action="@{'/signIn'}" method="post">
                         <h4 class="mb-4 pb-3" th:text="#{login}"></h4>
                         <div class="form-group">
-                          <input type="email" name="user_email" class="form-style" placeholder="example@gmail.com" id="logemail" autocomplete="off">
+                          <input type="email" name="user_email" class="form-style" placeholder="example@gmail.com" id="logemail" autocomplete="off" required>
                           <i class="input-icon uil uil-at"></i>
                         </div>
                         <div class="form-group mt-2">
-                          <input type="password" name="user_password" class="form-style" placeholder="********" id="logpass" autocomplete="off">
+                          <input type="password" name="user_password" class="form-style" placeholder="********" id="logpass" autocomplete="off" required>
                           <i class="input-icon uil uil-lock-alt"></i>
                         </div>
                         <button class="btn mt-4" th:text="#{login}"></button>

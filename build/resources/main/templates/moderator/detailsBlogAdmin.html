@@ -69,7 +69,7 @@
                         content += "<label class='textAreaLabel'>"
                         content += "<span>[[#{descriptionFeedback}]]:</span>"
                         if (blog.blogStatus.blogStatusName == "IN WAITING") {
-                            content += "<textarea maxlength='10000' rows='10' id='tinyMceTextarea' class='form-control' name='blogDescription'>" + blog.blogDescription + "</textarea>"
+                            content += "<textarea maxlength='10000' rows='10' id='tinyMceTextarea' class='form-control' name='blogDescription' required>" + blog.blogDescription + "</textarea>"
                         } else {
                             content += "<textarea maxlength='10000' rows='10' id='tinyMceTextarea' class='form-control' name='blogDescription' readonly>" + blog.blogDescription + "</textarea>"
                         }

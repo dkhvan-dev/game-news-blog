@@ -176,7 +176,7 @@
                                         </label>
                                         <label class="form-label mt-3">
                                             <span th:text="#{descriptionFeedback} + ':'"></span>
-                                            <textarea rows="10" id="tinyMceTextarea" class="form-control" name="newsDescription"></textarea>
+                                            <textarea rows="10" id="tinyMceTextarea" class="form-control" name="newsDescription" required></textarea>
                                         </label>
                                         <select class="form-select mt-3 allGames" name="game">
 
@@ -268,7 +268,7 @@
                                     </div>
                                     <div class="mt-3">
                                         <span th:text="#{descriptionFeedback} + ':'"></span> <br>
-                                        <textarea rows="10" id="tinyMceTextarea" class="form-control" name="gameDescription"></textarea>
+                                        <textarea rows="10" id="tinyMceTextarea" class="form-control" name="gameDescription" required></textarea>
                                     </div>
                                     <div class="mt-3 allPlatforms">
                                         <span th:text="#{platform} + ':'"></span>
@@ -1024,7 +1024,7 @@
                 $(".modal-body #blogId").val( blogId );
             });
             const resBlog = new XMLHttpRequest()
-            resBlog.open("GET", "http://localhost:8000/blogs")
+            resBlog.open("GET", "http://localhost:8000/blogs/admin")
             resBlog.send()
             resBlog.onload = function () {
                 let allBlogs = JSON.parse(this.responseText)

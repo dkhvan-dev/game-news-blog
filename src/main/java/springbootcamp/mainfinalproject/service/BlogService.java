@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface BlogService {
     List<BlogDto> getAllBlogs();
+    List<BlogDto> getAllBlogsAdmin();
     List<BlogDto> getAllBlogsByStatus(Long statusId);
     List<BlogDto> getAllBlogsByUser(Long userId);
     BlogDto getBlogById(Long blogId);

@@ -1,5 +1,6 @@
 package springbootcamp.mainfinalproject.api;
 
+import liquibase.pro.packaged.R;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,11 @@ public class BlogsController {
     @GetMapping()
     public ResponseEntity<List<BlogDto>> getAllBlogs() {
         return new ResponseEntity<>(blogService.getAllBlogs(), HttpStatus.OK);
+    }
+
+    @GetMapping("/admin")
+    public ResponseEntity<List<BlogDto>> getAllBlogsAdmin() {
+        return new ResponseEntity<>(blogService.getAllBlogsAdmin(), HttpStatus.OK);
     }
 
     @GetMapping("/byStatus/{statusId}")

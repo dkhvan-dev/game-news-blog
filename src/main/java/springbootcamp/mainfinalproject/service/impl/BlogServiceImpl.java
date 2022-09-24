@@ -33,6 +33,11 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
+    public List<BlogDto> getAllBlogsAdmin() {
+        return blogMapper.toDtoList(blogRepository.findAllByOrderByBlogStatusAsc());
+    }
+
+    @Override
     public List<BlogDto> getAllBlogsByStatus(Long statusId) {
         BlogStatus blogStatus = blogStatusService.getStatusById(statusId);
         if (blogStatus != null) {

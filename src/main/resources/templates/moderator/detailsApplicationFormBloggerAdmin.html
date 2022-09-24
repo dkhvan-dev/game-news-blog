@@ -58,7 +58,7 @@
                     if ([[${!canUpdateApplication}]]) {
                         content += "<textarea maxlength='10000' rows='10' class='form-control' name='applicationFormBloggerDescription' readonly>" + applicationForm.applicationFormBloggerDescription + "</textarea>"
                     } else {
-                        content += "<textarea maxlength='10000' rows='10' class='form-control' name='applicationFormBloggerDescription'>" + applicationForm.applicationFormBloggerDescription + "</textarea>"
+                        content += "<textarea maxlength='10000' rows='10' class='form-control' name='applicationFormBloggerDescription' required>" + applicationForm.applicationFormBloggerDescription + "</textarea>"
                     }
                     content += "</label>"
                     content += "</div>"

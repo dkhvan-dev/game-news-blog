@@ -86,23 +86,38 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String editUser(User user, String birthdate, String oldPassword, String newPassword, String reNewPassword) {
-        if (newPassword.equals(reNewPassword)) {
-            if (getCurrentUser().getUserId().equals(user.getUserId())) {
-                if (passwordEncoder.matches(oldPassword, getCurrentUser().getUserPassword())) {
-                    DateTimeFormatter pattern = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                    LocalDate userBirthDate = LocalDate.parse(birthdate, pattern);
-                    user.setUserBirthdate(userBirthDate);
-                    user.setUserPassword(passwordEncoder.encode(newPassword));
-                    user.setUserAvatar(getCurrentUser().getUserAvatar());
-                    user.setRoles(getCurrentUser().getRoles());
-                    userRepository.save(user);
-                    return "success";
-                } else {
-                    return "oldPasswordNotSameCurrentPassword";
-                }
+        if (newPassword.equals("") && reNewPassword.equals("")) {
+            if (passwordEncoder.matches(oldPassword, getCurrentUser().getUserPassword())) {
+                DateTimeFormatter pattern = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                LocalDate userBirthDate = LocalDate.parse(birthdate, pattern);
+                user.setUserBirthdate(userBirthDate);
+                user.setUserPassword(getCurrentUser().getUserPassword());
+                user.setUserAvatar(getCurrentUser().getUserAvatar());
+                user.setRoles(getCurrentUser().getRoles());
+                userRepository.save(user);
+                return "success";
+            } else {
+                return "oldPasswordNotSameCurrentPassword";
             }
         } else {
-            return "newPasswordsNotSame";
+            if (newPassword.equals(reNewPassword)) {
+                if (getCurrentUser().getUserId().equals(user.getUserId())) {
+                    if (passwordEncoder.matches(oldPassword, getCurrentUser().getUserPassword())) {
+                        DateTimeFormatter pattern = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                        LocalDate userBirthDate = LocalDate.parse(birthdate, pattern);
+                        user.setUserBirthdate(userBirthDate);
+                        user.setUserPassword(passwordEncoder.encode(newPassword));
+                        user.setUserAvatar(getCurrentUser().getUserAvatar());
+                        user.setRoles(getCurrentUser().getRoles());
+                        userRepository.save(user);
+                        return "success";
+                    } else {
+                        return "oldPasswordNotSameCurrentPassword";
+                    }
+                }
+            } else {
+                return "newPasswordsNotSame";
+            }
         }
         return null;
     }
